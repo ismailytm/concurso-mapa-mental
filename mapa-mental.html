@@ -28,22 +28,7 @@
     --c-vermelho:#6a2f39; --c-vermelho-b:#ab515e;
     --c-cinza:#3b3e4b;    --c-cinza-b:#5c6274;
   }
-  body.light{
-    --canvas-bg:#f4f6fa; --panel:#ffffff; --panel-2:#eef1f6; --text:#1b2130;
-    --muted:#5b6478; --border:#d3d9e5; --accent:#2f6fe0; --danger:#c53a4b;
-    --d0:#e9e6f8; --d0b:#a99fe0; --d0-text:#2c2652;
-    --d1:#dbe3f8; --d1b:#94aae6;
-    --d2:#c9eae2; --d2b:#6ec6b4;
-    --d3:#ccebd2; --d3b:#6fc088;
-    --d4:#d9f1dc; --d4b:#5fbc86;
-    --node-text:#183a2c;
-    --c-rosa:#f6d9ec;     --c-rosa-b:#d98fc4;
-    --c-azul:#d4e4f7;     --c-azul-b:#79aadc;
-    --c-roxo:#e6ddf8;     --c-roxo-b:#a58fe1;
-    --c-ambar:#f5e6c8;    --c-ambar-b:#cfa65c;
-    --c-vermelho:#f6d9dd; --c-vermelho-b:#dc8d99;
-    --c-cinza:#e2e4ea;    --c-cinza-b:#a7adbe;
-  }
+  /* tema fixo escuro — sem toggle de tema claro */
   *{box-sizing:border-box}
   html,body{height:100%}
   body{
@@ -65,22 +50,27 @@
     max-width:220px; height:28px; padding:0 8px; border-radius:7px;
     background:var(--panel-2); color:var(--text); border:1px solid var(--border);
   }
-  #srcSel{
-    max-width:92px; height:28px; padding:0 6px; border-radius:7px;
-    background:var(--panel-2); color:var(--text); border:1px solid var(--border);
-  }
-  #remoteBox{display:inline-flex; align-items:center; gap:5px}
-  #remoteUrl{
-    width:330px; max-width:42vw; height:28px; padding:0 8px; border-radius:7px; font:inherit;
-    background:var(--panel-2); color:var(--text); border:1px solid var(--border);
-  }
-  #remoteUrl:focus{border-color:var(--accent); outline:none}
+  /* toggle Pasta | Repo (esquerda = pasta local que edita, direita = repo remoto só leitura) */
+  #srcToggle{display:inline-flex; align-items:center; gap:6px; cursor:pointer; user-select:none;
+    font:11px/1 system-ui,sans-serif; white-space:nowrap}
+  #srcToggle .st-lbl{color:var(--muted); transition:color .12s}
+  #srcToggle.is-local  .st-lbl.l{color:var(--accent); font-weight:600}
+  #srcToggle.is-remote .st-lbl.r{color:var(--accent); font-weight:600}
+  #srcToggle .st-track{position:relative; width:32px; height:17px; border-radius:9px;
+    background:var(--panel-2); border:1px solid var(--border)}
+  #srcToggle .st-knob{position:absolute; top:1px; left:1px; width:13px; height:13px; border-radius:50%;
+    background:var(--accent); transition:left .14s}
+  #srcToggle.is-remote .st-knob{left:16px}
+  /* o 📁 Pasta e o selo "somente leitura" ficam empilhados na MESMA célula e só trocam
+     de visibility — assim o slot tem largura fixa (= o mais largo dos dois) e o toggle
+     Pasta|Repo não se move ao alternar. Conteúdo à direita, sem vão sobrando depois. */
+  #srcSlot{display:grid; align-items:center; justify-items:end; max-width:200px; overflow:hidden}
+  #srcSlot>*{grid-area:1/1; min-width:0}
   #roTag{
     font:600 10px/1 system-ui,sans-serif; letter-spacing:.3px; white-space:nowrap;
     color:var(--warning); border:1px solid var(--warning); border-radius:6px; padding:3px 6px;
   }
   /* modo somente-leitura (fonte = Repo): esconde as ações que gravam */
-  body.readonly #folderBtn,
   body.readonly [data-act="new"],
   body.readonly [data-act="rename"],
   body.readonly [data-act="dup"],
@@ -88,6 +78,10 @@
   body.readonly [data-act="undo"],
   body.readonly [data-act="redo"],
   body.readonly [data-act="addchild"]{display:none}
+  /* aberto via link (HOSTED): sem opção de Pasta — some o toggle e os separadores órfãos */
+  body.hosted #srcToggle,
+  body.hosted #srcSep,
+  body.hosted #tbSep1{display:none}
   .tb{
     height:28px; padding:0 10px; border-radius:7px; cursor:pointer;
     background:var(--panel-2); border:1px solid var(--border); color:var(--text);
@@ -204,6 +198,13 @@
     background:var(--panel-2); border:1px solid var(--border);
   }
   #refbox a.rb-item:hover{border-color:var(--accent); color:var(--accent)}
+  #refbox a.rb-item.rb-item-warn{border-style:dashed; border-color:var(--muted)}
+  #refbox .rb-kind{
+    flex:none; font:600 8.5px/1 ui-monospace,Menlo,Consolas,monospace; letter-spacing:.3px;
+    color:var(--muted); border:1px solid var(--border); border-radius:4px;
+    padding:2px 3px; min-width:24px; text-align:center;
+  }
+  #refbox .rb-kind-cf{color:var(--accent); border-color:var(--accent)}
   #refbox .rb-lbl{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
   #refbox .rb-x{margin-left:auto; flex:none; color:var(--muted); padding:0 2px; font-size:12px}
   #refbox .rb-x:hover{color:var(--danger)}
@@ -229,7 +230,6 @@
     font:inherit; color:inherit; background:rgba(0,0,0,.16);
     border:1px solid var(--accent); border-radius:6px; padding:4px 6px; outline:none;
   }
-  body.light textarea.edit{background:rgba(0,0,0,.05)}
 
   /* ---- controles inferiores (canto direito, como no NotebookLM) ---- */
   #controls{
@@ -296,9 +296,16 @@
   #actionbar .sw button[data-sc="vermelho"]{background:var(--c-vermelho-b)}
   #actionbar .sw button[data-sc="cinza"]{background:var(--c-cinza-b)}
 
-  /* ---- dica + toast + ajuda ---- */
-  #hint{
+  /* ---- dica + toast ---- */
+  #helpBtn{
     position:absolute; left:12px; bottom:12px; z-index:25;
+    width:30px; height:30px; border-radius:50%;
+    background:var(--panel); border:1px solid var(--border); color:var(--muted);
+    display:grid; place-items:center; cursor:pointer; font:700 14px/1 system-ui,sans-serif;
+  }
+  #helpBtn:hover{border-color:var(--accent); color:var(--accent)}
+  #hint{
+    position:absolute; left:12px; bottom:52px; z-index:25; display:none;
     padding:9px 24px 9px 11px;
     background:var(--panel); border:1px solid var(--border); border-radius:9px;
     font-size:11.5px; line-height:1.4;
@@ -316,27 +323,6 @@
     opacity:0; transition:opacity .18s, transform .18s;
   }
   #toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
-  #help{
-    position:absolute; inset:0; z-index:50; display:none;
-    background:rgba(0,0,0,.5); backdrop-filter:blur(2px);
-    align-items:center; justify-content:center; padding:20px;
-  }
-  #help.open{display:flex}
-  #help .box{
-    background:var(--panel); border:1px solid var(--border); border-radius:14px;
-    padding:22px 24px; max-width:520px; width:100%; box-shadow:0 20px 60px rgba(0,0,0,.5);
-  }
-  #help h2{margin:0 0 4px; font-size:16px}
-  #help p.sub{margin:0 0 14px; color:var(--muted)}
-  #help table{width:100%; border-collapse:collapse}
-  #help td{padding:5px 4px; border-bottom:1px solid var(--border); vertical-align:top}
-  #help td:first-child{white-space:nowrap; color:var(--accent); font-weight:600; padding-right:14px}
-  #help .close{margin-top:16px; width:100%; height:32px; border-radius:8px; cursor:pointer;
-    background:var(--accent); border:0; color:#fff; font-weight:600}
-  kbd{
-    background:var(--panel-2); border:1px solid var(--border); border-bottom-width:2px;
-    border-radius:5px; padding:1px 5px; font:600 11px/1.4 ui-monospace,Menlo,Consolas,monospace;
-  }
   .ghost{
     position:fixed; z-index:60; pointer-events:none; transform:translate(-50%,-50%);
     background:var(--panel-2); border:1.5px solid var(--accent); color:var(--text);
@@ -354,24 +340,21 @@
   <button class="tb" data-act="rename">Renomear</button>
   <button class="tb" data-act="dup">Duplicar</button>
   <button class="tb" data-act="del">Excluir</button>
-  <div class="sep"></div>
-  <select id="srcSel" title="Fonte dos mapas: Pasta local (edita) ou Repo remoto (só leitura)">
-    <option value="local">Pasta</option>
-    <option value="remote">Repo</option>
-  </select>
-  <button class="tb" data-act="folder" id="folderBtn" title="Salvar os mapas como .json numa pasta">&#128193; Pasta&#8230;</button>
-  <span id="remoteBox" hidden>
-    <input id="remoteUrl" type="text" spellcheck="false" placeholder="URL base dos mapas (ex.: https://usuario.github.io/repo/maps/)">
-    <button class="tb" data-act="loadRemote">Carregar</button>
-  </span>
-  <span id="roTag" hidden>somente leitura &middot; Repo</span>
-  <div class="sep"></div>
+  <div class="sep" id="tbSep1"></div>
   <button class="tb icon" data-act="addchild" title="Adicionar nó ao selecionado (Tab)">+</button>
   <button class="tb icon" data-act="undo" title="Desfazer (Ctrl+Z)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg></button>
   <button class="tb icon" data-act="redo" title="Refazer (Ctrl+Y)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg></button>
   <div class="spacer"></div>
-  <button class="tb icon" data-act="theme" title="Alternar tema claro/escuro">&#9681;</button>
-  <button class="tb icon" data-act="help" title="Atalhos e ajuda">?</button>
+  <span id="srcSlot">
+    <button class="tb" data-act="folder" id="folderBtn" title="Salvar os mapas como .json numa pasta" style="visibility:hidden">&#128193; Pasta&#8230;</button>
+    <span id="roTag" style="visibility:hidden">somente leitura</span>
+  </span>
+  <div class="sep" id="srcSep"></div>
+  <div id="srcToggle" title="Fonte dos mapas — Pasta: edita e salva · Repo: só leitura, do GitHub">
+    <span class="st-lbl l">Pasta</span>
+    <span class="st-track"><span class="st-knob"></span></span>
+    <span class="st-lbl r">Repo</span>
+  </div>
 </div>
 
 <div id="viewport">
@@ -426,6 +409,7 @@
   </div>
 </div>
 
+<button id="helpBtn" title="Dicas de teclado">?</button>
 <div id="hint">
   <div class="hrow"><b>Clique</b><span>seleciona</span></div>
   <div class="hrow"><b>Duplo-clique</b><span>edita</span></div>
@@ -438,32 +422,6 @@
 </div>
 
 <div id="toast"></div>
-
-<div id="help">
-  <div class="box">
-    <h2>Mapa Mental — Estudo</h2>
-    <p class="sub">Monte seus próprios mapas. Tudo fica salvo automaticamente neste navegador.</p>
-    <table>
-      <tr><td>Tab</td><td>Adiciona um <b>filho</b> ao nó selecionado e já entra no modo de edição</td></tr>
-      <tr><td>Enter</td><td>Adiciona um <b>irmão</b> depois do nó selecionado</td></tr>
-      <tr><td>F2 / 2&#215; clique</td><td>Edita o texto do nó</td></tr>
-      <tr><td>Enter <span style="color:var(--muted)">(editando)</span></td><td>Confirma (não cria nó nenhum) · <b>Shift+Enter</b> insere quebra de linha no nó</td></tr>
-      <tr><td>Tab <span style="color:var(--muted)">(editando)</span></td><td>Confirma e cria um <b>filho</b></td></tr>
-      <tr><td>Esc</td><td>Cancela a edição / limpa a seleção</td></tr>
-      <tr><td>Del / Backspace</td><td>Exclui o nó selecionado e seus descendentes</td></tr>
-      <tr><td>&#8592; &#8593; &#8594; &#8595;</td><td>Navega entre os nós (&#8592;/&#8594; também recolhe/expande)</td></tr>
-      <tr><td>Alt+&#8593; / Alt+&#8595;</td><td>Reordena o nó entre os irmãos</td></tr>
-      <tr><td>Arrastar nó</td><td>A guia mostra a marca no nó <b>mais próximo do cursor</b>: acima/abaixo dele reordena (mesmo nível), no meio dele vira filho. <kbd>Esc</kbd> cancela o arrasto</td></tr>
-      <tr><td>Roda / + / -</td><td>Zoom · barra de espaço ajusta à tela</td></tr>
-      <tr><td>Ctrl+Z / Ctrl+Y</td><td>Desfazer / refazer</td></tr>
-      <tr><td>Cor do nó</td><td>Botão de cor na barra de ações → escolha um tom. <b>Shift</b> pinta o <b>ramo inteiro</b> (nó + descendentes) · <b>Alt</b> pinta os <b>irmãos</b> (nós do mesmo pai) · <b>Shift+Alt</b> = irmãos + ramos</td></tr>
-      <tr><td>Referências</td><td>Botão &#128279; na barra de ações do nó (após "Cor do nó"): abre a caixa de <b>referências</b> — links (CF, slide, figura, docx…) para abrir, e adicionar/remover. Nós que já têm referência ganham um &#128279; no canto (visível ao passar o mouse / selecionar)</td></tr>
-      <tr><td>Fonte: Pasta</td><td>Vincula uma pasta local (ex.: <b>conteudo/mapa mental/</b>); cada mapa vira um <b>.json</b> ali, além do navegador (Chrome/Edge). Edita e salva</td></tr>
-      <tr><td>Fonte: Repo</td><td>Lê os mapas de uma <b>URL</b> (ex.: GitHub Pages): baixa <code>index.json</code> + cada <code>.json</code>. Fica <b>somente leitura</b> — dá pra ver, navegar, recolher e baixar PNG, mas não editar nem salvar. Também abre por <code>?maps=&lt;url&gt;</code></td></tr>
-    </table>
-    <button class="close" data-act="closehelp">Entendi</button>
-  </div>
-</div>
 
 <script>
 (function(){
@@ -479,9 +437,15 @@ const STORE = 'mm_v1';
 const H_GAP = 66;   // espaço horizontal entre colunas
 const V_GAP = 16;   // espaço vertical entre subárvores
 const FS_OK = ('showDirectoryPicker' in window);
+// aberto via link (GitHub Pages / servidor) x aberto direto (duplo-clique no arquivo).
+// No link não faz sentido a "Pasta" (não há arquivos locais): trava em Repo e esconde o toggle.
+// ?viewer=1 simula o modo link mesmo em file:// (p/ testar).
+const HOSTED = location.protocol !== 'file:' || new URLSearchParams(location.search).has('viewer');
 // chevron com bounding-box centrado em (12,12) — gira 180° sem "escorregar" no círculo
 const CHEVRON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 L15 12 L9 18"/></svg>';
 const LINK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 0 1 0 10h-2M8 12h8"/></svg>';
+// fonte remota fixa (GitHub Pages do repo concurso-mapa-mental) — a pasta que tem index.json + os .json
+const REMOTE_MAPS = 'https://ismailytm.github.io/concurso-mapa-mental/maps/';
 
 function toast(msg){
   const t = $('toast'); t.textContent = msg; t.classList.add('show');
@@ -510,6 +474,13 @@ let dirHandle = null, needsReconnect = false;   // pasta vinculada (File System 
 let source = 'local';          // 'local' (pasta, edita) | 'remote' (repo, só leitura)
 let readOnly = false;          // true no modo remoto — bloqueia toda mutação/persistência
 let remoteUrl = '';            // URL base do repo (com "/" no fim)
+// Base p/ resolver refs de ARQUIVO (caminho relativo tipo "conteudo/slides/x.pdf") no modo Repo.
+// É a pasta deste projeto no OneDrive/SharePoint (digivoxcombr-my) — o SharePoint serve o arquivo
+// por caminho quando o navegador está logado no tenant. Já URL-encodada (%C3%A2 = â, %20 = espaço).
+// Vai pro repo público, mas não expõe conteúdo: sem login, a URL só mostra a tela de autenticação.
+// Override por dispositivo: localStorage['mm_ref_base'] (inclusive '' p/ desligar) ou ?refbase=<url>.
+const REF_BASE_DEFAULT = 'https://digivoxcombr-my.sharepoint.com/personal/ismaily_mendes_smartspace_us/Documents/C%C3%A2mara%20dos%20Deputados/projetos/inss-df/';
+let REF_BASE = REF_BASE_DEFAULT;
 const els = new Map();     // id -> elemento .node
 let LAYOUT = new Map();    // id -> {node,parent,depth,x,y,w,h}
 let cand = null, pan = null, ghost = null;   // ponteiro
@@ -528,7 +499,10 @@ function normalize(node){
   if(Array.isArray(node.refs)){
     node.refs = node.refs
       .filter(r => r && (r.url || r.href))
-      .map(r => ({ label:String(r.label || r.url || r.href).trim(), url:String(r.url || r.href).trim() }));
+      .map(r => {
+        const url = String(r.url || r.href).trim();
+        return { label:String(r.label || r.url || r.href).trim(), url, kind: refKind(url, r.kind) };
+      });
     if(!node.refs.length) delete node.refs;
   } else if(node.refs !== undefined){ delete node.refs; }
   node.children.forEach(normalize);
@@ -700,15 +674,15 @@ function updateFolderBtn(){
 //  Fonte REMOTA (repo) — só leitura: baixa index.json + cada mapa via HTTP
 // ===========================================================================
 function refreshSrcUI(){
-  const selRemote = $('srcSel') && $('srcSel').value === 'remote';
-  const fb = $('folderBtn'); if(fb) fb.style.display = (selRemote || source === 'remote') ? 'none' : '';
-  const rb = $('remoteBox'); if(rb) rb.hidden = !selRemote;      // campo de URL: segue o <select>
-  const rt = $('roTag'); if(rt) rt.hidden = !readOnly;
+  const remote = source === 'remote';
+  const t = $('srcToggle');
+  if(t){ t.classList.toggle('is-remote', remote); t.classList.toggle('is-local', !remote); }
+  const fb = $('folderBtn'); if(fb) fb.style.visibility = remote ? 'hidden' : 'visible';
+  const rt = $('roTag'); if(rt) rt.style.visibility = readOnly ? 'visible' : 'hidden';
   document.body.classList.toggle('readonly', readOnly);
 }
 async function loadRemote(base){
-  base = (base || '').trim();
-  if(!base){ toast('Informe a URL base dos mapas'); return; }
+  base = (base || REMOTE_MAPS).trim();
   if(!/\/$/.test(base)) base += '/';
   try{
     const ir = await fetch(base + 'index.json', { cache:'no-store' });
@@ -729,9 +703,8 @@ async function loadRemote(base){
     }
     if(!Object.keys(loaded).length) throw new Error('nenhum mapa válido em ' + base);
     remoteUrl = base;
-    try{ localStorage.setItem('mm_remote_url', base); localStorage.setItem('mm_source', 'remote'); }catch(_){}
+    try{ localStorage.setItem('mm_source', 'remote'); }catch(_){}
     if(editingId) commitEdit(false);
-    const s = $('srcSel'); if(s) s.value = 'remote';
     source = 'remote'; readOnly = true;
     dirHandle = null; needsReconnect = false;          // solta a pasta em memória
     maps = loaded; currentId = Object.keys(maps)[0];
@@ -741,9 +714,11 @@ async function loadRemote(base){
     toast('Repo: ' + Object.keys(loaded).length + ' mapa(s) carregado(s)');
   }catch(e){
     toast('Falha ao carregar o repo — ' + e.message);
-    // carregamento falhou: continua no que estava (o <select> só volta pra "Pasta" se não estávamos em remoto)
-    const s = $('srcSel'); if(s && source !== 'remote') s.value = 'local';
-    refreshSrcUI();
+    if(!readOnly && !HOSTED){                     // nunca entrou em Repo e não é via link → volta pra Pasta
+      source = 'local';
+      try{ localStorage.setItem('mm_source', 'local'); }catch(_){}
+      refreshSrcUI(); updateFolderBtn();
+    }
   }
 }
 function exitRemote(){
@@ -814,7 +789,7 @@ function dupMap(){
     const o = { id:uid(), label:j.label, children:(j.children||[]).map(clone) };
     if(j.color) o.color = j.color;
     if(j.collapsed) o.collapsed = j.collapsed;
-    if(j.refs && j.refs.length) o.refs = j.refs.map(r => ({ label:r.label, url:r.url }));
+    if(j.refs && j.refs.length) o.refs = j.refs.map(r => ({ label:r.label, url:r.url, kind:refKind(r.url, r.kind) }));
     return o;
   };
   const id = uid();
@@ -995,6 +970,28 @@ const refbox = $('refbox');
 let refOpenId = null;
 const _rbEsc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
+const isAbsUrl = u => /^(https?:)?\/\//i.test(u) || /^(mailto:|tel:|data:)/i.test(u);
+// caminho relativo (conteudo/…): modo Repo + REF_BASE definida → resolve na base (OneDrive);
+// modo Pasta, ou sem base → devolve o relativo (abre o arquivo ao lado do mapa-mental.html)
+function resolveRefUrl(u){
+  u = String(u || '').trim();
+  if(!u || isAbsUrl(u)) return u;
+  if(source === 'remote' && REF_BASE) return REF_BASE.replace(/\/+$/, '') + '/' + u.replace(/^\/+/, '');
+  return u;
+}
+function refKind(u, explicit){
+  if(explicit) return explicit;
+  u = String(u || '').toLowerCase();
+  if(/planalto\.gov\.br|\/constituicao/.test(u)) return 'cf';
+  if(/\/slides?\//.test(u) || /_slide\.pdf$/.test(u)) return 'slide';
+  if(/\/figuras?\//.test(u)) return 'figura';
+  if(/\.docx?$/.test(u)) return 'docx';
+  if(/\/resumo\//.test(u) || /_(resumo|bolso)\.pdf$/.test(u)) return 'resumo';
+  if(isAbsUrl(u)) return 'web';
+  return 'file';
+}
+const REF_KIND_TAG = { cf:'CF', slide:'SL', figura:'FIG', docx:'DOC', resumo:'RES', web:'WEB', file:'—' };
+
 function openRefBox(id, anchorEl){
   const ctx = findCtx(id); if(!ctx){ closeRefBox(); return; }
   refOpenId = id;
@@ -1003,11 +1000,20 @@ function openRefBox(id, anchorEl){
   const refs = ctx.node.refs || [];
   let html = '<div class="rb-title">Referências</div>';
   html += refs.length
-    ? refs.map((r,i) =>
-        '<a class="rb-item" href="' + _rbEsc(r.url) + '" target="_blank" rel="noopener" title="' + _rbEsc(r.url) + '">' +
+    ? refs.map((r,i) => {
+        const href = resolveRefUrl(r.url);
+        const k = refKind(r.url, r.kind);
+        // relativo, modo Repo, sem base, e a página NÃO é file:// → não vai alcançar o arquivo
+        const needsBase = source === 'remote' && !REF_BASE && !isAbsUrl(r.url) && location.protocol !== 'file:';
+        return '<a class="rb-item' + (needsBase ? ' rb-item-warn' : '') + '" href="' + _rbEsc(href) +
+            '" target="_blank" rel="noopener" title="' + _rbEsc(needsBase
+              ? 'Defina a Base das referências (botão ?) p/ abrir do navegador — ' + r.url
+              : href) + '">' +
+          '<span class="rb-kind rb-kind-' + k + '">' + (REF_KIND_TAG[k] || '') + '</span>' +
           '<span class="rb-lbl">' + _rbEsc(r.label) + '</span>' +
           (readOnly ? '' : '<span class="rb-x" data-i="' + i + '" title="Remover">&#10005;</span>') +
-        '</a>').join('')
+        '</a>';
+      }).join('')
     : '<div class="rb-empty">' + (readOnly ? 'Sem referências.' : 'Nenhuma referência ainda.') + '</div>';
   if(!readOnly) html +=
     '<div class="rb-add">' +
@@ -1060,7 +1066,7 @@ function addRef(id, label, url){
   if(readOnly) return;
   const ctx = findCtx(id); if(!ctx) return;
   if(!Array.isArray(ctx.node.refs)) ctx.node.refs = [];
-  ctx.node.refs.push({ label, url });
+  ctx.node.refs.push({ label, url, kind: refKind(url) });
   snapshot(); render(); _reopenRefBox(id);
 }
 function removeRef(id, i){
@@ -1829,27 +1835,15 @@ $('topbar').addEventListener('click', e => {
     else if(dirHandle && needsReconnect) reconnectFolder();
     else linkFolder();
   }
-  if(a === 'loadRemote') loadRemote($('remoteUrl').value);
   if(a === 'undo')   undo();
   if(a === 'redo')   redo();
   if(a === 'addchild') addChild(selectedId || tree.id);
-  if(a === 'theme')  toggleTheme();
-  if(a === 'help')   $('help').classList.add('open');
 });
 $('mapSel').addEventListener('change', e => switchMap(e.target.value));
-$('srcSel').addEventListener('change', e => {
-  if(e.target.value === 'remote'){
-    refreshSrcUI();                       // mostra o campo de URL
-    const u = ($('remoteUrl').value.trim()) || '';
-    let saved = ''; try{ saved = localStorage.getItem('mm_remote_url') || ''; }catch(_){}
-    const url = u || saved;
-    $('remoteUrl').value = url;
-    if(url) loadRemote(url); else $('remoteUrl').focus();
-  } else {
-    if(source === 'remote') exitRemote(); else refreshSrcUI();
-  }
+$('srcToggle').addEventListener('click', () => {
+  if(source === 'remote') exitRemote();     // Repo → Pasta
+  else loadRemote();                        // Pasta → Repo (URL fixa REMOTE_MAPS)
 });
-$('remoteUrl').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); loadRemote(e.target.value); } });
 $('controls').addEventListener('click', e => {
   const b = e.target.closest('[data-act]'); if(!b) return;
   const a = b.dataset.act;
@@ -1859,18 +1853,28 @@ $('controls').addEventListener('click', e => {
   if(a === 'fit')       fitView();
   if(a === 'download')  openDownloadMenu();
 });
-$('help').addEventListener('click', e => {
-  if(e.target.id === 'help' || e.target.dataset.act === 'closehelp') $('help').classList.remove('open');
+$('helpBtn').addEventListener('click', () => {
+  const h = $('hint');
+  h.style.display = h.style.display === 'block' ? 'none' : 'block';
 });
 $('hint').addEventListener('click', e => {
   if(e.target.dataset.act === 'hidehint') $('hint').style.display = 'none';
 });
 
-function toggleTheme(){
-  document.body.classList.toggle('light');
-  try{ localStorage.setItem('mm_theme', document.body.classList.contains('light') ? 'light' : 'dark'); }catch(_){}
-  render();
-}
+// Base das referências: SEMPRE usada no modo Repo, hardcoded em REF_BASE_DEFAULT.
+// Override só via ?refbase=<url> (ex.: se a pasta do OneDrive for movida); vazio/== default volta ao padrão.
+(function bootRefBase(){
+  let saved = null;
+  try{ saved = localStorage.getItem('mm_ref_base'); }catch(_){}
+  if(saved) REF_BASE = saved;                                   // override guardado
+  const p = new URLSearchParams(location.search).get('refbase');
+  if(p !== null){
+    const v = p.trim();
+    if(v && v !== REF_BASE_DEFAULT){ REF_BASE = v; try{ localStorage.setItem('mm_ref_base', v); }catch(_){} }
+    else { REF_BASE = REF_BASE_DEFAULT; try{ localStorage.removeItem('mm_ref_base'); }catch(_){} }
+  }
+})();
+
 window.addEventListener('resize', () => { layout(); applyTransform(); positionActionBar(); });
 
 // ===========================================================================
@@ -1878,7 +1882,6 @@ window.addEventListener('resize', () => { layout(); applyTransform(); positionAc
 // ===========================================================================
 const BUILD = '2026-09-01w';
 try{ console.info('[mapa-mental] build ' + BUILD); }catch(e){}
-try{ if(localStorage.getItem('mm_theme') === 'light') document.body.classList.add('light'); }catch(_){}
 loadMaps();
 normalize(tree);
 resetHistory();
@@ -1888,20 +1891,19 @@ render();
 fitView();
 updateFolderBtn();
 
-// fonte remota? (?maps=<url> na URL, ou última sessão foi "Repo")
+// Fonte: Repo é o PADRÃO. Só fica em Pasta se o usuário escolheu explicitamente (mm_source==='local')
+// E se o mapa foi aberto direto do arquivo (não HOSTED). Aberto via link → sempre Repo, sem toggle.
+// ?maps=<url> força um repo alternativo (útil p/ teste local).
+if(HOSTED) document.body.classList.add('hosted');
 (function bootSource(){
   const qp = new URLSearchParams(location.search).get('maps');
-  let saved = '';
-  try{ saved = (localStorage.getItem('mm_source') === 'remote' && localStorage.getItem('mm_remote_url')) || ''; }catch(_){}
-  const url = qp || saved;
-  if(url){
-    source = 'remote';                     // marca cedo p/ o bootFolder abaixo pular
-    const ss = $('srcSel'); if(ss) ss.value = 'remote';
-    const ri = $('remoteUrl'); if(ri) ri.value = url;
-    refreshSrcUI();
-    loadRemote(url);
+  let saved = ''; try{ saved = localStorage.getItem('mm_source') || ''; }catch(_){}
+  if(!HOSTED && saved === 'local' && !qp){
+    source = 'local'; refreshSrcUI();
   } else {
+    source = 'remote';                     // marca cedo p/ o bootFolder abaixo pular
     refreshSrcUI();
+    loadRemote(qp || REMOTE_MAPS);
   }
 })();
 
