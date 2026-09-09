@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa Mental — Estudo</title>
+<style>
+  /* ---------------------------------------------------------------------------
+     Editor de mapa mental no estilo do NotebookLM (árvore horizontal, nós
+     coloridos por profundidade, conectores curvos, recolher/expandir, zoom).
+     Tudo local: salva em localStorage; exporta JSON e PNG.
+  --------------------------------------------------------------------------- */
+  :root{
+    --canvas-bg:#12131a; --panel:#1b1d26; --panel-2:#242734; --text:#e6e8ef;
+    --muted:#98a0b3; --border:#33374a; --accent:#6ea8fe; --danger:#e0596b;
+    /* uma cor por nível: indigo → azul → teal → verde → verde claro.
+       --dNb é também a cor do conector que CHEGA num nó de profundidade N */
+    --d0:#3f3d56; --d0b:#5f5c86; --d0-text:#e9e7f6;
+    --d1:#38406e; --d1b:#5b68ad;
+    --d2:#2a5852; --d2b:#3f877a;
+    --d3:#33603f; --d3b:#4f9560;
+    --d4:#417a4a; --d4b:#65b079;
+    --node-text:#e9f1ec;
+    --c-rosa:#5f3552;     --c-rosa-b:#c76fae;
+    --c-azul:#2f4a6d;     --c-azul-b:#4f7bb0;
+    --c-roxo:#463a6b;     --c-roxo-b:#7160b4;
+    --c-ambar:#6a5327;    --c-ambar-b:#ac8340;
+    --c-vermelho:#6a2f39; --c-vermelho-b:#ab515e;
+    --c-cinza:#3b3e4b;    --c-cinza-b:#5c6274;
+  }
+  body.light{
+    --canvas-bg:#f4f6fa; --panel:#ffffff; --panel-2:#eef1f6; --text:#1b2130;
+    --muted:#5b6478; --border:#d3d9e5; --accent:#2f6fe0; --danger:#c53a4b;
+    --d0:#e9e6f8; --d0b:#a99fe0; --d0-text:#2c2652;
+    --d1:#dbe3f8; --d1b:#94aae6;
+    --d2:#c9eae2; --d2b:#6ec6b4;
+    --d3:#ccebd2; --d3b:#6fc088;
+    --d4:#d9f1dc; --d4b:#5fbc86;
+    --node-text:#183a2c;
+    --c-rosa:#f6d9ec;     --c-rosa-b:#d98fc4;
+    --c-azul:#d4e4f7;     --c-azul-b:#79aadc;
+    --c-roxo:#e6ddf8;     --c-roxo-b:#a58fe1;
+    --c-ambar:#f5e6c8;    --c-ambar-b:#cfa65c;
+    --c-vermelho:#f6d9dd; --c-vermelho-b:#dc8d99;
+    --c-cinza:#e2e4ea;    --c-cinza-b:#a7adbe;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0; background:var(--canvas-bg); color:var(--text);
+    font:13px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    overflow:hidden; -webkit-font-smoothing:antialiased;
+  }
+  button{font:inherit; color:inherit}
+
+  /* ---- barra superior ---- */
+  #topbar{
+    position:absolute; inset:0 0 auto 0; height:46px; z-index:30;
+    display:flex; align-items:center; gap:6px; padding:0 10px;
+    background:var(--panel); border-bottom:1px solid var(--border);
+  }
+  #topbar .brand{font-weight:700; letter-spacing:.2px; margin-right:6px; white-space:nowrap}
+  #topbar .brand span{color:var(--accent)}
+  #mapSel{
+    max-width:220px; height:28px; padding:0 8px; border-radius:7px;
+    background:var(--panel-2); color:var(--text); border:1px solid var(--border);
+  }
+  #srcSel{
+    max-width:92px; height:28px; padding:0 6px; border-radius:7px;
+    background:var(--panel-2); color:var(--text); border:1px solid var(--border);
+  }
+  #remoteBox{display:inline-flex; align-items:center; gap:5px}
+  #remoteUrl{
+    width:330px; max-width:42vw; height:28px; padding:0 8px; border-radius:7px; font:inherit;
+    background:var(--panel-2); color:var(--text); border:1px solid var(--border);
+  }
+  #remoteUrl:focus{border-color:var(--accent); outline:none}
+  #roTag{
+    font:600 10px/1 system-ui,sans-serif; letter-spacing:.3px; white-space:nowrap;
+    color:var(--warning); border:1px solid var(--warning); border-radius:6px; padding:3px 6px;
+  }
+  /* modo somente-leitura (fonte = Repo): esconde as ações que gravam */
+  body.readonly #folderBtn,
+  body.readonly [data-act="new"],
+  body.readonly [data-act="rename"],
+  body.readonly [data-act="dup"],
+  body.readonly [data-act="del"],
+  body.readonly [data-act="undo"],
+  body.readonly [data-act="redo"],
+  body.readonly [data-act="addchild"]{display:none}
+  .tb{
+    height:28px; padding:0 10px; border-radius:7px; cursor:pointer;
+    background:var(--panel-2); border:1px solid var(--border); color:var(--text);
+    display:inline-flex; align-items:center; gap:5px; white-space:nowrap;
+  }
+  .tb:hover{border-color:var(--accent); color:var(--accent)}
+  .tb.icon{width:28px; padding:0; justify-content:center}
+  .tb.icon svg{width:15px; height:15px; display:block}
+  .tb:disabled{opacity:.4; cursor:default}
+  .sep{width:1px; height:24px; background:var(--border); margin:0 3px}
+  .spacer{flex:1}
+
+  /* ---- área do mapa ---- */
+  #viewport{
+    position:absolute; inset:46px 0 0 0; overflow:hidden;
+    cursor:grab; touch-action:none; user-select:none;
+  }
+  #viewport.panning{cursor:grabbing}
+  #world{position:absolute; left:0; top:0; transform-origin:0 0}
+  /* nós e conectores animam juntos por JS (transitionTo) — nada de transição CSS de posição aqui */
+  #links{position:absolute; left:0; top:0; overflow:visible; pointer-events:none}
+  #links .lk{fill:none; stroke-width:1.7; stroke-linecap:round; vector-effect:non-scaling-stroke}
+  #links .lk1{stroke:var(--d1b)}  /* conector que chega num nó de nível N usa a cor do nível N */
+  #links .lk2{stroke:var(--d2b)}
+  #links .lk3{stroke:var(--d3b)}
+  #links .lk4{stroke:var(--d4b)}
+  #links .lk5{stroke:var(--d4b)}
+
+  .node{
+    position:absolute; width:max-content; max-width:none; padding:9px 13px;
+    border:1.5px solid var(--d1b); border-radius:10px;
+    background:var(--d1); color:var(--node-text);
+    white-space:pre; word-break:normal; overflow-wrap:normal;   /* só quebra onde tiver \n de propósito */
+    box-shadow:0 1px 3px rgba(0,0,0,.28); cursor:default;
+    transition:box-shadow .12s, outline-color .12s;
+  }
+  .node[data-depth="0"]{background:var(--d0); border-color:var(--d0b); color:var(--d0-text); font-weight:600}
+  .node[data-depth="1"]{background:var(--d1); border-color:var(--d1b)}
+  .node[data-depth="2"]{background:var(--d2); border-color:var(--d2b)}
+  .node[data-depth="3"]{background:var(--d3); border-color:var(--d3b)}
+  .node[data-depth="4"]{background:var(--d4); border-color:var(--d4b)}
+  .node[data-color="rosa"]    {background:var(--c-rosa);     border-color:var(--c-rosa-b);     color:var(--node-text)}
+  .node[data-color="azul"]    {background:var(--c-azul);     border-color:var(--c-azul-b);     color:var(--node-text)}
+  .node[data-color="roxo"]    {background:var(--c-roxo);     border-color:var(--c-roxo-b);     color:var(--node-text)}
+  .node[data-color="ambar"]   {background:var(--c-ambar);    border-color:var(--c-ambar-b);    color:var(--node-text)}
+  .node[data-color="vermelho"]{background:var(--c-vermelho); border-color:var(--c-vermelho-b); color:var(--node-text)}
+  .node[data-color="cinza"]   {background:var(--c-cinza);    border-color:var(--c-cinza-b);    color:var(--node-text)}
+  .node.selected{outline:2px solid var(--accent); outline-offset:2px}
+  .node.dragging{opacity:.35}
+  .node.drop-target{outline:2px dashed var(--accent); outline-offset:2px}   /* soltar = vira filho */
+  /* soltar entre irmãos: linha de inserção */
+  #dropline{position:fixed; z-index:41; display:none; height:3px; border-radius:2px;
+    background:var(--accent); pointer-events:none; box-shadow:0 0 7px var(--accent)}
+  #dropline::before,#dropline::after{content:''; position:absolute; top:50%; width:7px; height:7px;
+    border-radius:50%; background:var(--accent); transform:translateY(-50%)}
+  #dropline::before{left:-3px} #dropline::after{right:-3px}
+  .node .lbl{display:block; min-width:14px; min-height:1em}
+  .node.enter{animation:nodeIn .5s cubic-bezier(.22,.61,.36,1)}
+  @keyframes nodeIn{ from{opacity:0; transform:translateX(-16px) scale(.9)} to{opacity:1; transform:none} }
+  @media (prefers-reduced-motion:reduce){ .node.enter{animation:none} }
+
+  /* seta de recolher/expandir: círculo destacado, FORA do balão (como no NotebookLM) */
+  .toggle{
+    position:absolute; left:100%; top:50%; margin-left:7px;
+    width:22px; height:22px; border-radius:50%; padding:0;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--panel); border:1px solid var(--border); color:var(--muted);
+    cursor:pointer; z-index:3; transform:translateY(-50%);
+    transition:background .12s, border-color .12s, color .12s;
+  }
+  .toggle:hover{border-color:var(--accent); color:var(--accent)}
+  .toggle svg{width:12px; height:12px; display:block; transform-origin:50% 50%; transition:transform .5s cubic-bezier(.22,.61,.36,1)}
+  .toggle[data-open="1"] svg{transform:rotate(180deg)}
+  .toggle.pop{animation:tgPop .34s ease}
+  @media (prefers-reduced-motion:reduce){ .toggle svg{transition:none} .toggle.pop{animation:none} }
+  @keyframes tgPop{
+    0%  {transform:translateY(-50%) scale(1);    box-shadow:0 0 0 0 rgba(110,168,254,.4)}
+    45% {transform:translateY(-50%) scale(1.28); box-shadow:0 0 0 7px rgba(110,168,254,0)}
+    100%{transform:translateY(-50%) scale(1);    box-shadow:0 0 0 0 rgba(110,168,254,0)}
+  }
+
+  /* ---- link de referências: ícone no canto superior direito do balão ---- */
+  /* ícone só existe em nós COM referências, e só aparece no hover/seleção do nó */
+  .reflink{
+    position:absolute; top:-9px; right:-9px;
+    width:19px; height:19px; border-radius:50%; padding:0;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--panel); border:1px solid var(--accent); color:var(--accent);
+    cursor:pointer; z-index:4;
+    opacity:0; pointer-events:none;
+    transition:opacity .12s, background .12s, color .12s;
+  }
+  .node:hover > .reflink,
+  .node.selected > .reflink,
+  .node.refopen > .reflink{ opacity:.85; pointer-events:auto }
+  .reflink:hover{ opacity:1; background:var(--accent); color:#fff }
+  .reflink svg{width:11px; height:11px; display:block}
+
+  /* ---- caixa de referências ---- */
+  #refbox{
+    position:fixed; z-index:46; display:none; flex-direction:column; gap:6px;
+    min-width:236px; max-width:340px; padding:9px;
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    box-shadow:0 12px 34px rgba(0,0,0,.42); font-size:12px;
+  }
+  #refbox.open{display:flex}
+  #refbox .rb-title{
+    font:600 10px/1 system-ui,sans-serif; letter-spacing:.5px;
+    text-transform:uppercase; color:var(--muted);
+  }
+  #refbox a.rb-item{
+    display:flex; align-items:center; gap:7px; padding:6px 8px; border-radius:7px;
+    color:var(--text); text-decoration:none;
+    background:var(--panel-2); border:1px solid var(--border);
+  }
+  #refbox a.rb-item:hover{border-color:var(--accent); color:var(--accent)}
+  #refbox .rb-lbl{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  #refbox .rb-x{margin-left:auto; flex:none; color:var(--muted); padding:0 2px; font-size:12px}
+  #refbox .rb-x:hover{color:var(--danger)}
+  #refbox .rb-empty{color:var(--muted); padding:1px 2px}
+  #refbox .rb-add{
+    display:flex; flex-direction:column; gap:4px;
+    border-top:1px solid var(--border); padding-top:7px;
+  }
+  #refbox .rb-add input{
+    height:26px; padding:0 7px; border-radius:6px; font:inherit;
+    background:var(--panel-2); border:1px solid var(--border); color:var(--text); outline:none;
+  }
+  #refbox .rb-add input:focus{border-color:var(--accent)}
+  #refbox .rb-add button{
+    height:26px; border-radius:6px; cursor:pointer;
+    background:var(--panel-2); border:1px solid var(--border); color:var(--text);
+  }
+  #refbox .rb-add button:hover{border-color:var(--accent); color:var(--accent)}
+
+  textarea.edit{
+    display:block; min-width:120px; min-height:1.4em; resize:none;
+    white-space:pre; overflow:hidden; field-sizing:content;   /* cresce com o texto, sem soft-wrap */
+    font:inherit; color:inherit; background:rgba(0,0,0,.16);
+    border:1px solid var(--accent); border-radius:6px; padding:4px 6px; outline:none;
+  }
+  body.light textarea.edit{background:rgba(0,0,0,.05)}
+
+  /* ---- controles inferiores (canto direito, como no NotebookLM) ---- */
+  #controls{
+    position:absolute; right:16px; bottom:16px; z-index:30;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .ctrl, .ctrl-group{
+    background:var(--panel); border:1px solid var(--border); border-radius:11px;
+    color:var(--text);
+  }
+  .ctrl{width:40px; height:40px; display:grid; place-items:center; cursor:pointer}
+  .ctrl:hover{border-color:var(--accent); color:var(--accent)}
+  .ctrl-group{display:flex; flex-direction:column; overflow:hidden}
+  .ctrl-group button{
+    width:40px; height:40px; border:0; background:transparent; color:inherit;
+    display:grid; place-items:center; cursor:pointer;
+  }
+  .ctrl-group button:first-child{border-bottom:1px solid var(--border)}
+  .ctrl-group button:hover{color:var(--accent)}
+  .ctrl svg,.ctrl-group svg{width:18px; height:18px}
+
+  #dlmenu{
+    position:absolute; right:64px; bottom:16px; z-index:31;
+    background:var(--panel); border:1px solid var(--border); border-radius:10px;
+    padding:5px; display:flex; flex-direction:column; gap:2px; min-width:150px;
+    box-shadow:0 8px 24px rgba(0,0,0,.35);
+  }
+  #dlmenu button{
+    text-align:left; padding:7px 10px; border:0; border-radius:7px;
+    background:transparent; color:var(--text); cursor:pointer;
+  }
+  #dlmenu button:hover{background:var(--panel-2)}
+
+  /* ---- barra de ações do nó selecionado ---- */
+  #actionbar{
+    position:fixed; z-index:40; display:none; flex-direction:column; gap:4px;
+    padding:4px; background:var(--panel-2); border:1px solid var(--border);
+    border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,.34);
+  }
+  #actionbar .row{display:flex; gap:3px}
+  #actionbar button{
+    width:28px; height:28px; border:0; border-radius:7px; background:transparent;
+    color:var(--text); cursor:pointer; display:grid; place-items:center;
+  }
+  #actionbar button:hover{background:var(--panel)}
+  #actionbar button.danger:hover{background:var(--danger); color:#fff}
+  #actionbar button.on{color:var(--accent)}
+  #actionbar svg{width:15px; height:15px}
+  #actionbar .sw{display:none; align-items:center; gap:4px; padding:2px 1px}
+  #actionbar .sw.open{display:flex}
+  #actionbar .sw-hint{font-size:9px; color:var(--muted); white-space:nowrap; padding:0 2px 0 3px; letter-spacing:.2px}
+  #actionbar .sw button{
+    width:20px; height:20px; border-radius:50%;
+    border:1.5px solid rgba(128,128,128,.5);
+    transition:transform .1s, border-color .1s;
+  }
+  #actionbar .sw button:hover{transform:scale(1.14); border-color:var(--accent)}
+  /* prefixo #actionbar p/ vencer o `#actionbar button{background:transparent}` */
+  #actionbar .sw button[data-sc="auto"]{background:repeating-linear-gradient(45deg,#8a8a8a,#8a8a8a 3px,#c6c6c6 3px,#c6c6c6 6px)}
+  #actionbar .sw button[data-sc="rosa"]{background:var(--c-rosa-b)}
+  #actionbar .sw button[data-sc="azul"]{background:var(--c-azul-b)}
+  #actionbar .sw button[data-sc="roxo"]{background:var(--c-roxo-b)}
+  #actionbar .sw button[data-sc="ambar"]{background:var(--c-ambar-b)}
+  #actionbar .sw button[data-sc="vermelho"]{background:var(--c-vermelho-b)}
+  #actionbar .sw button[data-sc="cinza"]{background:var(--c-cinza-b)}
+
+  /* ---- dica + toast + ajuda ---- */
+  #hint{
+    position:absolute; left:12px; bottom:12px; z-index:25;
+    padding:9px 24px 9px 11px;
+    background:var(--panel); border:1px solid var(--border); border-radius:9px;
+    font-size:11.5px; line-height:1.4;
+  }
+  #hint .hrow{display:flex; gap:7px; white-space:nowrap}
+  #hint .hrow b{color:var(--text); font-weight:600; min-width:88px}
+  #hint .hrow span{color:var(--muted)}
+  #hint .hint-x{position:absolute; top:4px; right:5px; border:0; background:transparent;
+    color:var(--muted); cursor:pointer; font-size:12px; line-height:1; padding:2px}
+  #hint .hint-x:hover{color:var(--text)}
+  #toast{
+    position:absolute; left:50%; bottom:22px; transform:translateX(-50%) translateY(6px);
+    z-index:45; padding:7px 15px; border-radius:20px; pointer-events:none;
+    background:var(--panel-2); border:1px solid var(--border); color:var(--text);
+    opacity:0; transition:opacity .18s, transform .18s;
+  }
+  #toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
+  #help{
+    position:absolute; inset:0; z-index:50; display:none;
+    background:rgba(0,0,0,.5); backdrop-filter:blur(2px);
+    align-items:center; justify-content:center; padding:20px;
+  }
+  #help.open{display:flex}
+  #help .box{
+    background:var(--panel); border:1px solid var(--border); border-radius:14px;
+    padding:22px 24px; max-width:520px; width:100%; box-shadow:0 20px 60px rgba(0,0,0,.5);
+  }
+  #help h2{margin:0 0 4px; font-size:16px}
+  #help p.sub{margin:0 0 14px; color:var(--muted)}
+  #help table{width:100%; border-collapse:collapse}
+  #help td{padding:5px 4px; border-bottom:1px solid var(--border); vertical-align:top}
+  #help td:first-child{white-space:nowrap; color:var(--accent); font-weight:600; padding-right:14px}
+  #help .close{margin-top:16px; width:100%; height:32px; border-radius:8px; cursor:pointer;
+    background:var(--accent); border:0; color:#fff; font-weight:600}
+  kbd{
+    background:var(--panel-2); border:1px solid var(--border); border-bottom-width:2px;
+    border-radius:5px; padding:1px 5px; font:600 11px/1.4 ui-monospace,Menlo,Consolas,monospace;
+  }
+  .ghost{
+    position:fixed; z-index:60; pointer-events:none; transform:translate(-50%,-50%);
+    background:var(--panel-2); border:1.5px solid var(--accent); color:var(--text);
+    padding:6px 10px; border-radius:8px; font-size:12px; max-width:220px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; opacity:.92;
+  }
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="brand">Mapa <span>Mental</span></div>
+  <select id="mapSel" title="Mapas salvos neste navegador"></select>
+  <button class="tb" data-act="new">Novo</button>
+  <button class="tb" data-act="rename">Renomear</button>
+  <button class="tb" data-act="dup">Duplicar</button>
+  <button class="tb" data-act="del">Excluir</button>
+  <div class="sep"></div>
+  <select id="srcSel" title="Fonte dos mapas: Pasta local (edita) ou Repo remoto (só leitura)">
+    <option value="local">Pasta</option>
+    <option value="remote">Repo</option>
+  </select>
+  <button class="tb" data-act="folder" id="folderBtn" title="Salvar os mapas como .json numa pasta">&#128193; Pasta&#8230;</button>
+  <span id="remoteBox" hidden>
+    <input id="remoteUrl" type="text" spellcheck="false" placeholder="URL base dos mapas (ex.: https://usuario.github.io/repo/maps/)">
+    <button class="tb" data-act="loadRemote">Carregar</button>
+  </span>
+  <span id="roTag" hidden>somente leitura &middot; Repo</span>
+  <div class="sep"></div>
+  <button class="tb icon" data-act="addchild" title="Adicionar nó ao selecionado (Tab)">+</button>
+  <button class="tb icon" data-act="undo" title="Desfazer (Ctrl+Z)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg></button>
+  <button class="tb icon" data-act="redo" title="Refazer (Ctrl+Y)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg></button>
+  <div class="spacer"></div>
+  <button class="tb icon" data-act="theme" title="Alternar tema claro/escuro">&#9681;</button>
+  <button class="tb icon" data-act="help" title="Atalhos e ajuda">?</button>
+</div>
+
+<div id="viewport">
+  <div id="world">
+    <svg id="links"><path class="lk lk1"></path><path class="lk lk2"></path><path class="lk lk3"></path><path class="lk lk4"></path><path class="lk lk5"></path></svg>
+  </div>
+</div>
+
+<div id="actionbar">
+  <div class="row">
+    <button data-a="child"   title="Novo filho (Tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5v6a4 4 0 0 0 4 4h10"/><path d="m15 10 5 5-5 5"/></svg></button>
+    <button data-a="sibling" title="Novo irmão (Enter)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h6a4 4 0 0 1 4 4v10"/><path d="m10 14 5 5 5-5"/></svg></button>
+    <button data-a="edit"    title="Editar texto (F2 / duplo-clique)">&#9998;</button>
+    <button data-a="up"      title="Mover para cima (Alt+&#8593;)">&#9650;</button>
+    <button data-a="down"    title="Mover para baixo (Alt+&#8595;)">&#9660;</button>
+    <button data-a="color"   title="Cor do nó — Shift: ramo inteiro · Alt: irmãos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3.6 4.2 6 7.1 6 10a6 6 0 0 1-12 0c0-2.9 2.4-5.8 6-10z"/></svg></button>
+    <button data-a="ref"     title="Adicionar referência"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 0 1 0 10h-2M8 12h8"/></svg></button>
+    <button data-a="del" class="danger" title="Excluir (Del)">&#10005;</button>
+  </div>
+  <div class="sw">
+    <button data-sc="auto"     title="Cor automática (por nível) — Shift: ramo · Alt: irmãos"></button>
+    <button data-sc="rosa"     title="Rosa — Shift: ramo · Alt: irmãos"></button>
+    <button data-sc="azul"     title="Azul — Shift: ramo · Alt: irmãos"></button>
+    <button data-sc="roxo"     title="Roxo — Shift: ramo · Alt: irmãos"></button>
+    <button data-sc="ambar"    title="Âmbar — Shift: ramo · Alt: irmãos"></button>
+    <button data-sc="vermelho" title="Vermelho — Shift: ramo · Alt: irmãos"></button>
+    <button data-sc="cinza"    title="Cinza — Shift: ramo · Alt: irmãos"></button>
+    <span class="sw-hint">Shift=ramo · Alt=irmãos</span>
+  </div>
+</div>
+
+<div id="dropline"></div>
+<div id="refbox"></div>
+
+<div id="controls">
+  <div class="ctrl" data-act="toggleall" title="Expandir / recolher tudo">
+    <svg viewBox="0 0 24 24"><path d="M6 10 L12 4 L18 10 M6 14 L12 20 L18 14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="ctrl-group">
+    <button data-act="zoomin" title="Aproximar (+)">
+      <svg viewBox="0 0 24 24"><path d="M12 5 V19 M5 12 H19" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+    </button>
+    <button data-act="zoomout" title="Afastar (-)">
+      <svg viewBox="0 0 24 24"><path d="M5 12 H19" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="ctrl" data-act="fit" title="Ajustar à tela (barra de espaço)">
+    <svg viewBox="0 0 24 24"><path d="M4 9 V4 H9 M15 4 H20 V9 M20 15 V20 H15 M9 20 H4 V15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <div class="ctrl" data-act="download" title="Baixar (PNG / JSON)">
+    <svg viewBox="0 0 24 24"><path d="M12 4 V15 M7 11 L12 16 L17 11 M5 20 H19" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</div>
+
+<div id="hint">
+  <div class="hrow"><b>Clique</b><span>seleciona</span></div>
+  <div class="hrow"><b>Duplo-clique</b><span>edita</span></div>
+  <div class="hrow"><b>Tab</b><span>cria filho</span></div>
+  <div class="hrow"><b>Enter</b><span>cria irmão</span></div>
+  <div class="hrow"><b>Del</b><span>exclui</span></div>
+  <div class="hrow"><b>Arraste um nó</b><span>reordena / aninha</span></div>
+  <div class="hrow"><b>Roda do mouse</b><span>zoom</span></div>
+  <button class="hint-x" title="Ocultar" data-act="hidehint">&#10005;</button>
+</div>
+
+<div id="toast"></div>
+
+<div id="help">
+  <div class="box">
+    <h2>Mapa Mental — Estudo</h2>
+    <p class="sub">Monte seus próprios mapas. Tudo fica salvo automaticamente neste navegador.</p>
+    <table>
+      <tr><td>Tab</td><td>Adiciona um <b>filho</b> ao nó selecionado e já entra no modo de edição</td></tr>
+      <tr><td>Enter</td><td>Adiciona um <b>irmão</b> depois do nó selecionado</td></tr>
+      <tr><td>F2 / 2&#215; clique</td><td>Edita o texto do nó</td></tr>
+      <tr><td>Enter <span style="color:var(--muted)">(editando)</span></td><td>Confirma (não cria nó nenhum) · <b>Shift+Enter</b> insere quebra de linha no nó</td></tr>
+      <tr><td>Tab <span style="color:var(--muted)">(editando)</span></td><td>Confirma e cria um <b>filho</b></td></tr>
+      <tr><td>Esc</td><td>Cancela a edição / limpa a seleção</td></tr>
+      <tr><td>Del / Backspace</td><td>Exclui o nó selecionado e seus descendentes</td></tr>
+      <tr><td>&#8592; &#8593; &#8594; &#8595;</td><td>Navega entre os nós (&#8592;/&#8594; também recolhe/expande)</td></tr>
+      <tr><td>Alt+&#8593; / Alt+&#8595;</td><td>Reordena o nó entre os irmãos</td></tr>
+      <tr><td>Arrastar nó</td><td>A guia mostra a marca no nó <b>mais próximo do cursor</b>: acima/abaixo dele reordena (mesmo nível), no meio dele vira filho. <kbd>Esc</kbd> cancela o arrasto</td></tr>
+      <tr><td>Roda / + / -</td><td>Zoom · barra de espaço ajusta à tela</td></tr>
+      <tr><td>Ctrl+Z / Ctrl+Y</td><td>Desfazer / refazer</td></tr>
+      <tr><td>Cor do nó</td><td>Botão de cor na barra de ações → escolha um tom. <b>Shift</b> pinta o <b>ramo inteiro</b> (nó + descendentes) · <b>Alt</b> pinta os <b>irmãos</b> (nós do mesmo pai) · <b>Shift+Alt</b> = irmãos + ramos</td></tr>
+      <tr><td>Referências</td><td>Botão &#128279; na barra de ações do nó (após "Cor do nó"): abre a caixa de <b>referências</b> — links (CF, slide, figura, docx…) para abrir, e adicionar/remover. Nós que já têm referência ganham um &#128279; no canto (visível ao passar o mouse / selecionar)</td></tr>
+      <tr><td>Fonte: Pasta</td><td>Vincula uma pasta local (ex.: <b>conteudo/mapa mental/</b>); cada mapa vira um <b>.json</b> ali, além do navegador (Chrome/Edge). Edita e salva</td></tr>
+      <tr><td>Fonte: Repo</td><td>Lê os mapas de uma <b>URL</b> (ex.: GitHub Pages): baixa <code>index.json</code> + cada <code>.json</code>. Fica <b>somente leitura</b> — dá pra ver, navegar, recolher e baixar PNG, mas não editar nem salvar. Também abre por <code>?maps=&lt;url&gt;</code></td></tr>
+    </table>
+    <button class="close" data-act="closehelp">Entendi</button>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+// ===========================================================================
+//  Utilidades
+// ===========================================================================
+const $ = id => document.getElementById(id);
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const uid = () => 'n' + Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-3);
+const STORE = 'mm_v1';
+const H_GAP = 66;   // espaço horizontal entre colunas
+const V_GAP = 16;   // espaço vertical entre subárvores
+const FS_OK = ('showDirectoryPicker' in window);
+// chevron com bounding-box centrado em (12,12) — gira 180° sem "escorregar" no círculo
+const CHEVRON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6 L15 12 L9 18"/></svg>';
+const LINK_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7A5 5 0 0 1 7 7h2M15 7h2a5 5 0 0 1 0 10h-2M8 12h8"/></svg>';
+
+function toast(msg){
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(()=>t.classList.remove('show'), 1600);
+}
+function downloadBlob(blob, name){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href), 4000);
+}
+function safeName(s){
+  return (s||'').replace(/[^\w\- À-ɏ]+/g,'').trim().replace(/\s+/g,'_') || 'mapa';
+}
+
+// ===========================================================================
+//  Estado
+// ===========================================================================
+let maps = null, currentId = null, tree = null;
+let zoom = 1, panX = 0, panY = 0;
+let selectedId = null, editingId = null, pendingNewId = null;
+let history = [], histIdx = -1;
+let animateNext = false;   // anima a entrada dos nós no próximo layout (expandir / adicionar)
+let _anchorRef = null;     // {id, y} — nó que deve ficar imóvel; o layout inteiro translada p/ mantê-lo
+let dirHandle = null, needsReconnect = false;   // pasta vinculada (File System Access)
+let source = 'local';          // 'local' (pasta, edita) | 'remote' (repo, só leitura)
+let readOnly = false;          // true no modo remoto — bloqueia toda mutação/persistência
+let remoteUrl = '';            // URL base do repo (com "/" no fim)
+const els = new Map();     // id -> elemento .node
+let LAYOUT = new Map();    // id -> {node,parent,depth,x,y,w,h}
+let cand = null, pan = null, ghost = null;   // ponteiro
+let _lastClick = null;   // {id, t} — detecção própria de duplo-clique (mais tolerante que a nativa)
+
+const viewport = $('viewport'), world = $('world'), bar = $('actionbar');
+const LK = [1,2,3,4,5].map(d => $('links').querySelector('.lk' + d));   // path por nível
+
+// ===========================================================================
+//  Persistência / gestão de mapas
+// ===========================================================================
+function normalize(node){
+  if(!node.id) node.id = uid();
+  if(!Array.isArray(node.children)) node.children = [];
+  if(node.collapsed !== true) delete node.collapsed;
+  if(Array.isArray(node.refs)){
+    node.refs = node.refs
+      .filter(r => r && (r.url || r.href))
+      .map(r => ({ label:String(r.label || r.url || r.href).trim(), url:String(r.url || r.href).trim() }));
+    if(!node.refs.length) delete node.refs;
+  } else if(node.refs !== undefined){ delete node.refs; }
+  node.children.forEach(normalize);
+  return node;
+}
+function loadMaps(){
+  try{
+    const raw = JSON.parse(localStorage.getItem(STORE));
+    if(raw && raw.maps && Object.keys(raw.maps).length){
+      maps = raw.maps;
+      currentId = (raw.currentId && maps[raw.currentId]) ? raw.currentId : Object.keys(maps)[0];
+    }
+  }catch(e){}
+  if(!maps){
+    const id = uid();
+    maps = { [id]: { name:'Novo mapa', tree:normalize({ id:uid(), label:'Novo mapa', children:[] }), updatedAt:Date.now() } };
+    currentId = id;
+  }
+  tree = normalize(maps[currentId].tree);
+}
+const saveMaps = (()=>{
+  let t;
+  return function(){
+    if(readOnly) return;                 // modo Repo: nunca grava (localStorage nem pasta)
+    clearTimeout(t);
+    t = setTimeout(()=>{
+      maps[currentId].tree = tree;
+      maps[currentId].updatedAt = Date.now();
+      try{ localStorage.setItem(STORE, JSON.stringify({maps, currentId})); }
+      catch(e){ toast('Não foi possível salvar (armazenamento cheio?)'); }
+      if(dirHandle && !needsReconnect) writeMapFile(currentId);
+    }, 250);
+  };
+})();
+
+// ---- pasta vinculada: cada mapa é um .json (Chrome/Edge, File System Access) ----
+function _idb(){
+  return new Promise((res, rej) => {
+    const r = indexedDB.open('mm-fs', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('kv');
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+}
+async function idbGet(k){
+  const db = await _idb();
+  return new Promise((res, rej) => { const q = db.transaction('kv').objectStore('kv').get(k);
+    q.onsuccess = () => res(q.result); q.onerror = () => rej(q.error); });
+}
+async function idbSet(k, v){
+  const db = await _idb();
+  return new Promise((res, rej) => { const tx = db.transaction('kv', 'readwrite');
+    tx.objectStore('kv').put(v, k); tx.oncomplete = () => res(); tx.onerror = () => rej(tx.error); });
+}
+// nome de arquivo ideal para um mapa = título saneado + .json (com sufixo -2, -3… se colidir)
+function fileNameFor(id){
+  let base = safeName(maps[id].name || 'mapa'), want = base + '.json';
+  for(let k = 2; Object.values(maps).some(m => m !== maps[id] && m.file === want); k++) want = base + '-' + k + '.json';
+  return want;
+}
+async function writeMapFile(id){
+  if(!dirHandle || needsReconnect || !maps[id]) return;
+  try{
+    let want = maps[id].file || fileNameFor(id);
+    const ideal = fileNameFor(id);
+    // mapa renomeado → tenta renomear o arquivo junto, via move() atômico (sem apagar+recriar).
+    // Se move não existir / falhar (Firefox, OneDrive travado…), mantém o nome atual.
+    if(maps[id].file && maps[id].file !== ideal){
+      try{
+        const h = await dirHandle.getFileHandle(maps[id].file);
+        if(typeof h.move === 'function'){ await h.move(ideal); want = ideal; }
+      }catch(_){}
+    }
+    const fh = await dirHandle.getFileHandle(want, { create:true });
+    const w = await fh.createWritable();
+    await w.write(JSON.stringify({ app:'mapa-mental', version:1, id, name:maps[id].name, tree:maps[id].tree }, null, 2));
+    await w.close();
+    maps[id].file = want;
+  }catch(e){ console.warn('writeMapFile', e); }
+}
+async function removeMapFile(id){
+  if(dirHandle && !needsReconnect && maps[id] && maps[id].file){
+    try{ await dirHandle.removeEntry(maps[id].file); }catch(_){}
+  }
+}
+async function syncFromDir(){
+  if(!dirHandle) return 0;
+  let count = 0;
+  try{
+    for await (const [name, h] of dirHandle.entries()){
+      if(h.kind !== 'file' || !/\.json$/i.test(name)) continue;
+      try{
+        const f = await h.getFile();
+        const d = JSON.parse(await f.text());
+        if(!d || typeof d !== 'object' || !d.tree) continue;
+        const id = d.id || ('file:' + name);
+        maps[id] = { name: d.name || name.replace(/\.json$/i, ''), tree: normalize(d.tree),
+                     updatedAt: f.lastModified || Date.now(), file: name };
+        count++;
+      }catch(_){}
+    }
+  }catch(e){ console.warn('syncFromDir', e); }
+  return count;
+}
+async function linkFolder(){
+  // id:'mm-notebook' → o navegador reabre na última pasta escolhida; startIn no handle anterior crava nela
+  const base = { id:'mm-notebook', mode:'readwrite' };
+  const prev = dirHandle;
+  try{
+    dirHandle = await window.showDirectoryPicker(prev ? { ...base, startIn: prev } : base);
+  }catch(e){
+    if(e && e.name === 'AbortError'){ dirHandle = prev; return; }
+    try{ dirHandle = await window.showDirectoryPicker(base); }   // startIn inválido? tenta sem
+    catch(e2){
+      if(e2 && e2.name !== 'AbortError'){ toast('Sem acesso a pastas neste navegador/contexto — use Baixar → JSON'); }
+      dirHandle = e2 && e2.name === 'AbortError' ? prev : null;
+      return;
+    }
+  }
+  needsReconnect = false;
+  try{ await idbSet('dir', dirHandle); }catch(_){}
+
+  // trocar de pasta = trocar de acervo: descarta o que veio da pasta anterior
+  // (senão os mapas da pasta antiga continuam na lista — e o loop abaixo os copiaria pra nova).
+  const switching = !!prev;
+  if(switching) maps = {};
+
+  const found = await syncFromDir();
+
+  if(switching){
+    if(!Object.keys(maps).length){
+      const id = uid();
+      maps[id] = { name:'Novo mapa', tree:normalize({ id:uid(), label:'Novo mapa', children:[] }), updatedAt:Date.now() };
+    }
+    currentId = Object.keys(maps)[0];
+  } else {
+    // primeiro vínculo: adota os mapas atuais (do navegador) na pasta escolhida
+    for(const id in maps){ if(!maps[id].file) await writeMapFile(id); }
+    if(!maps[currentId]) currentId = Object.keys(maps)[0];
+  }
+  tree = maps[currentId].tree; normalize(tree);
+  resetHistory(); refreshMapSel(); selectedId = null; render(); fitView(); updateFolderBtn(); saveMaps();
+  toast(found ? ('Pasta "' + dirHandle.name + '" · ' + found + ' arquivo(s) carregado(s)')
+              : ('Pasta "' + dirHandle.name + '" vinculada'));
+}
+async function reconnectFolder(){
+  if(!dirHandle) return;
+  try{
+    const p = await dirHandle.requestPermission({ mode:'readwrite' });
+    if(p !== 'granted') return;
+    needsReconnect = false;
+    await syncFromDir();
+    if(!maps[currentId]) currentId = Object.keys(maps)[0];
+    tree = maps[currentId].tree; normalize(tree);
+    resetHistory(); refreshMapSel(); render(); fitView(); updateFolderBtn();
+    toast('Pasta reconectada');
+  }catch(e){ console.warn('reconnectFolder', e); }
+}
+function updateFolderBtn(){
+  const b = $('folderBtn'); if(!b) return;
+  if(!FS_OK){ b.textContent = 'Baixar JSON'; b.title = 'Baixar o mapa atual como .json'; return; }
+  if(dirHandle && needsReconnect){ b.textContent = '📁 Reconectar'; b.title = 'Reautorizar o acesso à pasta vinculada'; }
+  else if(dirHandle){ b.textContent = '📁 ' + dirHandle.name;
+    b.title = 'Cada mapa é salvo como .json na pasta "' + dirHandle.name + '". Clique para trocar de pasta.'; }
+  else { b.textContent = '📁 Pasta…'; b.title = 'Escolher uma pasta (ex.: notebook) para salvar os mapas como .json'; }
+}
+
+// ===========================================================================
+//  Fonte REMOTA (repo) — só leitura: baixa index.json + cada mapa via HTTP
+// ===========================================================================
+function refreshSrcUI(){
+  const selRemote = $('srcSel') && $('srcSel').value === 'remote';
+  const fb = $('folderBtn'); if(fb) fb.style.display = (selRemote || source === 'remote') ? 'none' : '';
+  const rb = $('remoteBox'); if(rb) rb.hidden = !selRemote;      // campo de URL: segue o <select>
+  const rt = $('roTag'); if(rt) rt.hidden = !readOnly;
+  document.body.classList.toggle('readonly', readOnly);
+}
+async function loadRemote(base){
+  base = (base || '').trim();
+  if(!base){ toast('Informe a URL base dos mapas'); return; }
+  if(!/\/$/.test(base)) base += '/';
+  try{
+    const ir = await fetch(base + 'index.json', { cache:'no-store' });
+    if(!ir.ok) throw new Error('index.json (' + ir.status + ')');
+    let list = await ir.json();
+    if(!Array.isArray(list)) throw new Error('index.json não é uma lista');
+    list = list.filter(n => typeof n === 'string' && /\.json$/i.test(n));
+    const loaded = {};
+    for(const name of list){
+      try{
+        const r = await fetch(base + name.split('/').map(encodeURIComponent).join('/'), { cache:'no-store' });
+        if(!r.ok) continue;
+        const d = await r.json();
+        if(!d || typeof d !== 'object' || !d.tree) continue;
+        const id = d.id || ('remote:' + name);
+        loaded[id] = { name: d.name || name.replace(/\.json$/i,''), tree: normalize(d.tree), file: name, updatedAt: Date.now() };
+      }catch(_){}
+    }
+    if(!Object.keys(loaded).length) throw new Error('nenhum mapa válido em ' + base);
+    remoteUrl = base;
+    try{ localStorage.setItem('mm_remote_url', base); localStorage.setItem('mm_source', 'remote'); }catch(_){}
+    if(editingId) commitEdit(false);
+    const s = $('srcSel'); if(s) s.value = 'remote';
+    source = 'remote'; readOnly = true;
+    dirHandle = null; needsReconnect = false;          // solta a pasta em memória
+    maps = loaded; currentId = Object.keys(maps)[0];
+    tree = maps[currentId].tree;
+    selectedId = null; editingId = null; pendingNewId = null;
+    resetHistory(); refreshSrcUI(); refreshMapSel(); render(); fitView();
+    toast('Repo: ' + Object.keys(loaded).length + ' mapa(s) carregado(s)');
+  }catch(e){
+    toast('Falha ao carregar o repo — ' + e.message);
+    // carregamento falhou: continua no que estava (o <select> só volta pra "Pasta" se não estávamos em remoto)
+    const s = $('srcSel'); if(s && source !== 'remote') s.value = 'local';
+    refreshSrcUI();
+  }
+}
+function exitRemote(){
+  source = 'local'; readOnly = false; remoteUrl = '';
+  try{ localStorage.setItem('mm_source', 'local'); }catch(_){}
+  maps = null; currentId = null;                        // descarta os mapas do repo
+  loadMaps();                                           // reconstrói maps/currentId/tree do localStorage
+  normalize(tree); resetHistory();
+  selectedId = null; editingId = null;
+  refreshSrcUI(); refreshMapSel(); render(); fitView(); updateFolderBtn();
+  reconnectIfLinked();
+}
+async function reconnectIfLinked(){
+  if(!FS_OK || source === 'remote') return;
+  try{
+    const h = await idbGet('dir'); if(!h) return;
+    dirHandle = h;
+    let perm = 'prompt';
+    try{ perm = await h.queryPermission({ mode:'readwrite' }); }catch(_){}
+    if(perm === 'granted'){
+      await syncFromDir();
+      if(!maps[currentId]) currentId = Object.keys(maps)[0];
+      tree = maps[currentId].tree; normalize(tree);
+      resetHistory(); refreshMapSel(); render(); fitView();
+    } else { needsReconnect = true; }
+  }catch(_){}
+  updateFolderBtn();
+}
+function refreshMapSel(){
+  const sel = $('mapSel'); sel.innerHTML = '';
+  Object.keys(maps).forEach(id=>{
+    const o = document.createElement('option');
+    o.value = id; o.textContent = maps[id].name || '(sem nome)';
+    sel.appendChild(o);
+  });
+  sel.value = currentId;
+  document.title = (maps[currentId].name || 'Mapa Mental') + ' — Mapa Mental';
+}
+function resetHistory(){ history = [JSON.stringify(tree)]; histIdx = 0; }
+
+function switchMap(id){
+  if(!maps[id]) return;
+  if(editingId) commitEdit(false);
+  currentId = id; tree = normalize(maps[id].tree);
+  selectedId = null; editingId = null; pendingNewId = null;
+  resetHistory(); refreshMapSel(); render(); fitView(); saveMaps();
+}
+function newMap(){
+  if(readOnly) return;
+  const name = (prompt('Nome do novo mapa:', 'Novo mapa') || '').trim();
+  if(name === '') return;
+  const id = uid();
+  maps[id] = { name, tree:normalize({ id:uid(), label:name, children:[] }), updatedAt:Date.now() };
+  currentId = id; tree = maps[id].tree;
+  selectedId = tree.id; resetHistory(); refreshMapSel(); render(); fitView();
+  startEdit(tree.id); saveMaps();
+  if(dirHandle && !needsReconnect) writeMapFile(id);
+}
+function renameMap(){
+  if(readOnly) return;
+  const name = (prompt('Renomear mapa:', maps[currentId].name) || '').trim();
+  if(name === '') return;
+  maps[currentId].name = name; refreshMapSel(); saveMaps();
+}
+function dupMap(){
+  if(readOnly) return;
+  const clone = j => {
+    const o = { id:uid(), label:j.label, children:(j.children||[]).map(clone) };
+    if(j.color) o.color = j.color;
+    if(j.collapsed) o.collapsed = j.collapsed;
+    if(j.refs && j.refs.length) o.refs = j.refs.map(r => ({ label:r.label, url:r.url }));
+    return o;
+  };
+  const id = uid();
+  maps[id] = { name:maps[currentId].name + ' (cópia)', tree:clone(tree), updatedAt:Date.now() };
+  currentId = id; tree = maps[id].tree; selectedId = null;
+  resetHistory(); refreshMapSel(); render(); fitView(); saveMaps();
+  if(dirHandle && !needsReconnect) writeMapFile(id);
+  toast('Mapa duplicado');
+}
+function delMap(){
+  if(readOnly) return;
+  if(!confirm('Excluir o mapa "' + (maps[currentId].name||'') + '"? Esta ação não pode ser desfeita.')) return;
+  removeMapFile(currentId);
+  delete maps[currentId];
+  const ids = Object.keys(maps);
+  if(!ids.length){
+    const id = uid();
+    maps[id] = { name:'Novo mapa', tree:normalize({ id:uid(), label:'Novo mapa', children:[] }), updatedAt:Date.now() };
+    currentId = id;
+  } else currentId = ids[0];
+  tree = normalize(maps[currentId].tree); selectedId = null;
+  resetHistory(); refreshMapSel(); render(); fitView(); saveMaps();
+}
+
+// ===========================================================================
+//  Operações na árvore
+// ===========================================================================
+function findCtx(id, node, parent, index){
+  node = node || tree; parent = parent || null; index = index==null ? -1 : index;
+  if(node.id === id) return { node, parent, index };
+  for(let i=0;i<node.children.length;i++){
+    const r = findCtx(id, node.children[i], node, i);
+    if(r) return r;
+  }
+  return null;
+}
+function walk(node, fn, depth, parent){
+  depth = depth||0; parent = parent||null;
+  fn(node, parent, depth);
+  node.children.forEach(c => walk(c, fn, depth+1, node));
+}
+function countDesc(node){ let n = -1; walk(node, ()=>n++); return n; }
+function isDescendant(ancestorId, maybeId){
+  const c = findCtx(ancestorId);
+  return !!(c && findCtx(maybeId, c.node));
+}
+function visibleList(){
+  const out = [];
+  (function rec(node, parent, depth){
+    out.push({ node, parent, depth, id:node.id });
+    if(!node.collapsed) node.children.forEach(c => rec(c, node, depth+1));
+  })(tree, null, 0);
+  return out;
+}
+
+function snapshot(){
+  if(readOnly) return;                   // sem histórico/persistência no modo Repo
+  const s = JSON.stringify(tree);
+  if(history[histIdx] === s) return;
+  history = history.slice(0, histIdx+1);
+  history.push(s);
+  if(history.length > 80) history.shift();
+  histIdx = history.length - 1;
+  saveMaps();
+}
+function restore(idx){
+  histIdx = idx;
+  tree = normalize(JSON.parse(history[histIdx]));
+  maps[currentId].tree = tree;
+  if(selectedId && !findCtx(selectedId)) selectedId = null;
+  editingId = null; pendingNewId = null;
+  render(); positionActionBar(); saveMaps();
+}
+function undo(){ if(readOnly) return; if(histIdx > 0) restore(histIdx - 1); }
+function redo(){ if(readOnly) return; if(histIdx < history.length - 1) restore(histIdx + 1); }
+
+function addChild(parentId){
+  if(readOnly) return;
+  const ctx = findCtx(parentId); if(!ctx) return;
+  delete ctx.node.collapsed;
+  const node = { id:uid(), label:'', children:[] };
+  ctx.node.children.push(node);
+  pendingNewId = node.id; selectedId = node.id;
+  animateNext = true;
+  render(); ensureVisible(node.id); startEdit(node.id);
+}
+function addSibling(nodeId){
+  if(readOnly) return;
+  const ctx = findCtx(nodeId);
+  if(!ctx || !ctx.parent) return addChild(nodeId);
+  const node = { id:uid(), label:'', children:[] };
+  ctx.parent.children.splice(ctx.index+1, 0, node);
+  pendingNewId = node.id; selectedId = node.id;
+  animateNext = true;
+  render(); ensureVisible(node.id); startEdit(node.id);
+}
+function removeNode(id){
+  if(readOnly) return;
+  const ctx = findCtx(id);
+  if(!ctx || !ctx.parent){ toast('A raiz não pode ser excluída'); return; }
+  const n = countDesc(ctx.node);
+  if(n > 0 && !confirm('Excluir este nó e os ' + n + ' descendentes?')) return;
+  ctx.parent.children.splice(ctx.index, 1);
+  selectedId = ctx.parent.id; editingId = null; pendingNewId = null;
+  snapshot(); render(); positionActionBar();
+}
+function moveSibling(id, dir){
+  if(readOnly) return;
+  const ctx = findCtx(id); if(!ctx || !ctx.parent) return;
+  const arr = ctx.parent.children, i = ctx.index, j = i + dir;
+  if(j < 0 || j >= arr.length) return;
+  transitionTo(() => { arr.splice(j, 0, arr.splice(i, 1)[0]); snapshot(); });
+  positionActionBar();
+}
+function reparent(srcId, tgtId){
+  if(readOnly) return;
+  if(srcId === tgtId || isDescendant(srcId, tgtId)) return;
+  const s = findCtx(srcId); if(!s || !s.parent) return;
+  const t = findCtx(tgtId); if(!t) return;
+  selectedId = srcId; animateNext = true;
+  transitionTo(() => {
+    _anchorRef = null;
+    s.parent.children.splice(s.index, 1);
+    delete t.node.collapsed;
+    t.node.children.push(s.node);
+    snapshot();
+  });
+  positionActionBar();
+}
+// solta ENTRE irmãos: move srcId p/ antes/depois de refId, no mesmo pai de refId
+function reorderNode(srcId, refId, pos){
+  if(readOnly) return;
+  if(srcId === refId || isDescendant(srcId, refId)) return;
+  const s = findCtx(srcId), r = findCtx(refId);
+  if(!s || !s.parent || !r || !r.parent) return;   // refId precisa ter pai (não a raiz)
+  selectedId = srcId; animateNext = true;
+  transitionTo(() => {
+    _anchorRef = null;
+    s.parent.children.splice(s.index, 1);
+    const rc = findCtx(refId);                      // re-localiza: índices podem ter mudado
+    rc.parent.children.splice(rc.index + (pos === 'after' ? 1 : 0), 0, s.node);
+    snapshot();
+  });
+  positionActionBar();
+}
+function toggleCollapse(id){
+  const ctx = findCtx(id); if(!ctx || !ctx.node.children.length) return;
+  transitionTo(() => {
+    _anchorRef = { id, y: (POS.get(id) || { y:0 }).y };   // fixa ESTE balão nesta posição
+    if(ctx.node.collapsed){ delete ctx.node.collapsed; animateNext = true; }
+    else ctx.node.collapsed = true;
+    snapshot();
+  });
+  positionActionBar();
+}
+function setColor(id, key, opts){
+  if(readOnly) return;
+  opts = opts || {};
+  const ctx = findCtx(id); if(!ctx) return;
+  const apply = n => { if(key && key !== 'auto') n.color = key; else delete n.color; };
+  const roots = (opts.siblings && ctx.parent) ? ctx.parent.children.slice() : [ctx.node];
+  roots.forEach(r => opts.deep ? walk(r, apply) : apply(r));
+  snapshot(); render();
+  if(opts.siblings) toast('Cor aplicada aos ' + roots.length + ' irmãos' + (opts.deep ? ' (com ramos)' : ''));
+  else if(opts.deep) toast('Cor aplicada ao ramo (' + countDesc(ctx.node) + ' descendentes)');
+}
+function toggleAll(){
+  let anyExpanded = false;
+  walk(tree, (n,p,d)=>{ if(d>0 && n.children.length && !n.collapsed) anyExpanded = true; });
+  walk(tree, (n,p,d)=>{ if(d>0 && n.children.length){ if(anyExpanded) n.collapsed = true; else delete n.collapsed; } });
+  snapshot(); render(); fitView();
+}
+
+// ===========================================================================
+//  Referências por nó (ícone no canto do balão → caixa com links)
+// ===========================================================================
+const refbox = $('refbox');
+let refOpenId = null;
+const _rbEsc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function openRefBox(id, anchorEl){
+  const ctx = findCtx(id); if(!ctx){ closeRefBox(); return; }
+  refOpenId = id;
+  document.querySelectorAll('.node.refopen').forEach(e => e.classList.remove('refopen'));
+  const _el0 = els.get(id); if(_el0) _el0.classList.add('refopen');
+  const refs = ctx.node.refs || [];
+  let html = '<div class="rb-title">Referências</div>';
+  html += refs.length
+    ? refs.map((r,i) =>
+        '<a class="rb-item" href="' + _rbEsc(r.url) + '" target="_blank" rel="noopener" title="' + _rbEsc(r.url) + '">' +
+          '<span class="rb-lbl">' + _rbEsc(r.label) + '</span>' +
+          (readOnly ? '' : '<span class="rb-x" data-i="' + i + '" title="Remover">&#10005;</span>') +
+        '</a>').join('')
+    : '<div class="rb-empty">' + (readOnly ? 'Sem referências.' : 'Nenhuma referência ainda.') + '</div>';
+  if(!readOnly) html +=
+    '<div class="rb-add">' +
+      '<input class="rb-lbl-in" type="text" placeholder="Título (ex.: CF art. 1º · Slide aula 4)">' +
+      '<input class="rb-url-in" type="text" placeholder="URL ou caminho (https://… · conteudo/slides/…)">' +
+      '<button class="rb-add-btn">Adicionar</button>' +
+    '</div>';
+  refbox.innerHTML = html;
+  refbox.classList.add('open');
+
+  const b = anchorEl.getBoundingClientRect();
+  refbox.style.left = '0px'; refbox.style.top = '0px';
+  const bw = refbox.offsetWidth, bh = refbox.offsetHeight;
+  let left = b.right - bw, top = b.bottom + 6;
+  if(top + bh > window.innerHeight - 8) top = b.top - bh - 6;
+  refbox.style.left = clamp(left, 8, window.innerWidth - bw - 8) + 'px';
+  refbox.style.top  = clamp(top, 8, window.innerHeight - bh - 8) + 'px';
+
+  if(!readOnly){
+    const lblIn = refbox.querySelector('.rb-lbl-in');
+    const urlIn = refbox.querySelector('.rb-url-in');
+    const doAdd = () => {
+      const url = urlIn.value.trim(); if(!url){ urlIn.focus(); return; }
+      addRef(id, lblIn.value.trim() || url, url);
+    };
+    refbox.querySelector('.rb-add-btn').addEventListener('click', doAdd);
+    urlIn.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); doAdd(); } });
+    lblIn.addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); urlIn.focus(); } });
+    refbox.querySelectorAll('.rb-x').forEach(x => x.addEventListener('click', e => {
+      e.preventDefault(); e.stopPropagation();
+      removeRef(id, +x.dataset.i);
+    }));
+  }
+}
+function closeRefBox(){
+  if(refOpenId == null) return;
+  const _el0 = els.get(refOpenId); if(_el0) _el0.classList.remove('refopen');
+  refOpenId = null;
+  refbox.classList.remove('open');
+  refbox.innerHTML = '';
+}
+function _reopenRefBox(id){
+  if(!findCtx(id)){ closeRefBox(); return; }
+  const el = els.get(id);
+  const anchor = (el && el.querySelector('.reflink'))
+    || (selectedId === id && bar.style.display !== 'none' ? bar.querySelector('[data-a="ref"]') : null);
+  if(anchor) openRefBox(id, anchor); else closeRefBox();
+}
+function addRef(id, label, url){
+  if(readOnly) return;
+  const ctx = findCtx(id); if(!ctx) return;
+  if(!Array.isArray(ctx.node.refs)) ctx.node.refs = [];
+  ctx.node.refs.push({ label, url });
+  snapshot(); render(); _reopenRefBox(id);
+}
+function removeRef(id, i){
+  if(readOnly) return;
+  const ctx = findCtx(id); if(!ctx || !ctx.node.refs) return;
+  ctx.node.refs.splice(i, 1);
+  if(!ctx.node.refs.length) delete ctx.node.refs;
+  snapshot(); render(); _reopenRefBox(id);
+}
+
+// ===========================================================================
+//  Layout — árvore horizontal, ancorada no PAI (filhos se distribuem em volta
+//  do centro do pai, não o contrário), colunas alinhadas por profundidade
+// ===========================================================================
+const POS = new Map();   // id -> {x,y} visual atual do nó (base das animações)
+// posição EM REPOUSO: left/top arredondado (seta nítida) e sem transform residual.
+// Durante a animação os nós NÃO usam left/top — usam transform (ver frame()) p/ o texto
+// não "chiar"/tremer (transform é composto pela GPU, o glifo é rasterizado uma vez só).
+function place(id, x, y){
+  const el = els.get(id); if(!el) return;
+  x = Math.round(x); y = Math.round(y);
+  el.style.transform = '';
+  el.style.left = x + 'px'; el.style.top = y + 'px';
+  POS.set(id, { x, y });
+}
+// um segmento de conector: sai do círculo da seta do pai (px+pw+18) até a esquerda do filho
+function linkSeg(px, pw, py, ph, cx, cy, ch){
+  const x1 = px + pw + 18, y1 = py + ph/2, x2 = cx, y2 = cy + ch/2, dx = x2 - x1;
+  return 'M' + x1 + ',' + y1 + ' C' + (x1+dx*0.5) + ',' + y1 + ' ' + (x2-dx*0.5) + ',' + y2 + ' ' + x2 + ',' + y2;
+}
+// desenha os conectores agrupados por nível do filho (um <path> por nível → cor por nível).
+// posOf(id) -> {x,y,w,h} (permite interpolar durante a animação)
+function drawLinks(posOf){
+  const byLvl = [[],[],[],[],[]];   // índice = nível do filho − 1 (clamp em 5)
+  LAYOUT.forEach((it, id) => {
+    if(!it.parent) return;
+    const p = posOf(it.parent.id), c = posOf(id);
+    if(!p || !c) return;
+    const lvl = Math.min(it.depth, 5);
+    byLvl[lvl - 1].push(linkSeg(p.x, p.w, p.y, p.h, c.x, c.y, c.h));
+  });
+  for(let i = 0; i < 5; i++) if(LK[i]) LK[i].setAttribute('d', byLvl[i].join(' '));
+}
+function layout(){
+  const list = visibleList();
+  const byId = new Map(list.map(it => [it.id, it]));
+
+  // --- 1. sincroniza o DOM ---
+  const seen = new Set();
+  for(const it of list){
+    const { node, depth, id } = it;
+    let el = els.get(id);
+    if(!el){
+      el = document.createElement('div');
+      el.className = 'node';
+      el.dataset.id = id;
+      el.innerHTML = '<span class="lbl"></span>';
+      world.appendChild(el);
+      els.set(id, el);
+      if(animateNext){
+        el.classList.add('enter');
+        el.addEventListener('animationend', () => el.classList.remove('enter'), { once:true });
+      }
+    }
+    el.dataset.depth = Math.min(depth, 4);
+    if(node.color) el.dataset.color = node.color; else el.removeAttribute('data-color');
+    el.classList.toggle('selected', id === selectedId);
+    if(id !== editingId) el.querySelector('.lbl').textContent = node.label || '​';
+
+    let tg = el.querySelector('.toggle');
+    if(node.children.length){
+      if(!tg){
+        tg = document.createElement('button');
+        tg.className = 'toggle'; tg.tabIndex = -1;
+        tg.innerHTML = CHEVRON;
+        tg.addEventListener('click', ev => {
+          ev.stopPropagation();
+          tg.classList.remove('pop'); void tg.offsetWidth; tg.classList.add('pop');
+          tg.addEventListener('animationend', () => tg.classList.remove('pop'), { once:true });
+          toggleCollapse(id);
+        });
+        tg.addEventListener('pointerdown', ev => ev.stopPropagation());
+        el.appendChild(tg);
+      }
+      tg.dataset.open = node.collapsed ? '0' : '1';
+      tg.title = node.collapsed ? 'Expandir' : 'Recolher';
+    } else if(tg){ tg.remove(); }
+
+    // ícone de referências (canto superior direito) — SÓ em nós que já têm refs;
+    // aparece apenas no hover/seleção do nó (ver CSS). Adicionar a 1ª ref = botão do #actionbar.
+    let rl = el.querySelector('.reflink');
+    const nrefs = (node.refs && node.refs.length) || 0;
+    if(nrefs > 0){
+      if(!rl){
+        rl = document.createElement('button');
+        rl.className = 'reflink'; rl.tabIndex = -1;
+        rl.innerHTML = LINK_ICON;
+        rl.addEventListener('pointerdown', ev => ev.stopPropagation());
+        rl.addEventListener('click', ev => { ev.stopPropagation(); openRefBox(id, rl); });
+        el.appendChild(rl);
+      }
+      rl.title = nrefs + (nrefs > 1 ? ' referências' : ' referência');
+    } else if(rl){ rl.remove(); }
+
+    seen.add(id);
+  }
+  els.forEach((el, id) => { if(!seen.has(id)){ el.remove(); els.delete(id); POS.delete(id); } });
+  animateNext = false;
+
+  // --- 2. mede ---
+  for(const it of list){
+    const el = els.get(it.id);
+    it.w = el.offsetWidth;
+    it.h = el.offsetHeight;
+  }
+
+  // --- 3. x por coluna (largura da coluna = maior nó daquela profundidade) ---
+  const colW = [];
+  let maxDepth = 0;
+  for(const it of list){
+    colW[it.depth] = Math.max(colW[it.depth] || 0, it.w);
+    if(it.depth > maxDepth) maxDepth = it.depth;
+  }
+  const colX = [0];
+  for(let d=1; d<=maxDepth; d++) colX[d] = colX[d-1] + colW[d-1] + H_GAP;
+
+  // --- 4. y — ancorado no pai ---
+  // 4a. extensão vertical que cada subárvore ocupa (folga p/ centralizar os filhos)
+  function ext(node){
+    const it = byId.get(node.id);
+    const kids = node.collapsed ? [] : node.children;
+    if(!kids.length){ it.ext = it.h; return it.ext; }
+    let sum = 0;
+    for(const k of kids) sum += ext(k);
+    sum += V_GAP * (kids.length - 1);
+    it.ext = Math.max(it.h, sum);
+    return it.ext;
+  }
+  // 4b. atribui y: o nó fica em `yc` (centro), e os filhos se distribuem em volta desse mesmo centro
+  function ly(node, depth, yc){
+    const it = byId.get(node.id);
+    it.x = colX[depth];
+    it.y = yc - it.h / 2;
+    const kids = node.collapsed ? [] : node.children;
+    if(!kids.length) return;
+    let total = 0;
+    for(const k of kids) total += byId.get(k.id).ext;
+    total += V_GAP * (kids.length - 1);
+    let top = yc - total / 2;
+    for(const k of kids){
+      const ke = byId.get(k.id).ext;
+      ly(k, depth + 1, top + ke / 2);
+      top += ke + V_GAP;
+    }
+  }
+  ext(tree);
+  ly(tree, 0, byId.get(tree.id).ext / 2);
+
+  // 4c. ancoragem: mantém _anchorRef.id fixo em _anchorRef.y (o layout inteiro só translada).
+  // Como o cálculo é afim em yc, deslocar todo mundo == recentralizar — é determinístico,
+  // então um render() seguinte reproduz a mesma posição (sem "pulo").
+  if(_anchorRef && byId.has(_anchorRef.id)){
+    const dy = _anchorRef.y - byId.get(_anchorRef.id).y;
+    if(dy) for(const it of list) it.y += dy;
+  }
+
+  // --- 5. aplica posições + conectores ---
+  let maxX = 0, maxY = 0, minY = Infinity;
+  for(const it of list){
+    place(it.id, it.x, it.y);
+    maxX = Math.max(maxX, it.x + it.w);
+    maxY = Math.max(maxY, it.y + it.h);
+    minY = Math.min(minY, it.y);
+  }
+  if(minY === Infinity) minY = 0;
+  LAYOUT = byId;
+  drawLinks(id => LAYOUT.get(id));
+  $('links').setAttribute('width', maxX);
+  $('links').setAttribute('height', maxY);
+  return { maxX, maxY, minY };
+}
+
+function render(){
+  closeRefBox();
+  layout();
+  applyTransform();
+  positionActionBar();
+  $('mapSel').value = currentId;
+}
+
+// ---- animação: nós E conectores interpolados juntos, por rAF (perfeitamente em sincronia) ----
+const REDUCE_MOTION = (window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches);
+const TWEEN_MS = 520;
+let _tween = null;
+const _ease = u => 1 - Math.pow(1 - u, 3);   // easeOutCubic
+
+function clearNodeTransforms(){
+  LAYOUT.forEach((it, id) => { const el = els.get(id); if(el) el.style.transform = ''; });
+}
+function finishTween(){
+  if(!_tween) return;
+  cancelAnimationFrame(_tween.raf);
+  panX = _tween.px1; panY = _tween.py1;
+  clearNodeTransforms();
+  LAYOUT.forEach((it, id) => place(id, it.x, it.y));   // pousa em left/top arredondado
+  applyTransform();
+  drawLinks(id => LAYOUT.get(id));
+  positionActionBar();
+  _tween = null;
+}
+
+// muta a árvore, recomputa o layout e anima do estado visual atual até o novo.
+// Os nós ficam parados em left/top (alvo) e o deslocamento vai num `transform: translate`
+// interpolado — assim o texto não treme (a GPU move o glifo já rasterizado).
+function transitionTo(mutate){
+  finishTween();
+  const from = new Map(POS);          // onde os nós estão AGORA na tela
+  if(mutate) mutate();
+  layout();                            // LAYOUT = alvo; left/top já nos alvos; cria .enter nos novos
+
+  if(REDUCE_MOTION){ positionActionBar(); return; }
+
+  const t0 = performance.now();
+  _tween = { raf: 0, px1: panX, py1: panY };
+  function frame(now){
+    if(!_tween) return;
+    let t = (now - t0) / TWEEN_MS; if(t >= 1) t = 1;
+    const k = _ease(t), inv = 1 - k;
+    // posição visual interpolada (p/ conectores e barra de ações)
+    const at = id => {
+      const b = LAYOUT.get(id); if(!b) return null;
+      const a = from.get(id);
+      if(!a || (Math.abs(a.x - b.x) < 1 && Math.abs(a.y - b.y) < 1)) return { x: b.x, y: b.y, w: b.w, h: b.h };
+      return { x: b.x + (a.x - b.x) * inv, y: b.y + (a.y - b.y) * inv, w: b.w, h: b.h };
+    };
+    LAYOUT.forEach((it, id) => {
+      const el = els.get(id); if(!el) return;
+      const a = from.get(id);
+      // nó novo, ou que quase não anda (< ~1px, ex.: a raiz): fica no alvo, sem transform → texto 100% estável
+      if(!a || (Math.abs(a.x - it.x) < 1 && Math.abs(a.y - it.y) < 1)){
+        el.style.transform = ''; POS.set(id, { x: it.x, y: it.y }); return;
+      }
+      const dx = (a.x - it.x) * inv, dy = (a.y - it.y) * inv;
+      el.style.transform = (t >= 1) ? '' : 'translate(' + dx + 'px,' + dy + 'px)';
+      POS.set(id, { x: it.x + dx, y: it.y + dy });
+    });
+    drawLinks(at);
+    positionActionBar();
+    if(t < 1) _tween.raf = requestAnimationFrame(frame);
+    else { LAYOUT.forEach((it, id) => place(id, it.x, it.y)); drawLinks(id => LAYOUT.get(id)); _tween = null; }
+  }
+  _tween.raf = requestAnimationFrame(frame);
+}
+
+// ===========================================================================
+//  Câmera
+// ===========================================================================
+function applyTransform(){
+  world.style.transform = 'translate(' + panX + 'px,' + panY + 'px) scale(' + zoom + ')';
+}
+function zoomAt(factor, cx, cy){
+  finishTween();
+  const nz = clamp(zoom * factor, 0.18, 3);
+  const wx = (cx - panX) / zoom, wy = (cy - panY) / zoom;
+  zoom = nz;
+  panX = cx - wx * zoom;
+  panY = cy - wy * zoom;
+  applyTransform(); positionActionBar();
+}
+function zoomBy(factor){
+  const r = viewport.getBoundingClientRect();
+  zoomAt(factor, r.width/2, r.height/2);
+}
+function fitView(){
+  finishTween();
+  _anchorRef = null;                        // "ajustar à tela" volta ao layout natural (centralizado)
+  const { maxX, maxY, minY } = layout();
+  const r = viewport.getBoundingClientRect();
+  const pad = 70;
+  const spanY = (maxY - minY) || 1;
+  const z = clamp(Math.min((r.width - pad*2) / maxX, (r.height - pad*2) / spanY), 0.18, 1.4);
+  zoom = z;
+  panX = (r.width  - maxX * z) / 2;
+  panY = (r.height - spanY * z) / 2 - minY * z;
+  applyTransform(); positionActionBar();
+}
+function ensureVisible(id){
+  layout();
+  const it = LAYOUT.get(id); if(!it) return;
+  const r = viewport.getBoundingClientRect();
+  const m = 46;
+  const sx = panX + it.x * zoom, sy = panY + it.y * zoom;
+  const sw = it.w * zoom, sh = it.h * zoom;
+  if(sx < m)                 panX += (m - sx);
+  if(sx + sw > r.width - m)  panX -= (sx + sw - (r.width - m));
+  if(sy < m)                 panY += (m - sy);
+  if(sy + sh > r.height - m) panY -= (sy + sh - (r.height - m));
+  applyTransform(); positionActionBar();
+}
+
+// ===========================================================================
+//  Barra de ações
+// ===========================================================================
+function positionActionBar(){
+  if(readOnly || selectedId == null || editingId != null){ bar.style.display = 'none'; return; }
+  const lit = LAYOUT.get(selectedId);
+  const pit = POS.get(selectedId) || lit;      // x/y acompanham a animação; w/h do layout
+  if(!lit || !pit){ bar.style.display = 'none'; return; }
+  bar.style.display = 'flex';
+  const _rb = bar.querySelector('[data-a="ref"]');
+  if(_rb){
+    const _c = findCtx(selectedId);
+    const _n = _c && _c.node.refs && _c.node.refs.length;
+    _rb.classList.toggle('on', !!_n);
+    _rb.title = _n ? ('Referências (' + _n + ')') : 'Adicionar referência';
+  }
+  const r = viewport.getBoundingClientRect();
+  const sx = r.left + panX + pit.x * zoom;
+  const sy = r.top  + panY + pit.y * zoom;
+  const sw = lit.w * zoom;
+  bar.style.left = '0px'; bar.style.top = '0px';
+  const bw = bar.offsetWidth, bh = bar.offsetHeight;
+  let left = sx + sw/2 - bw/2;
+  let top  = sy - bh - 10;
+  if(top < r.top + 6) top = sy + lit.h * zoom + 10;
+  left = clamp(left, r.left + 6, r.right - bw - 6);
+  bar.style.left = left + 'px';
+  bar.style.top  = top + 'px';
+}
+bar.addEventListener('click', e => {
+  const b = e.target.closest('button'); if(!b) return;
+  const a = b.dataset.a, sc = b.dataset.sc;
+  if(sc){ setColor(selectedId, sc, { deep: e.shiftKey, siblings: e.altKey }); bar.querySelector('.sw').classList.remove('open'); return; }
+  if(!selectedId) return;
+  if(a === 'child')   addChild(selectedId);
+  if(a === 'sibling') addSibling(selectedId);
+  if(a === 'edit')    startEdit(selectedId);
+  if(a === 'up')      moveSibling(selectedId, -1);
+  if(a === 'down')    moveSibling(selectedId, +1);
+  if(a === 'ref')   { bar.querySelector('.sw').classList.remove('open'); openRefBox(selectedId, b); }
+  if(a === 'del')     removeNode(selectedId);
+  if(a === 'color')   bar.querySelector('.sw').classList.toggle('open');
+});
+
+// ===========================================================================
+//  Edição de texto
+// ===========================================================================
+// cresce a caixa de edição no tamanho exato do texto (largura E altura), sem soft-wrap
+function autoGrow(ta){
+  ta.style.width = '0px'; ta.style.height = '0px';
+  ta.style.width  = Math.max(120, Math.min(ta.scrollWidth + 2, 1000)) + 'px';
+  ta.style.height = ta.scrollHeight + 'px';
+}
+
+function startEdit(id){
+  if(readOnly) return;
+  if(editingId === id) return;
+  if(editingId != null) commitEdit(false);
+  const ctx = findCtx(id); if(!ctx) return;
+  editingId = id; selectedId = id;
+  const el = els.get(id);
+  el.querySelector('.lbl').style.display = 'none';
+  const ta = document.createElement('textarea');
+  ta.className = 'edit';
+  ta.value = ctx.node.label;
+  ta.wrap = 'off';
+  el.appendChild(ta);
+  autoGrow(ta);
+  ta.focus(); ta.select();
+  ta.addEventListener('input', () => autoGrow(ta));
+  ta.addEventListener('pointerdown', ev => ev.stopPropagation());
+  ta.addEventListener('keydown', onEditKey);
+  ta.addEventListener('blur', () => { if(editingId === id) commitEdit(false); });
+  positionActionBar();
+}
+function onEditKey(e){
+  if(e.key === 'Escape'){ e.preventDefault(); cancelEdit(); }
+  else if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); commitEdit(false); }   // só confirma; não cria nada
+  else if(e.key === 'Tab'){ e.preventDefault(); commitEdit('child'); }
+  e.stopPropagation();
+}
+function finishEditDOM(id){
+  const el = els.get(id); if(!el) return;
+  const ta = el.querySelector('textarea.edit'); if(ta) ta.remove();
+  const lbl = el.querySelector('.lbl'); if(lbl) lbl.style.display = '';
+}
+function cancelEdit(){
+  if(editingId == null) return;
+  const id = editingId; editingId = null;
+  finishEditDOM(id);
+  if(id === pendingNewId){
+    const ctx = findCtx(id);
+    if(ctx && ctx.parent){
+      ctx.parent.children.splice(ctx.index, 1);
+      selectedId = ctx.parent.id;
+    }
+    pendingNewId = null;
+  }
+  render(); positionActionBar();
+}
+function commitEdit(then){
+  if(editingId == null) return;
+  const id = editingId;
+  const el = els.get(id);
+  const ta = el ? el.querySelector('textarea.edit') : null;
+  const val = (ta ? ta.value : '').replace(/\s+$/,'');
+  const ctx = findCtx(id);
+  editingId = null;
+  finishEditDOM(id);
+
+  if(!val && id === pendingNewId){          // nó recém-criado deixado vazio → descarta
+    if(ctx && ctx.parent){
+      ctx.parent.children.splice(ctx.index, 1);
+      selectedId = ctx.parent.id;
+    }
+    pendingNewId = null;
+    render(); positionActionBar();
+    return;
+  }
+  let changed = false;
+  if(ctx){
+    const finalVal = val || ctx.node.label || '(vazio)';
+    if(finalVal !== ctx.node.label){ ctx.node.label = finalVal; changed = true; }
+  }
+  const wasNew = (id === pendingNewId);
+  pendingNewId = null;
+  if(changed || wasNew) snapshot(); else saveMaps();
+  render();
+
+  if(then === 'sibling') addSibling(id);
+  else if(then === 'child') addChild(id);
+  else positionActionBar();
+}
+
+// ===========================================================================
+//  Ponteiro: pan, seleção, arrastar-para-reposicionar
+// ===========================================================================
+function setSelected(id){
+  if(editingId != null && editingId !== id) commitEdit(false);
+  selectedId = id;
+  els.forEach((el, i) => el.classList.toggle('selected', i === id));
+  positionActionBar();
+}
+function makeGhost(id){
+  const ctx = findCtx(id);
+  const g = document.createElement('div');
+  g.className = 'ghost';
+  g.textContent = ((ctx && ctx.node.label) || '(vazio)').split('\n')[0];
+  document.body.appendChild(g);
+  return g;
+}
+function clearDrop(){
+  document.querySelectorAll('.node.drop-target').forEach(e => e.classList.remove('drop-target'));
+  $('dropline').style.display = 'none';
+}
+viewport.addEventListener('pointerdown', e => {
+  if(e.button !== 0) return;
+  closeMenus();
+  finishTween();                       // interagir corta a animação em curso, sem deixar nada meio-caminho
+  if(e.target.closest('#actionbar')) return;
+  if(e.target.closest('.toggle')) return;
+  if(e.target.closest('textarea.edit')) return;
+  const nodeEl = e.target.closest('.node');
+  if(nodeEl){
+    cand = { id:nodeEl.dataset.id, x:e.clientX, y:e.clientY, moved:false, target:null };
+    viewport.setPointerCapture(e.pointerId);
+    return;
+  }
+  if(editingId != null) commitEdit(false);
+  pan = { x:e.clientX, y:e.clientY, ox:panX, oy:panY, moved:false };
+  viewport.classList.add('panning');
+  viewport.setPointerCapture(e.pointerId);
+});
+viewport.addEventListener('pointermove', e => {
+  if(pan){
+    panX = pan.ox + (e.clientX - pan.x);
+    panY = pan.oy + (e.clientY - pan.y);
+    if(Math.hypot(e.clientX - pan.x, e.clientY - pan.y) > 3) pan.moved = true;
+    applyTransform(); positionActionBar();
+    return;
+  }
+  if(cand && !readOnly){
+    if(!cand.moved && Math.hypot(e.clientX - cand.x, e.clientY - cand.y) > 5){
+      cand.moved = true;
+      const el = els.get(cand.id); if(el) el.classList.add('dragging');
+      ghost = makeGhost(cand.id);
+    }
+    if(cand.moved && ghost){
+      ghost.style.left = e.clientX + 'px';
+      ghost.style.top  = e.clientY + 'px';
+      clearDrop();
+      cand.target = null; cand.mode = null;
+
+      // nó mais próximo do cursor (distância à caixa; 0 se dentro), ignorando o próprio e descendentes
+      const r = viewport.getBoundingClientRect();
+      const mx = e.clientX, my = e.clientY;
+      let best = null, bestD = Infinity;
+      LAYOUT.forEach((it, id) => {
+        if(id === cand.id || isDescendant(cand.id, id)) return;
+        const sx = r.left + panX + it.x * zoom, sy = r.top + panY + it.y * zoom;
+        const sw = it.w * zoom, sh = it.h * zoom;
+        const dx = Math.max(sx - mx, 0, mx - (sx + sw));
+        const dy = Math.max(sy - my, 0, my - (sy + sh));
+        const d = Math.hypot(dx, dy);
+        if(d < bestD){ bestD = d; best = { id, sx, sy, sw, sh }; }
+      });
+      if(best){
+        const { id, sx, sy, sw, sh } = best;
+        const tc = findCtx(id);
+        const canSib = !!(tc && tc.parent);            // raiz não tem irmãos
+        let mode;
+        if(!canSib) mode = 'into';
+        else if(my < sy) mode = 'before';              // acima da caixa → antes
+        else if(my > sy + sh) mode = 'after';          // abaixo da caixa → depois
+        else {                                         // dentro da caixa (vertical): terços
+          const rel = (my - sy) / sh;
+          mode = rel < 0.34 ? 'before' : rel > 0.66 ? 'after' : 'into';
+        }
+        cand.target = id; cand.mode = mode;
+        if(mode === 'into'){
+          const el = els.get(id); if(el) el.classList.add('drop-target');
+        } else {
+          const dl = $('dropline');
+          dl.style.display = 'block';
+          dl.style.left  = sx + 'px';
+          dl.style.width = sw + 'px';
+          dl.style.top   = (mode === 'before' ? sy - 2 : sy + sh - 1) + 'px';
+        }
+      }
+    }
+  }
+});
+function endPointer(e){
+  if(pan){
+    const wasClick = !pan.moved;
+    pan = null; viewport.classList.remove('panning');
+    try{ viewport.releasePointerCapture(e.pointerId); }catch(_){}
+    if(wasClick && selectedId != null) setSelected(null);
+    return;
+  }
+  if(cand){
+    try{ viewport.releasePointerCapture(e.pointerId); }catch(_){}
+    if(!cand.moved){
+      const t = performance.now();
+      if(_lastClick && _lastClick.id === cand.id && t - _lastClick.t < 450){
+        _lastClick = null;
+        startEdit(cand.id);                 // 2º clique no mesmo balão → editar
+      } else {
+        _lastClick = { id: cand.id, t };
+        setSelected(cand.id);
+      }
+    } else {
+      const el = els.get(cand.id); if(el) el.classList.remove('dragging');
+      if(ghost){ ghost.remove(); ghost = null; }
+      clearDrop();
+      if(cand.target){
+        if(cand.mode === 'into') reparent(cand.id, cand.target);
+        else reorderNode(cand.id, cand.target, cand.mode);
+      }
+    }
+    cand = null;
+  }
+}
+function abortDrag(){          // Esc durante o arrasto: cancela sem mover nada
+  const el = cand && els.get(cand.id); if(el) el.classList.remove('dragging');
+  if(ghost){ ghost.remove(); ghost = null; }
+  clearDrop();
+  cand = null;
+}
+viewport.addEventListener('pointerup', endPointer);
+viewport.addEventListener('pointercancel', e => {
+  if(ghost){ ghost.remove(); ghost = null; }
+  clearDrop();
+  const el = cand && els.get(cand.id); if(el) el.classList.remove('dragging');
+  pan = null; cand = null; viewport.classList.remove('panning');
+});
+// nós: duplo-clique tratado à mão em endPointer (_lastClick). Aqui só o resto:
+viewport.addEventListener('dblclick', e => {
+  // o duplo-clique que abre o editor troca .lbl por <textarea> no meio do gesto —
+  // o e.target daqui pode cair num vão e escapar do closest('.node'). Se acabou de
+  // entrar em edição (ou ainda está editando), o duplo-clique foi num nó: não ajusta.
+  if(editingId != null) return;
+  if(e.target.closest('.node') || e.target.closest('.toggle') || e.target.closest('textarea.edit')) return;
+  fitView();   // duplo-clique no vazio → ajustar à tela
+});
+viewport.addEventListener('wheel', e => {
+  e.preventDefault();
+  const r = viewport.getBoundingClientRect();
+  const f = e.deltaY < 0 ? 1.12 : 1/1.12;
+  zoomAt(f, e.clientX - r.left, e.clientY - r.top);
+}, { passive:false });
+
+// ===========================================================================
+//  Teclado
+// ===========================================================================
+function navigate(key){
+  if(!selectedId) return;
+  const ctx = findCtx(selectedId); if(!ctx) return;
+  const { node, parent, index } = ctx;
+  let target = null;
+  if(key === 'ArrowRight'){
+    if(node.children.length){
+      if(node.collapsed){ toggleCollapse(selectedId); return; }
+      target = node.children[0].id;
+    }
+  } else if(key === 'ArrowLeft'){
+    if(node.children.length && !node.collapsed){ toggleCollapse(selectedId); return; }
+    if(parent) target = parent.id;
+  } else if(key === 'ArrowUp'){
+    if(parent && index > 0) target = parent.children[index-1].id;
+  } else if(key === 'ArrowDown'){
+    if(parent && index < parent.children.length-1) target = parent.children[index+1].id;
+  }
+  if(target){ selectedId = target; render(); ensureVisible(target); }
+}
+document.addEventListener('keydown', e => {
+  if(cand && cand.moved && e.key === 'Escape'){ e.preventDefault(); abortDrag(); return; }
+  if(editingId != null) return;                       // textarea trata o seu
+  const tag = e.target.tagName;
+  if(tag === 'INPUT' || tag === 'SELECT' || tag === 'TEXTAREA') return;
+
+  // modo Repo (só leitura): só navegação, zoom, ajustar à tela e limpar seleção
+  if(readOnly && !['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Escape',' ','+','=','-','_'].includes(e.key)) return;
+
+  if(e.ctrlKey || e.metaKey){
+    const k = e.key.toLowerCase();
+    if(k === 'z'){ e.preventDefault(); e.shiftKey ? redo() : undo(); }
+    else if(k === 'y'){ e.preventDefault(); redo(); }
+    else if(k === 's'){ e.preventDefault(); saveMaps(); toast('Salvo automaticamente'); }
+    return;
+  }
+  if(e.altKey){
+    if(selectedId && (e.key === 'ArrowUp' || e.key === 'ArrowDown')){
+      e.preventDefault();
+      moveSibling(selectedId, e.key === 'ArrowUp' ? -1 : 1);
+    }
+    return;
+  }
+
+  switch(e.key){
+    case 'Tab':       e.preventDefault(); if(selectedId) addChild(selectedId); break;
+    case 'Enter':     e.preventDefault(); if(selectedId) addSibling(selectedId); break;
+    case 'F2':        if(selectedId) startEdit(selectedId); break;
+    case 'Delete':
+    case 'Backspace': e.preventDefault(); if(selectedId) removeNode(selectedId); break;
+    case 'Escape':    selectedId = null; render(); positionActionBar(); break;
+    case ' ':         e.preventDefault(); fitView(); break;
+    case '+': case '=': zoomBy(1.12); break;
+    case '-': case '_': zoomBy(1/1.12); break;
+    case 'ArrowUp': case 'ArrowDown': case 'ArrowLeft': case 'ArrowRight':
+      e.preventDefault(); navigate(e.key); break;
+  }
+});
+
+// ===========================================================================
+//  Exportação
+// ===========================================================================
+function exportJSON(){
+  const data = { app:'mapa-mental', version:1, name:maps[currentId].name, tree };
+  downloadBlob(new Blob([JSON.stringify(data, null, 2)], { type:'application/json' }),
+    safeName(maps[currentId].name) + '.mindmap.json');
+}
+function roundRect(g, x, y, w, h, r){
+  g.beginPath();
+  g.moveTo(x+r, y);
+  g.arcTo(x+w, y,   x+w, y+h, r);
+  g.arcTo(x+w, y+h, x,   y+h, r);
+  g.arcTo(x,   y+h, x,   y,   r);
+  g.arcTo(x,   y,   x+w, y,   r);
+  g.closePath();
+}
+function exportPNG(){
+  layout();
+  const items = [...LAYOUT.values()];
+  if(!items.length) return;
+  let minX=1e9, minY=1e9, maxX=-1e9, maxY=-1e9;
+  items.forEach(it => {
+    minX = Math.min(minX, it.x); minY = Math.min(minY, it.y);
+    maxX = Math.max(maxX, it.x + it.w); maxY = Math.max(maxY, it.y + it.h);
+  });
+  const pad = 46, scale = 2;
+  const W = (maxX - minX) + pad*2, H = (maxY - minY) + pad*2;
+  const cv = document.createElement('canvas');
+  cv.width = W * scale; cv.height = H * scale;
+  const g = cv.getContext('2d');
+  g.scale(scale, scale);
+  g.translate(-minX + pad, -minY + pad);
+
+  const bodyCS = getComputedStyle(document.body);
+  g.fillStyle = bodyCS.getPropertyValue('--canvas-bg').trim() || '#12131a';
+  g.fillRect(minX - pad, minY - pad, W, H);
+
+  g.lineWidth = 1.7;
+  LAYOUT.forEach((it, id) => {
+    const ctx = findCtx(id); if(!ctx || !ctx.parent) return;
+    const p = LAYOUT.get(ctx.parent.id); if(!p) return;
+    g.strokeStyle = bodyCS.getPropertyValue('--d' + Math.min(it.depth, 4) + 'b').trim() || '#5b68ad';
+    const x1 = p.x + p.w, y1 = p.y + p.h/2, x2 = it.x, y2 = it.y + it.h/2, dx = x2 - x1;
+    g.beginPath();
+    g.moveTo(x1, y1);
+    g.bezierCurveTo(x1 + dx*0.5, y1, x2 - dx*0.5, y2, x2, y2);
+    g.stroke();
+  });
+
+  LAYOUT.forEach((it, id) => {
+    const el = els.get(id); if(!el) return;
+    const cs = getComputedStyle(el);
+    roundRect(g, it.x, it.y, it.w, it.h, 10);
+    g.fillStyle = cs.backgroundColor; g.fill();
+    g.lineWidth = 1.5; g.strokeStyle = cs.borderTopColor; g.stroke();
+    const fs = parseFloat(cs.fontSize) || 13;
+    g.fillStyle = cs.color;
+    g.font = cs.fontWeight + ' ' + fs + 'px ' + cs.fontFamily;
+    g.textBaseline = 'middle';
+    const ctx = findCtx(id);
+    const lines = String((ctx && ctx.node.label) || '').split('\n');   // sem wrap: só as quebras explícitas
+    const lh = fs * 1.4;
+    let ty = it.y + it.h/2 - (lines.length - 1) * lh/2;
+    lines.forEach(ln => { g.fillText(ln, it.x + 13, ty); ty += lh; });
+  });
+
+  cv.toBlob(b => downloadBlob(b, safeName(maps[currentId].name) + '.png'), 'image/png');
+}
+
+// ===========================================================================
+//  Menus / UI
+// ===========================================================================
+function closeMenus(){
+  const m = $('dlmenu'); if(m) m.remove();
+  const sw = bar.querySelector('.sw'); if(sw) sw.classList.remove('open');
+  closeRefBox();
+}
+function openDownloadMenu(){
+  if($('dlmenu')){ closeMenus(); return; }
+  const m = document.createElement('div');
+  m.id = 'dlmenu';
+  m.innerHTML = '<button data-dl="png">Imagem (PNG)</button><button data-dl="json">Arquivo (JSON)</button>';
+  document.body.appendChild(m);
+  m.addEventListener('click', e => {
+    const b = e.target.closest('button'); if(!b) return;
+    closeMenus();
+    if(b.dataset.dl === 'png') exportPNG(); else exportJSON();
+  });
+}
+document.addEventListener('pointerdown', e => {
+  if(!e.target.closest('#dlmenu') && !e.target.closest('[data-act="download"]')) {
+    const m = $('dlmenu'); if(m) m.remove();
+  }
+  if(!e.target.closest('#actionbar')){
+    const sw = bar.querySelector('.sw'); if(sw) sw.classList.remove('open');
+  }
+  if(!e.target.closest('#refbox') && !e.target.closest('.reflink') && !e.target.closest('[data-a="ref"]')){
+    closeRefBox();
+  }
+});
+
+$('topbar').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if(!b) return;
+  const a = b.dataset.act;
+  if(a === 'new')    newMap();
+  if(a === 'rename') renameMap();
+  if(a === 'dup')    dupMap();
+  if(a === 'del')    delMap();
+  if(a === 'folder' && !readOnly){
+    if(!FS_OK) exportJSON();
+    else if(dirHandle && needsReconnect) reconnectFolder();
+    else linkFolder();
+  }
+  if(a === 'loadRemote') loadRemote($('remoteUrl').value);
+  if(a === 'undo')   undo();
+  if(a === 'redo')   redo();
+  if(a === 'addchild') addChild(selectedId || tree.id);
+  if(a === 'theme')  toggleTheme();
+  if(a === 'help')   $('help').classList.add('open');
+});
+$('mapSel').addEventListener('change', e => switchMap(e.target.value));
+$('srcSel').addEventListener('change', e => {
+  if(e.target.value === 'remote'){
+    refreshSrcUI();                       // mostra o campo de URL
+    const u = ($('remoteUrl').value.trim()) || '';
+    let saved = ''; try{ saved = localStorage.getItem('mm_remote_url') || ''; }catch(_){}
+    const url = u || saved;
+    $('remoteUrl').value = url;
+    if(url) loadRemote(url); else $('remoteUrl').focus();
+  } else {
+    if(source === 'remote') exitRemote(); else refreshSrcUI();
+  }
+});
+$('remoteUrl').addEventListener('keydown', e => { if(e.key === 'Enter'){ e.preventDefault(); loadRemote(e.target.value); } });
+$('controls').addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if(!b) return;
+  const a = b.dataset.act;
+  if(a === 'toggleall') toggleAll();
+  if(a === 'zoomin')    zoomBy(1.15);
+  if(a === 'zoomout')   zoomBy(1/1.15);
+  if(a === 'fit')       fitView();
+  if(a === 'download')  openDownloadMenu();
+});
+$('help').addEventListener('click', e => {
+  if(e.target.id === 'help' || e.target.dataset.act === 'closehelp') $('help').classList.remove('open');
+});
+$('hint').addEventListener('click', e => {
+  if(e.target.dataset.act === 'hidehint') $('hint').style.display = 'none';
+});
+
+function toggleTheme(){
+  document.body.classList.toggle('light');
+  try{ localStorage.setItem('mm_theme', document.body.classList.contains('light') ? 'light' : 'dark'); }catch(_){}
+  render();
+}
+window.addEventListener('resize', () => { layout(); applyTransform(); positionActionBar(); });
+
+// ===========================================================================
+//  Boot
+// ===========================================================================
+const BUILD = '2026-09-01w';
+try{ console.info('[mapa-mental] build ' + BUILD); }catch(e){}
+try{ if(localStorage.getItem('mm_theme') === 'light') document.body.classList.add('light'); }catch(_){}
+loadMaps();
+normalize(tree);
+resetHistory();
+refreshMapSel();
+selectedId = null;
+render();
+fitView();
+updateFolderBtn();
+
+// fonte remota? (?maps=<url> na URL, ou última sessão foi "Repo")
+(function bootSource(){
+  const qp = new URLSearchParams(location.search).get('maps');
+  let saved = '';
+  try{ saved = (localStorage.getItem('mm_source') === 'remote' && localStorage.getItem('mm_remote_url')) || ''; }catch(_){}
+  const url = qp || saved;
+  if(url){
+    source = 'remote';                     // marca cedo p/ o bootFolder abaixo pular
+    const ss = $('srcSel'); if(ss) ss.value = 'remote';
+    const ri = $('remoteUrl'); if(ri) ri.value = url;
+    refreshSrcUI();
+    loadRemote(url);
+  } else {
+    refreshSrcUI();
+  }
+})();
+
+// reconecta uma pasta vinculada anteriormente (Chrome/Edge)
+(async function bootFolder(){
+  if(!FS_OK || source === 'remote') return;
+  try{
+    const h = await idbGet('dir');
+    if(!h) return;
+    dirHandle = h;
+    let perm = 'prompt';
+    try{ perm = await h.queryPermission({ mode:'readwrite' }); }catch(_){}
+    if(perm === 'granted'){
+      await syncFromDir();
+      if(!maps[currentId]) currentId = Object.keys(maps)[0];
+      tree = maps[currentId].tree; normalize(tree);
+      resetHistory(); refreshMapSel(); selectedId = null; render(); fitView();
+    } else {
+      needsReconnect = true;
+    }
+  }catch(e){ console.warn('bootFolder', e); }
+  updateFolderBtn();
+})();
+
+})();
+</script>
+</body>
+</html>

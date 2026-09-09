@@ -1,0 +1,507 @@
+{
+  "app": "mapa-mental",
+  "version": 1,
+  "id": "ndcinssmap1",
+  "name": "Direito Constitucional",
+  "tree": {
+    "id": "dc-root",
+    "label": "Direito Constitucional (CF/88)",
+    "children": [
+      {
+        "id": "t1",
+        "label": "TÍTULO I — Princípios Fundamentais (arts. 1º a 4º)",
+        "refs": [
+          {
+            "label": "CF/88 — Título I (Planalto)",
+            "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#tituloi"
+          },
+          {
+            "label": "Figura — mapa consolidado (slide aula 4)",
+            "url": "conteudo/figuras/dc1/aula4p5_principios-fundamentais-consolidado.png"
+          }
+        ],
+        "children": [
+          {
+            "id": "t1-pre",
+            "label": "Preâmbulo",
+            "refs": [
+              {
+                "label": "CF/88 — Preâmbulo (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm"
+              },
+              {
+                "label": "Slide — aula 1 (Preâmbulo)",
+                "url": "conteudo/slides/DC1_aula1_slide.pdf"
+              }
+            ],
+            "children": [
+              {
+                "id": "t1-pre-a",
+                "label": "Conteúdo: instituir \"um Estado Democrático\"; assegurar direitos sociais e\nindividuais, liberdade, segurança, bem-estar, desenvolvimento, igualdade e\njustiça; sociedade fraterna, pluralista e sem preconceitos; solução pacífica\ndas controvérsias; \"sob a proteção de Deus\"",
+                "children": []
+              },
+              {
+                "id": "t1-pre-b",
+                "label": "Sem força normativa · não cria direitos/deveres ·\nnão é parâmetro de controle de constitucionalidade",
+                "children": []
+              },
+              {
+                "id": "t1-pre-c",
+                "label": "Não é norma de reprodução obrigatória (STF, ADI 2.076 —\n\"sob a proteção de Deus\" pode faltar nas Constituições estaduais)",
+                "children": []
+              },
+              {
+                "id": "t1-pre-d",
+                "label": "Função: diretriz / vetor de interpretação da Constituição",
+                "children": []
+              },
+              {
+                "id": "t1-vg",
+                "label": "Visão geral — 8 blocos didáticos",
+                "collapsed": true,
+                "refs": [
+                  {
+                    "label": "Figura — mapa dos 8 blocos (slide aula 1)",
+                    "url": "conteudo/figuras/dc1/aula1p11_principios-fundamentais-8-blocos.png"
+                  }
+                ],
+                "children": [
+                  {
+                    "id": "t1-vg-a",
+                    "label": "Princípios estruturantes do Estado brasileiro,\nescolhidos pelo Poder Constituinte Originário",
+                    "children": []
+                  },
+                  {
+                    "id": "t1-vg-b",
+                    "label": "1 Federativo · 2 Republicano · 3 Estado Democrático de Direito ·\n4 Soberania Popular · 5 Separação de Poderes · 6 Fundamentos (art. 1º) ·\n7 Objetivos (art. 3º) · 8 Princípios na Ordem Internacional (art. 4º)",
+                    "children": []
+                  }
+                ]
+              }
+            ],
+            "collapsed": true
+          },
+          {
+            "id": "t1-a1",
+            "label": "Art. 1º — Fundamentos da República (SO CI DI VAL PLU)",
+            "refs": [
+              {
+                "label": "CF/88 — art. 1º (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art1"
+              },
+              {
+                "label": "Slide — aula 4",
+                "url": "conteudo/slides/DC1_aula4_slide.pdf"
+              },
+              {
+                "label": "Figura — Fundamentos/Objetivos/RI",
+                "url": "conteudo/figuras/dc1/aula4p1_fundamentos-objetivos-ri.png"
+              }
+            ],
+            "children": [
+              {
+                "id": "t1-a1-0",
+                "label": "SO — Soberania (ótica interna: impor a ordem jurídica no território ·\nótica externa: dever de igualdade entre os Estados)",
+                "children": []
+              },
+              {
+                "id": "t1-a1-1",
+                "label": "CI — Cidadania (sentido amplo: titular de direitos fundamentais ·\nsentido estrito: titular de direitos políticos)",
+                "children": []
+              },
+              {
+                "id": "t1-a1-2",
+                "label": "DI — Dignidade da pessoa humana (direito à existência digna)",
+                "children": []
+              },
+              {
+                "id": "t1-a1-3",
+                "label": "VAL — Valores sociais do trabalho e da livre iniciativa (opção pelo modelo capitalista)",
+                "children": []
+              },
+              {
+                "id": "t1-a1-4",
+                "label": "PLU — Pluralismo político (pluralidade de ideias; ≠ pluripartidarismo, que dele decorre)",
+                "children": []
+              },
+              {
+                "id": "t1-a1-pu",
+                "label": "Parágrafo único — soberania popular: \"todo o poder emana do povo\",\npor representantes eleitos OU diretamente (ligado ao ideal democrático)",
+                "children": []
+              },
+              {
+                "id": "t1-a1-ci",
+                "label": "\"Cidadania\" é sempre fundamento (art. 1º, II) — nunca princípio de relações internacionais",
+                "children": []
+              }
+            ],
+            "collapsed": true
+          },
+          {
+            "id": "t1-a2",
+            "label": "Art. 2º — Separação dos Poderes",
+            "refs": [
+              {
+                "label": "CF/88 — art. 2º (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art2"
+              },
+              {
+                "label": "Slide — aula 3 (Separação dos Poderes)",
+                "url": "conteudo/slides/DC1_aula3_slide.pdf"
+              },
+              {
+                "label": "Figura — Separação dos Poderes",
+                "url": "conteudo/figuras/dc1/aula2p9_separacao-dos-poderes.png"
+              }
+            ],
+            "children": [
+              {
+                "id": "t1-a2-a",
+                "label": "Legislativo, Executivo e Judiciário — independentes e harmônicos entre si",
+                "children": []
+              },
+              {
+                "id": "t1-a2-b",
+                "label": "Visão clássica: Aristóteles (\"Política\") e Montesquieu (\"Do Espírito das Leis\")",
+                "children": []
+              },
+              {
+                "id": "t1-a2-c",
+                "label": "Visão moderna — funções típicas e atípicas:\nLegislativo: típicas legislar e fiscalizar · atípicas administrar e julgar\nExecutivo: típica administrar · atípicas legislar (MP) e julgar (PAD)\nJudiciário: típica julgar · atípicas administrar e legislar (regimento)",
+                "children": []
+              },
+              {
+                "id": "t1-a2-d",
+                "label": "Freios e contrapesos (checks and balances) — controles recíprocos:\nex. nomeação de Ministro do STF, processo legislativo, controle de constitucionalidade",
+                "children": []
+              },
+              {
+                "id": "t1-a2-e",
+                "label": "É cláusula pétrea (art. 60, §4º, III)",
+                "children": []
+              }
+            ],
+            "collapsed": true
+          },
+          {
+            "id": "t1-a3",
+            "label": "Art. 3º — Objetivos fundamentais (CO GA ER PRO)",
+            "collapsed": true,
+            "refs": [
+              {
+                "label": "CF/88 — art. 3º (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art3"
+              },
+              {
+                "label": "Slide — aula 4",
+                "url": "conteudo/slides/DC1_aula4_slide.pdf"
+              },
+              {
+                "label": "Figura — Fundamentos/Objetivos/RI",
+                "url": "conteudo/figuras/dc1/aula4p1_fundamentos-objetivos-ri.png"
+              }
+            ],
+            "children": [
+              {
+                "id": "t1-a3-0",
+                "label": "CO — Construir uma sociedade livre, justa e solidária",
+                "children": []
+              },
+              {
+                "id": "t1-a3-1",
+                "label": "GA — Garantir o desenvolvimento nacional",
+                "children": []
+              },
+              {
+                "id": "t1-a3-2",
+                "label": "ER — Erradicar a pobreza e a marginalização e reduzir as desigualdades sociais e regionais",
+                "children": []
+              },
+              {
+                "id": "t1-a3-3",
+                "label": "PRO — Promover o bem de todos, sem preconceitos de origem, raça, sexo, cor, idade...",
+                "children": []
+              },
+              {
+                "id": "t1-a3-a",
+                "label": "Verbos no infinitivo → art. 3º (chave de identificação)",
+                "children": []
+              },
+              {
+                "id": "t1-a3-b",
+                "label": "\"Erradicar\" a pobreza (não \"reduzir a nível aceitável\"); \"reduzir\" só as desigualdades",
+                "children": []
+              }
+            ]
+          },
+          {
+            "id": "t1-a4",
+            "label": "Art. 4º — Princípios nas relações internacionais (PANIICO SOCO REDE)",
+            "refs": [
+              {
+                "label": "CF/88 — art. 4º (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art4"
+              },
+              {
+                "label": "Slide — aula 4",
+                "url": "conteudo/slides/DC1_aula4_slide.pdf"
+              },
+              {
+                "label": "Figura — Fundamentos/Objetivos/RI",
+                "url": "conteudo/figuras/dc1/aula4p1_fundamentos-objetivos-ri.png"
+              }
+            ],
+            "children": [
+              {
+                "id": "t1-a4-0",
+                "label": "P — Prevalência dos direitos humanos",
+                "children": []
+              },
+              {
+                "id": "t1-a4-1",
+                "label": "A — Autodeterminação dos povos",
+                "children": []
+              },
+              {
+                "id": "t1-a4-2",
+                "label": "N — Não-intervenção",
+                "children": []
+              },
+              {
+                "id": "t1-a4-3",
+                "label": "I — Independência nacional",
+                "children": []
+              },
+              {
+                "id": "t1-a4-4",
+                "label": "I — Igualdade entre os Estados",
+                "children": []
+              },
+              {
+                "id": "t1-a4-5",
+                "label": "CO — Cooperação entre os povos para o progresso da humanidade",
+                "children": []
+              },
+              {
+                "id": "t1-a4-6",
+                "label": "SO — Solução pacífica dos conflitos",
+                "children": []
+              },
+              {
+                "id": "t1-a4-7",
+                "label": "CO — Concessão de asilo político",
+                "children": []
+              },
+              {
+                "id": "t1-a4-8",
+                "label": "RE — Repúdio ao terrorismo e ao racismo",
+                "children": []
+              },
+              {
+                "id": "t1-a4-9",
+                "label": "DE — Defesa da paz",
+                "children": []
+              },
+              {
+                "id": "t1-a4-a",
+                "label": "São 10 incisos (art. 4º, I a X) — o mnemônico não segue a ordem numérica",
+                "children": []
+              },
+              {
+                "id": "t1-a4-b",
+                "label": "Parágrafo único: integração econômica, política, social e cultural dos povos da\nAMÉRICA LATINA → comunidade latino-americana de nações",
+                "children": []
+              },
+              {
+                "id": "t1-a4-c",
+                "label": "Pegadinha: outra região (América do Sul, Ibero-América, Mercosul) = errado",
+                "children": []
+              }
+            ],
+            "collapsed": true
+          },
+          {
+            "id": "t1-formas",
+            "label": "Formas: Estado · governo · sistema · regime",
+            "collapsed": true,
+            "refs": [
+              {
+                "label": "Slide — aula 2",
+                "url": "conteudo/slides/DC1_aula2_slide.pdf"
+              },
+              {
+                "label": "Figura — Princípio Republicano",
+                "url": "conteudo/figuras/dc1/aula2p3_principio-republicano.png"
+              },
+              {
+                "label": "Figura — Estado Democrático de Direito",
+                "url": "conteudo/figuras/dc1/aula2p5_estado-democratico-de-direito.png"
+              }
+            ],
+            "children": [
+              {
+                "id": "t1-formas-a",
+                "label": "Forma de Estado = Federação (organização territorial do poder) ·\nForma de governo = República (chefia do Estado) ·\nSistema de governo = Presidencialismo (relação Executivo × Legislativo) ·\nRegime político = Democracia semidireta / participativa",
+                "children": []
+              },
+              {
+                "id": "t1-formas-rep",
+                "label": "Princípio Republicano (art. 1º)",
+                "collapsed": true,
+                "children": [
+                  {
+                    "id": "t1-formas-rep-a",
+                    "label": "Características: eleição + mandato (alternância no poder) +\ndever de prestar contas (accountability)",
+                    "children": []
+                  },
+                  {
+                    "id": "t1-formas-rep-b",
+                    "label": "NÃO é cláusula pétrea expressa",
+                    "children": []
+                  },
+                  {
+                    "id": "t1-formas-rep-c",
+                    "label": "Divergência: limitação material implícita (plebiscito de 1993 — art. 2º do ADCT)",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "id": "t1-formas-edd",
+                "label": "Estado Democrático de Direito (art. 1º, parte final)",
+                "collapsed": true,
+                "children": [
+                  {
+                    "id": "t1-formas-edd-a",
+                    "label": "Estado Democrático: poder do povo; espécies de democracia —\ndireta · indireta (representativa) · semidireta (participativa) = Brasil",
+                    "children": []
+                  },
+                  {
+                    "id": "t1-formas-edd-b",
+                    "label": "Estado de Direito: observância das leis; criado em oposição ao antigo Estado de Polícia",
+                    "children": []
+                  },
+                  {
+                    "id": "t1-formas-edd-c",
+                    "label": "Instrumentos de participação: plebiscito (prévio) · referendo (posterior) ·\niniciativa popular · ação popular · júri",
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "t1-fed",
+            "label": "Federação brasileira",
+            "refs": [
+              {
+                "label": "Slide — aula 2",
+                "url": "conteudo/slides/DC1_aula2_slide.pdf"
+              },
+              {
+                "label": "Figura — Princípio Federativo",
+                "url": "conteudo/figuras/dc1/aula1p12_principio-federativo.png"
+              }
+            ],
+            "children": [
+              {
+                "id": "t1-fed-0",
+                "label": "Base: arts. 1º e 18",
+                "children": []
+              },
+              {
+                "id": "t1-fed-a",
+                "label": "Por segregação (movimento centrífugo, do Estado unitário de 1824) —\ninverso dos EUA (agregação)",
+                "children": []
+              },
+              {
+                "id": "t1-fed-b",
+                "label": "De 3º grau: União, Estados/DF e Municípios\n(Município como ente autônomo é peculiaridade brasileira)",
+                "children": []
+              },
+              {
+                "id": "t1-fed-c",
+                "label": "Cooperativa (competências comuns art. 23 / concorrentes art. 24) ·\nassimétrica (DF, Zona Franca)",
+                "children": []
+              },
+              {
+                "id": "t1-fed-d",
+                "label": "Indissolúvel — não há direito de secessão;\ntentativa autoriza intervenção federal (art. 34, I)",
+                "children": []
+              },
+              {
+                "id": "t1-fed-cap",
+                "label": "Autonomia dos entes — 4 capacidades",
+                "collapsed": true,
+                "children": [
+                  {
+                    "id": "t1-fed-cap-a",
+                    "label": "Auto-organização · Autogoverno · Autolegislação · Autoadministração",
+                    "children": []
+                  }
+                ]
+              }
+            ],
+            "collapsed": true
+          },
+          {
+            "id": "t1-cp",
+            "label": "Cláusulas pétreas (art. 60, §4º) — FOi VOcê que SEPAROU os DIREITOS",
+            "refs": [
+              {
+                "label": "CF/88 — art. 60, §4º (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art60§4"
+              },
+              {
+                "label": "Slide — aula 2",
+                "url": "conteudo/slides/DC1_aula2_slide.pdf"
+              },
+              {
+                "label": "Figura — Princípio Federativo",
+                "url": "conteudo/figuras/dc1/aula1p12_principio-federativo.png"
+              }
+            ],
+            "children": [
+              {
+                "id": "t1-cp-0",
+                "label": "FO — Forma federativa de Estado",
+                "children": []
+              },
+              {
+                "id": "t1-cp-1",
+                "label": "VO — Voto direto, secreto, universal e periódico",
+                "children": []
+              },
+              {
+                "id": "t1-cp-2",
+                "label": "SEPAROU — Separação dos Poderes",
+                "children": []
+              },
+              {
+                "id": "t1-cp-3",
+                "label": "DIREITOS — Direitos e garantias individuais",
+                "children": []
+              },
+              {
+                "id": "t1-cp-b",
+                "label": "\"Voto obrigatório\" NÃO é cláusula pétrea (a obrigatoriedade pode ser alterada por emenda)",
+                "children": []
+              },
+              {
+                "id": "t1-cp-c",
+                "label": "República NÃO é cláusula pétrea expressa — limitação material implícita\n(art. 2º do ADCT, plebiscito de 1993)",
+                "children": []
+              },
+              {
+                "id": "t1-cp-d",
+                "label": "\"Direitos e garantias individuais\": doutrina majoritária amplia ao conjunto\ndos direitos e garantias fundamentais",
+                "children": []
+              }
+            ],
+            "collapsed": true
+          }
+        ]
+      }
+    ]
+  }
+}
