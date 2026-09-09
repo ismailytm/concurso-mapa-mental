@@ -237,22 +237,22 @@
     display:flex; flex-direction:column; gap:8px;
   }
   .ctrl, .ctrl-group{
-    background:var(--panel); border:1px solid var(--border); border-radius:11px;
+    background:var(--panel); border:1px solid var(--border); border-radius:9px;
     color:var(--text);
   }
-  .ctrl{width:40px; height:40px; display:grid; place-items:center; cursor:pointer}
+  .ctrl{width:30px; height:30px; display:grid; place-items:center; cursor:pointer}
   .ctrl:hover{border-color:var(--accent); color:var(--accent)}
   .ctrl-group{display:flex; flex-direction:column; overflow:hidden}
   .ctrl-group button{
-    width:40px; height:40px; border:0; background:transparent; color:inherit;
+    width:30px; height:30px; border:0; background:transparent; color:inherit;
     display:grid; place-items:center; cursor:pointer;
   }
   .ctrl-group button:first-child{border-bottom:1px solid var(--border)}
   .ctrl-group button:hover{color:var(--accent)}
-  .ctrl svg,.ctrl-group svg{width:18px; height:18px}
+  .ctrl svg,.ctrl-group svg{width:15px; height:15px}
 
   #dlmenu{
-    position:absolute; right:64px; bottom:16px; z-index:31;
+    position:absolute; right:54px; bottom:16px; z-index:31;
     background:var(--panel); border:1px solid var(--border); border-radius:10px;
     padding:5px; display:flex; flex-direction:column; gap:2px; min-width:150px;
     box-shadow:0 8px 24px rgba(0,0,0,.35);
@@ -262,6 +262,19 @@
     background:transparent; color:var(--text); cursor:pointer;
   }
   #dlmenu button:hover{background:var(--panel-2)}
+
+  /* viewport estreita (celular em pé) OU baixa (celular deitado / janela do PC encolhida):
+     os controles só DEITAM na horizontal — mesmo tamanho de botão do layout vertical.
+     Media query de TAMANHO da viewport — reavalia sozinha ao redimensionar. */
+  @media (max-width:640px), (max-height:480px){
+    /* mesma base do #helpBtn (bottom:12px + safe-area) — os dois alinham embaixo */
+    #controls{ flex-direction:row; bottom:calc(12px + env(safe-area-inset-bottom)) }
+    .ctrl-group{ flex-direction:row }
+    .ctrl-group button:first-child{ border-bottom:0; border-right:1px solid var(--border) }
+    #dlmenu{                              /* abre ACIMA da barra, encostado à direita */
+      right:16px; bottom:calc(12px + env(safe-area-inset-bottom) + 38px);
+    }
+  }
 
   /* ---- barra de ações do nó selecionado ---- */
   #actionbar{
@@ -298,14 +311,14 @@
 
   /* ---- dica + toast ---- */
   #helpBtn{
-    position:absolute; left:12px; bottom:12px; z-index:25;
+    position:absolute; left:12px; bottom:calc(12px + env(safe-area-inset-bottom)); z-index:25;
     width:30px; height:30px; border-radius:50%;
     background:var(--panel); border:1px solid var(--border); color:var(--muted);
     display:grid; place-items:center; cursor:pointer; font:700 14px/1 system-ui,sans-serif;
   }
   #helpBtn:hover{border-color:var(--accent); color:var(--accent)}
   #hint{
-    position:absolute; left:12px; bottom:52px; z-index:25; display:none;
+    position:absolute; left:12px; bottom:calc(52px + env(safe-area-inset-bottom)); z-index:25; display:none;
     padding:9px 24px 9px 11px;
     background:var(--panel); border:1px solid var(--border); border-radius:9px;
     font-size:11.5px; line-height:1.4;
