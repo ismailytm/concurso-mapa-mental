@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Mapa Mental — Estudo</title>
 <style>
   /* ---------------------------------------------------------------------------
@@ -484,6 +484,8 @@ let REF_BASE = REF_BASE_DEFAULT;
 const els = new Map();     // id -> elemento .node
 let LAYOUT = new Map();    // id -> {node,parent,depth,x,y,w,h}
 let cand = null, pan = null, ghost = null;   // ponteiro
+const pointers = new Map();   // pointerId -> {x,y} em coords de tela — p/ detectar pinça (2 dedos)
+let pinch = null;             // {d0, mx0, my0, z0, panX0, panY0} enquanto 2 dedos estão na tela
 let _lastClick = null;   // {id, t} — detecção própria de duplo-clique (mais tolerante que a nativa)
 
 const viewport = $('viewport'), world = $('world'), bar = $('actionbar');
@@ -1340,6 +1342,47 @@ function zoomBy(factor){
   const r = viewport.getBoundingClientRect();
   zoomAt(factor, r.width/2, r.height/2);
 }
+// ---- pinça (2 dedos) no mobile: zoom + pan juntos, o mundo "gruda" no meio dos dedos ----
+function _twoPointers(){
+  const it = pointers.values();
+  return [it.next().value, it.next().value];
+}
+function pinchStart(){
+  finishTween();
+  if(pan){ pan = null; viewport.classList.remove('panning'); }
+  if(cand){ abortDrag(); }
+  const [a, b] = _twoPointers();
+  const r = viewport.getBoundingClientRect();
+  pinch = {
+    d0: Math.hypot(a.x - b.x, a.y - b.y) || 1,
+    mx0: (a.x + b.x) / 2 - r.left,
+    my0: (a.y + b.y) / 2 - r.top,
+    z0: zoom, panX0: panX, panY0: panY
+  };
+}
+function pinchMove(){
+  if(!pinch || pointers.size < 2) return;
+  const [a, b] = _twoPointers();
+  const r  = viewport.getBoundingClientRect();
+  const d  = Math.hypot(a.x - b.x, a.y - b.y) || 1;
+  const mx = (a.x + b.x) / 2 - r.left;
+  const my = (a.y + b.y) / 2 - r.top;
+  const z  = clamp(pinch.z0 * d / pinch.d0, 0.18, 3);
+  const wx = (pinch.mx0 - pinch.panX0) / pinch.z0;   // ponto do mundo sob o meio dos dedos no início
+  const wy = (pinch.my0 - pinch.panY0) / pinch.z0;
+  zoom = z;
+  panX = mx - wx * z;
+  panY = my - wy * z;
+  applyTransform(); positionActionBar();
+}
+function pinchEnd(){
+  pinch = null;
+  if(pointers.size === 1){            // sobrou 1 dedo → segue como pan, sem "pulo"
+    const p = pointers.values().next().value;
+    pan = { x:p.x, y:p.y, ox:panX, oy:panY, moved:true };
+    viewport.classList.add('panning');
+  }
+}
 function fitView(){
   finishTween();
   _anchorRef = null;                        // "ajustar à tela" volta ao layout natural (centralizado)
@@ -1524,8 +1567,14 @@ function clearDrop(){
 }
 viewport.addEventListener('pointerdown', e => {
   if(e.button !== 0) return;
+  pointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
   closeMenus();
   finishTween();                       // interagir corta a animação em curso, sem deixar nada meio-caminho
+  if(pointers.size >= 2){              // 2º dedo → pinça (zoom + pan com 2 dedos), cancela pan/drag de 1 dedo
+    try{ viewport.setPointerCapture(e.pointerId); }catch(_){}
+    pinchStart();
+    return;
+  }
   if(e.target.closest('#actionbar')) return;
   if(e.target.closest('.toggle')) return;
   if(e.target.closest('textarea.edit')) return;
@@ -1541,6 +1590,8 @@ viewport.addEventListener('pointerdown', e => {
   viewport.setPointerCapture(e.pointerId);
 });
 viewport.addEventListener('pointermove', e => {
+  if(pointers.has(e.pointerId)) pointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
+  if(pinch){ pinchMove(); return; }
   if(pan){
     panX = pan.ox + (e.clientX - pan.x);
     panY = pan.oy + (e.clientY - pan.y);
@@ -1600,6 +1651,12 @@ viewport.addEventListener('pointermove', e => {
   }
 });
 function endPointer(e){
+  pointers.delete(e.pointerId);
+  if(pinch){
+    try{ viewport.releasePointerCapture(e.pointerId); }catch(_){}
+    if(pointers.size < 2) pinchEnd();
+    return;
+  }
   if(pan){
     const wasClick = !pan.moved;
     pan = null; viewport.classList.remove('panning');
@@ -1638,10 +1695,11 @@ function abortDrag(){          // Esc durante o arrasto: cancela sem mover nada
 }
 viewport.addEventListener('pointerup', endPointer);
 viewport.addEventListener('pointercancel', e => {
+  pointers.delete(e.pointerId);
   if(ghost){ ghost.remove(); ghost = null; }
   clearDrop();
   const el = cand && els.get(cand.id); if(el) el.classList.remove('dragging');
-  pan = null; cand = null; viewport.classList.remove('panning');
+  pan = null; cand = null; pinch = null; viewport.classList.remove('panning');
 });
 // nós: duplo-clique tratado à mão em endPointer (_lastClick). Aqui só o resto:
 viewport.addEventListener('dblclick', e => {
