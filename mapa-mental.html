@@ -139,8 +139,9 @@
     border-radius:50%; background:var(--accent); transform:translateY(-50%)}
   #dropline::before{left:-3px} #dropline::after{right:-3px}
   .node .lbl{display:block; min-width:14px; min-height:1em}
-  .node.enter{animation:nodeIn .5s cubic-bezier(.22,.61,.36,1)}
-  @keyframes nodeIn{ from{opacity:0; transform:translateX(-16px) scale(.9)} to{opacity:1; transform:none} }
+  .node.enter{animation:nodeIn var(--enter-dur,.72s) cubic-bezier(.22,.61,.36,1)}   /* dur = ~0.96× a tween atual (JS seta --enter-dur) */
+  /* só o fade — a POSIÇÃO do nó novo é animada pelo JS (transitionTo: sai de trás do pai e abre em leque) */
+  @keyframes nodeIn{ from{opacity:0} to{opacity:1} }
   @media (prefers-reduced-motion:reduce){ .node.enter{animation:none} }
 
   /* seta de recolher/expandir: círculo destacado, FORA do balão (como no NotebookLM) */
@@ -174,7 +175,8 @@
     opacity:0; pointer-events:none;
     transition:opacity .12s, background .12s, color .12s;
   }
-  .node:hover > .reflink,
+  /* :not(:has(.toggle:hover)) — passar o mouse sobre o ">"/"<" (que é filho do .node) não revela o ícone */
+  .node:hover:not(:has(> .toggle:hover)) > .reflink,
   .node.selected > .reflink,
   .node.refopen > .reflink{ opacity:.85; pointer-events:auto }
   .reflink:hover{ opacity:1; background:var(--accent); color:#fff }
@@ -447,7 +449,10 @@ const $ = id => document.getElementById(id);
 const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
 const uid = () => 'n' + Math.random().toString(36).slice(2,9) + Date.now().toString(36).slice(-3);
 const STORE = 'mm_v1';
-const H_GAP = 66;   // espaço horizontal entre colunas
+const H_GAP = 66;   // folga horizontal "natural" depois da coluna (base do vão entre o ">" e os filhos)
+// o vão real entre a borda direita do pai (onde fica o ">") e os filhos é clampado nesta faixa:
+const H_GAP_MIN = 44;
+const H_GAP_MAX = 100;
 const V_GAP = 16;   // espaço vertical entre subárvores
 const FS_OK = ('showDirectoryPicker' in window);
 // aberto via link (GitHub Pages / servidor) x aberto direto (duplo-clique no arquivo).
@@ -498,7 +503,9 @@ const els = new Map();     // id -> elemento .node
 let LAYOUT = new Map();    // id -> {node,parent,depth,x,y,w,h}
 let cand = null, pan = null, ghost = null;   // ponteiro
 const pointers = new Map();   // pointerId -> {x,y} em coords de tela — p/ detectar pinça (2 dedos)
-let pinch = null;             // {d0, mx0, my0, z0, panX0, panY0} enquanto 2 dedos estão na tela
+let pinch = null;             // {d0, mx0, my0, z0, panX0, panY0, t0} enquanto 2 dedos estão na tela
+let _pinchTapPending = null;  // {t,mx,my} — a pinça terminou como TOQUE rápido (sem pinçar); aguarda o par
+let _2fTapT = 0;              // timestamp do último toque de 2 dedos — 2 seguidos = duplo-toque → zoom OUT
 let _lastClick = null;   // {id, t} — detecção própria de duplo-clique (mais tolerante que a nativa)
 
 const viewport = $('viewport'), world = $('world'), bar = $('actionbar');
@@ -952,11 +959,35 @@ function reorderNode(srcId, refId, pos){
 }
 function toggleCollapse(id){
   const ctx = findCtx(id); if(!ctx || !ctx.node.children.length) return;
+  const willExpand = !!ctx.node.collapsed;
   transitionTo(() => {
     _anchorRef = { id, y: (POS.get(id) || { y:0 }).y };   // fixa ESTE balão nesta posição
     if(ctx.node.collapsed){ delete ctx.node.collapsed; animateNext = true; }
     else ctx.node.collapsed = true;
     snapshot();
+  }, () => {
+    // câmera no zoom de foco (desktop FOCUS_ZOOM · mobile FOCUS_ZOOM_MOBILE): recolher → só o nó.
+    // expandir: desktop → nó + filhos diretos (recua p/ caber);
+    //           mobile  → do ">" do pai até os filhos, zoom TRAVADO (não recua); alinhado à esquerda
+    //                     (linha longa transborda), e se não couberem na altura o 1º filho fica no topo.
+    const it = LAYOUT.get(id); if(!it) return null;
+    const TG = 32;
+    const r = viewport.getBoundingClientRect();
+    const mobile = r.width <= 640 || r.height <= 480;
+    const fz = mobile ? FOCUS_ZOOM_MOBILE : FOCUS_ZOOM;
+    if(!willExpand) return frameBox(it.x, it.y, it.w + TG, it.h, fz);
+    // desktop: bbox inclui a caixa do pai. mobile: começa no ">" (borda direita do pai), sem a caixa dele.
+    let x0 = mobile ? it.x + it.w : it.x, y0, x1, y1, has = false;
+    if(!mobile){ y0 = it.y; x1 = it.x + it.w; y1 = it.y + it.h; has = true; }
+    ctx.node.children.forEach(c => {
+      const ci = LAYOUT.get(c.id); if(!ci) return;
+      const cX1 = ci.x + ci.w + (c.children && c.children.length ? TG : 0);
+      if(!has){ y0 = ci.y; x1 = cX1; y1 = ci.y + ci.h; has = true; }
+      else { x0 = Math.min(x0, ci.x); y0 = Math.min(y0, ci.y); x1 = Math.max(x1, cX1); y1 = Math.max(y1, ci.y + ci.h); }
+    });
+    if(!has) return frameBox(it.x, it.y, it.w + TG, it.h, fz);   // defensivo: sem filhos visíveis
+    if(mobile) return frameBox(x0, y0, x1 - x0, y1 - y0, fz, { exact: true, anchorLeft: true, topWhenTall: true });
+    return frameBox(x0, y0, x1 - x0, y1 - y0, fz);
   });
   positionActionBar();
 }
@@ -974,8 +1005,16 @@ function setColor(id, key, opts){
 function toggleAll(){
   let anyExpanded = false;
   walk(tree, (n,p,d)=>{ if(d>0 && n.children.length && !n.collapsed) anyExpanded = true; });
-  walk(tree, (n,p,d)=>{ if(d>0 && n.children.length){ if(anyExpanded) n.collapsed = true; else delete n.collapsed; } });
-  snapshot(); render(); fitView();
+  const collapsing = anyExpanded;
+  transitionTo(() => {
+    // fixa a RAIZ na posição visual atual: sem isso o `ly()` recentra a árvore inteira num novo
+    // eixo Y (a raiz "pula" de y≈0 pro meio da árvore expandida), e aí nós+câmera se movem em
+    // sentidos que se somam → a tela "desce e volta". Com a raiz fixa, tudo abre/fecha em volta dela.
+    _anchorRef = { id: tree.id, y: (POS.get(tree.id) || { y: 0 }).y };
+    walk(tree, (n,p,d)=>{ if(d>0 && n.children.length){ if(collapsing) n.collapsed = true; else delete n.collapsed; } });
+    if(!collapsing) animateNext = true;   // .enter (fade) nos nós que aparecem
+    snapshot();
+  }, fitTarget, TWEEN_MS_ALL);   // câmera anima até "ajustar à tela" junto com os nós, mais devagar
 }
 
 // ===========================================================================
@@ -1114,7 +1153,7 @@ function linkSeg(px, pw, py, ph, cx, cy, ch){
 }
 // desenha os conectores agrupados por nível do filho (um <path> por nível → cor por nível).
 // posOf(id) -> {x,y,w,h} (permite interpolar durante a animação)
-function drawLinks(posOf){
+function drawLinks(posOf, extra){
   const byLvl = [[],[],[],[],[]];   // índice = nível do filho − 1 (clamp em 5)
   LAYOUT.forEach((it, id) => {
     if(!it.parent) return;
@@ -1123,6 +1162,7 @@ function drawLinks(posOf){
     const lvl = Math.min(it.depth, 5);
     byLvl[lvl - 1].push(linkSeg(p.x, p.w, p.y, p.h, c.x, c.y, c.h));
   });
+  if(extra) for(const e of extra) byLvl[Math.min(e.lvl, 5) - 1].push(e.seg);   // conectores dos nós que estão saindo
   for(let i = 0; i < 5; i++) if(LK[i]) LK[i].setAttribute('d', byLvl[i].join(' '));
 }
 function layout(){
@@ -1198,15 +1238,9 @@ function layout(){
     it.h = el.offsetHeight;
   }
 
-  // --- 3. x por coluna (largura da coluna = maior nó daquela profundidade) ---
+  // --- 3. largura de cada profundidade (maior nó do nível) — base do vão "natural" até os filhos ---
   const colW = [];
-  let maxDepth = 0;
-  for(const it of list){
-    colW[it.depth] = Math.max(colW[it.depth] || 0, it.w);
-    if(it.depth > maxDepth) maxDepth = it.depth;
-  }
-  const colX = [0];
-  for(let d=1; d<=maxDepth; d++) colX[d] = colX[d-1] + colW[d-1] + H_GAP;
+  for(const it of list) colW[it.depth] = Math.max(colW[it.depth] || 0, it.w);
 
   // --- 4. y — ancorado no pai ---
   // 4a. extensão vertical que cada subárvore ocupa (folga p/ centralizar os filhos)
@@ -1220,25 +1254,29 @@ function layout(){
     it.ext = Math.max(it.h, sum);
     return it.ext;
   }
-  // 4b. atribui y: o nó fica em `yc` (centro), e os filhos se distribuem em volta desse mesmo centro
-  function ly(node, depth, yc){
+  // 4b. atribui y: o nó fica em `yc` (centro), e os filhos se distribuem em volta desse mesmo centro.
+  //     x: o filho sai da BORDA DIREITA do pai (onde fica o ">") + um vão CLAMPADO em [H_GAP_MIN, H_GAP_MAX]
+  //     — o vão "natural" seria o alinhamento por coluna (colW[depth] − pai.w + H_GAP); clampar evita
+  //     conector minúsculo (pai muito largo) ou gigante (pai bem mais estreito que o vizinho da coluna).
+  function ly(node, depth, yc, xLeft){
     const it = byId.get(node.id);
-    it.x = colX[depth];
+    it.x = xLeft;
     it.y = yc - it.h / 2;
     const kids = node.collapsed ? [] : node.children;
     if(!kids.length) return;
+    const childX = it.x + it.w + clamp((colW[depth] || it.w) - it.w + H_GAP, H_GAP_MIN, H_GAP_MAX);
     let total = 0;
     for(const k of kids) total += byId.get(k.id).ext;
     total += V_GAP * (kids.length - 1);
     let top = yc - total / 2;
     for(const k of kids){
       const ke = byId.get(k.id).ext;
-      ly(k, depth + 1, top + ke / 2);
+      ly(k, depth + 1, top + ke / 2, childX);
       top += ke + V_GAP;
     }
   }
   ext(tree);
-  ly(tree, 0, byId.get(tree.id).ext / 2);
+  ly(tree, 0, byId.get(tree.id).ext / 2, 0);
 
   // 4c. ancoragem: mantém _anchorRef.id fixo em _anchorRef.y (o layout inteiro só translada).
   // Como o cálculo é afim em yc, deslocar todo mundo == recentralizar — é determinístico,
@@ -1267,6 +1305,7 @@ function layout(){
 function render(){
   closeRefBox();
   layout();
+  world.style.setProperty('--enter-dur', Math.round(TWEEN_MS * 0.96) + 'ms');   // fade dos nós novos ~= tween padrão
   applyTransform();
   positionActionBar();
   $('mapSel').value = currentId;
@@ -1274,7 +1313,8 @@ function render(){
 
 // ---- animação: nós E conectores interpolados juntos, por rAF (perfeitamente em sincronia) ----
 const REDUCE_MOTION = (window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches);
-const TWEEN_MS = 520;
+const TWEEN_MS = 750;
+const TWEEN_MS_ALL = 1200;   // expandir/recolher TUDO anima mais devagar (muita coisa mexendo de uma vez)
 let _tween = null;
 const _ease = u => 1 - Math.pow(1 - u, 3);   // easeOutCubic
 
@@ -1285,6 +1325,8 @@ function finishTween(){
   if(!_tween) return;
   cancelAnimationFrame(_tween.raf);
   panX = _tween.px1; panY = _tween.py1;
+  if(_tween.pz1 != null) zoom = _tween.pz1;
+  if(_tween.leaving) _tween.leaving.forEach(L => { L.el.remove(); POS.delete(L.id); });
   clearNodeTransforms();
   LAYOUT.forEach((it, id) => place(id, it.x, it.y));   // pousa em left/top arredondado
   applyTransform();
@@ -1296,20 +1338,84 @@ function finishTween(){
 // muta a árvore, recomputa o layout e anima do estado visual atual até o novo.
 // Os nós ficam parados em left/top (alvo) e o deslocamento vai num `transform: translate`
 // interpolado — assim o texto não treme (a GPU move o glifo já rasterizado).
-function transitionTo(mutate){
+function transitionTo(mutate, camFn, ms){
   finishTween();
+  const dur = ms || TWEEN_MS;
   const from = new Map(POS);          // onde os nós estão AGORA na tela
+  const wasParent = new Map(), wasDepth = new Map();
+  LAYOUT.forEach((it, id) => { wasParent.set(id, it.parent ? it.parent.id : null); wasDepth.set(id, it.depth); });
+  const px0 = panX, py0 = panY, z0 = zoom;
   if(mutate) mutate();
-  layout();                            // LAYOUT = alvo; left/top já nos alvos; cria .enter nos novos
 
-  if(REDUCE_MOTION){ positionActionBar(); return; }
+  // nós que SAEM (visíveis agora, somem depois — ex.: recolher): tira do `els` p/ o layout()
+  // não apagá-los, e depois anima cada um "voltando pra dentro" do ancestral que sobreviveu.
+  const afterIds = new Set(visibleList().map(x => x.id));
+  const leaving = [];
+  for(const id of from.keys()){
+    if(afterIds.has(id)) continue;
+    let s = wasParent.get(id);
+    while(s != null && !afterIds.has(s)) s = wasParent.get(s);
+    const el = els.get(id);
+    if(!el || s == null) continue;
+    els.delete(id);
+    el.style.pointerEvents = 'none';
+    el.style.zIndex = '-1';              // fica POR TRÁS do pai (e dos demais) enquanto "entra" nele
+    leaving.push({ id, el, sink: s, from: from.get(id), depth: wasDepth.get(id) || 1, h: el.offsetHeight || 0 });
+  }
+
+  layout();                            // LAYOUT = alvo; left/top já nos alvos; cria .enter nos novos
+  world.style.setProperty('--enter-dur', Math.round(dur * 0.96) + 'ms');   // fade dos nós novos acompanha ESTA tween
+
+  // revelação "empilhado atrás do pai → abre em leque": todo nó NOVO cujo pai já estava
+  // na tela começa colado no lado direito do pai; a tween (transform + o fade do .enter) o abre até a coluna dele.
+  LAYOUT.forEach((it, id) => {
+    if(from.has(id) || !it.parent) return;
+    const pa = from.get(it.parent.id); if(!pa) return;
+    const pit = LAYOUT.get(it.parent.id);
+    from.set(id, { x: pa.x + (pit ? pit.w : 0), y: pa.y + (pit ? pit.h / 2 : 0) - it.h / 2 });
+  });
+
+  // alvo dos que saem: encaixam a PONTA ESQUERDA na ponta esquerda do pai (empilham atrás dele, alinhados)
+  leaving.forEach(L => {
+    const p = LAYOUT.get(L.sink);
+    L.tx = p ? p.x : L.from.x;
+    L.ty = p ? p.y + p.h / 2 - L.h / 2 : L.from.y;
+  });
+
+  // alvo de câmera (opcional) — calculado DEPOIS do layout (depende do LAYOUT novo)
+  let px1 = panX, py1 = panY, z1 = zoom;
+  if(camFn){ const c = camFn(); if(c){ px1 = c.panX; py1 = c.panY; if(c.zoom != null) z1 = c.zoom; } }
+  const camMoves = Math.abs(px1 - px0) > 0.5 || Math.abs(py1 - py0) > 0.5 || Math.abs(z1 - z0) > 0.001;
+
+  // anti-"wobble": lerp independente de panX/panY/zoom faz o centro VAGAR durante o zoom-out
+  // (o raiz sai do meio e volta). Em vez disso, interpola a POSIÇÃO NA TELA de um ponto fixo do
+  // mundo (o que está sob o centro da viewport no início) + o zoom, e deriva o pan disso.
+  const _vr  = viewport.getBoundingClientRect();
+  const _ax  = (_vr.width / 2 - px0) / z0, _ay = (_vr.height / 2 - py0) / z0;
+  const _s0x = _vr.width / 2, _s0y = _vr.height / 2;      // ponto começa no centro da tela
+  const _s1x = px1 + _ax * z1, _s1y = py1 + _ay * z1;     // e termina onde a câmera-alvo o coloca
+
+  if(REDUCE_MOTION){
+    leaving.forEach(L => { L.el.remove(); POS.delete(L.id); });
+    if(camMoves){ panX = px1; panY = py1; zoom = z1; applyTransform(); }
+    positionActionBar(); return;
+  }
 
   const t0 = performance.now();
-  _tween = { raf: 0, px1: panX, py1: panY };
+  _tween = { raf: 0, px1, py1, pz1: z1, camMoves, leaving };
   function frame(now){
     if(!_tween) return;
-    let t = (now - t0) / TWEEN_MS; if(t >= 1) t = 1;
+    let t = (now - t0) / dur; if(t >= 1) t = 1;
     const k = _ease(t), inv = 1 - k;
+    if(camMoves){
+      const zc = z1 + (z0 - z1) * inv;
+      const sx = _s1x + (_s0x - _s1x) * inv;
+      const sy = _s1y + (_s0y - _s1y) * inv;
+      zoom = zc;
+      panX = sx - _ax * zc;
+      panY = sy - _ay * zc;
+      applyTransform();
+    }
     // posição visual interpolada (p/ conectores e barra de ações)
     const at = id => {
       const b = LAYOUT.get(id); if(!b) return null;
@@ -1328,10 +1434,30 @@ function transitionTo(mutate){
       el.style.transform = (t >= 1) ? '' : 'translate(' + dx + 'px,' + dy + 'px)';
       POS.set(id, { x: it.x + dx, y: it.y + dy });
     });
-    drawLinks(at);
+    // nós "voltando pra dentro" do pai: convergem pro sink + fade, com o conector encolhendo junto
+    let leavingSegs = null;
+    if(_tween.leaving.length){
+      leavingSegs = [];
+      const fade = 1 - Math.max(0, t - 0.5) / 0.5;   // fica ~1 até a metade, some no fim (já atrás do pai)
+      for(const L of _tween.leaving){
+        const a = L.from;
+        const x = L.tx + (a.x - L.tx) * inv, y = L.ty + (a.y - L.ty) * inv;
+        // sem scale — a fonte não "encolhe"; o nó desliza inteiro pra trás do pai (z-index:-1) e some
+        L.el.style.transform = 'translate(' + (x - a.x) + 'px,' + (y - a.y) + 'px)';
+        L.el.style.opacity = String(fade);
+        const sp = LAYOUT.get(L.sink);
+        if(sp && x > sp.x + sp.w - 4)   // conector some quando o nó já encostou/entrou no pai
+          leavingSegs.push({ lvl: Math.min(L.depth, 5), seg: linkSeg(sp.x, sp.w, sp.y, sp.h, x, y, L.h) });
+      }
+    }
+    drawLinks(at, leavingSegs);
     positionActionBar();
     if(t < 1) _tween.raf = requestAnimationFrame(frame);
-    else { LAYOUT.forEach((it, id) => place(id, it.x, it.y)); drawLinks(id => LAYOUT.get(id)); _tween = null; }
+    else {
+      if(camMoves){ panX = px1; panY = py1; zoom = z1; applyTransform(); }
+      _tween.leaving.forEach(L => { L.el.remove(); POS.delete(L.id); });
+      LAYOUT.forEach((it, id) => place(id, it.x, it.y)); drawLinks(id => LAYOUT.get(id)); _tween = null;
+    }
   }
   _tween.raf = requestAnimationFrame(frame);
 }
@@ -1370,8 +1496,16 @@ function pinchStart(){
     d0: Math.hypot(a.x - b.x, a.y - b.y) || 1,
     mx0: (a.x + b.x) / 2 - r.left,
     my0: (a.y + b.y) / 2 - r.top,
-    z0: zoom, panX0: panX, panY0: panY
+    z0: zoom, panX0: panX, panY0: panY, t0: performance.now()
   };
+}
+// duplo-toque de 2 dedos (só mobile) → zoom OUT suave mantendo o ponto tocado fixo
+function twoFingerDblZoomOut(cx, cy){
+  transitionTo(null, () => {
+    const nz = clamp(zoom / 1.5, 0.18, 3);
+    const wx = (cx - panX) / zoom, wy = (cy - panY) / zoom;
+    return { zoom: nz, panX: cx - wx * nz, panY: cy - wy * nz };
+  }, 320);
 }
 function pinchMove(){
   if(!pinch || pointers.size < 2) return;
@@ -1396,18 +1530,68 @@ function pinchEnd(){
     viewport.classList.add('panning');
   }
 }
+// {panX,panY,zoom} p/ enquadrar a ÁRVORE INTEIRA (usa o LAYOUT já calculado). Base do fitView e do toggleAll animado.
+function fitTarget(){
+  const r = viewport.getBoundingClientRect();
+  let maxX = 0, maxY = 0, minY = Infinity;
+  LAYOUT.forEach(it => { maxX = Math.max(maxX, it.x + it.w); maxY = Math.max(maxY, it.y + it.h); minY = Math.min(minY, it.y); });
+  if(minY === Infinity) minY = 0;
+  // margem proporcional à viewport (antes era 70px fixos — comia ~1/3 da largura no celular)
+  const padX = clamp(r.width  * 0.045, 14, 70);
+  const padY = clamp(r.height * 0.07,  14, 70);
+  // reserva o canto dos #controls (viewport larga = verticais à direita; estreita/baixa = deitados na base)
+  const narrow   = r.width <= 640 || r.height <= 480;
+  const reserveR = narrow ? 0  : 72;
+  const reserveB = narrow ? 48 : 0;
+  const TG = 32;                              // ">" de recolher: fica ~29px à direita da caixa do nó (+ borda); escala com o zoom
+  const marginL = padX, marginR = padX + reserveR;
+  const marginT = padY, marginB = padY + reserveB;
+  const availW = r.width  - marginL - marginR;
+  const availH = r.height - marginT - marginB;
+  const spanY  = (maxY - minY) || 1;
+  const effW   = maxX + TG;                   // largura do mapa CONTANDO o ">" do nó mais à direita
+  const z = clamp(Math.min(availW / effW, availH / spanY), 0.18, 1.6);
+  return {
+    zoom: z,
+    panX: marginL + (availW - effW  * z) / 2,   // centra a caixa que inclui o ">"
+    panY: marginT + (availH - spanY * z) / 2 - minY * z
+  };
+}
 function fitView(){
   finishTween();
   _anchorRef = null;                        // "ajustar à tela" volta ao layout natural (centralizado)
-  const { maxX, maxY, minY } = layout();
-  const r = viewport.getBoundingClientRect();
-  const pad = 70;
-  const spanY = (maxY - minY) || 1;
-  const z = clamp(Math.min((r.width - pad*2) / maxX, (r.height - pad*2) / spanY), 0.18, 1.4);
-  zoom = z;
-  panX = (r.width  - maxX * z) / 2;
-  panY = (r.height - spanY * z) / 2 - minY * z;
+  layout();
+  const t = fitTarget();
+  zoom = t.zoom; panX = t.panX; panY = t.panY;
   applyTransform(); positionActionBar();
+}
+// zoom PADRÃO de foco: clicar em </> sempre leva a câmera pra este zoom (ou menos, se o alvo não couber)
+const FOCUS_ZOOM = 1.5;
+const FOCUS_ZOOM_MOBILE = 1.3;   // modo mobile (w<=640 || h<=480) usa um zoom de foco menor
+// pan/zoom p/ enquadrar uma bbox de MUNDO {bx,by,bw,bh} no zoom-alvo (default FOCUS_ZOOM), com as margens do fitView.
+// opts.exact = usa targetZ na marra (NÃO recua p/ caber); opts.anchorLeft = alinha bx na margem esquerda (transborda à direita);
+// opts.topWhenTall = se a bbox não couber na altura, encosta o topo dela na margem de cima (1º filho no topo) em vez de centrar.
+function frameBox(bx, by, bw, bh, targetZ, opts){
+  opts = opts || {};
+  const r = viewport.getBoundingClientRect();
+  const padX = clamp(r.width  * 0.045, 14, 70);
+  const padY = clamp(r.height * 0.07,  14, 70);
+  const narrow = r.width <= 640 || r.height <= 480;
+  const marginL = padX, marginR = padX + (narrow ? 0 : 72);
+  const marginT = padY, marginB = padY + (narrow ? 48 : 0);
+  const availW = r.width  - marginL - marginR;
+  const availH = r.height - marginT - marginB;
+  const fitZ = Math.min(availW / Math.max(bw, 1), availH / Math.max(bh, 1));
+  const z = opts.exact ? clamp(targetZ || FOCUS_ZOOM, 0.18, 3)
+                       : clamp(Math.min(targetZ || FOCUS_ZOOM, fitZ), 0.18, 3);
+  const tall = opts.topWhenTall && bh * z > availH;
+  return {
+    zoom: z,
+    panX: opts.anchorLeft ? (marginL - bx * z)
+                          : (marginL + (availW - bw * z) / 2 - bx * z),
+    panY: tall ? (marginT - by * z)
+               : (marginT + (availH - bh * z) / 2 - by * z)
+  };
 }
 function ensureVisible(id){
   layout();
@@ -1605,6 +1789,13 @@ viewport.addEventListener('pointerdown', e => {
 viewport.addEventListener('pointermove', e => {
   if(pointers.has(e.pointerId)) pointers.set(e.pointerId, { x:e.clientX, y:e.clientY });
   if(pinch){ pinchMove(); return; }
+  // modo Repo (só leitura): começar a arrastar EM CIMA de um nó vira arrasto da TELA
+  // (não dá pra reordenar; clique parado no nó ainda seleciona — o `cand` só vira `pan` se mover)
+  if(readOnly && cand && !pan && Math.hypot(e.clientX - cand.x, e.clientY - cand.y) > 4){
+    pan = { x: cand.x, y: cand.y, ox: panX, oy: panY, moved: true };
+    cand = null;
+    viewport.classList.add('panning');
+  }
   if(pan){
     panX = pan.ox + (e.clientX - pan.x);
     panY = pan.oy + (e.clientY - pan.y);
@@ -1667,7 +1858,21 @@ function endPointer(e){
   pointers.delete(e.pointerId);
   if(pinch){
     try{ viewport.releasePointerCapture(e.pointerId); }catch(_){}
-    if(pointers.size < 2) pinchEnd();
+    if(pointers.size < 2){
+      // pinça que durou pouco e quase não mudou o zoom = TOQUE de 2 dedos; guarda p/ ver se vem o par
+      _pinchTapPending = (performance.now() - pinch.t0 < 260 && Math.abs(zoom - pinch.z0) < 0.03)
+        ? { t: performance.now(), mx: pinch.mx0, my: pinch.my0 } : null;
+      pinchEnd();
+    }
+    return;
+  }
+  // 2º dedo saindo logo depois do 1º, sem ter pinçado → toque de 2 dedos concluído
+  if(_pinchTapPending && pointers.size === 0 && performance.now() - _pinchTapPending.t < 220){
+    const tap = _pinchTapPending; _pinchTapPending = null;
+    pan = null; viewport.classList.remove('panning');           // limpa o pan que o pinchEnd semeou
+    const now = performance.now();
+    if(_2fTapT && now - _2fTapT < 480){ _2fTapT = 0; twoFingerDblZoomOut(tap.mx, tap.my); }
+    else _2fTapT = now;
     return;
   }
   if(pan){
@@ -1712,16 +1917,26 @@ viewport.addEventListener('pointercancel', e => {
   if(ghost){ ghost.remove(); ghost = null; }
   clearDrop();
   const el = cand && els.get(cand.id); if(el) el.classList.remove('dragging');
-  pan = null; cand = null; pinch = null; viewport.classList.remove('panning');
+  pan = null; cand = null; pinch = null; _pinchTapPending = null; viewport.classList.remove('panning');
 });
 // nós: duplo-clique tratado à mão em endPointer (_lastClick). Aqui só o resto:
 viewport.addEventListener('dblclick', e => {
   // o duplo-clique que abre o editor troca .lbl por <textarea> no meio do gesto —
   // o e.target daqui pode cair num vão e escapar do closest('.node'). Se acabou de
-  // entrar em edição (ou ainda está editando), o duplo-clique foi num nó: não ajusta.
+  // entrar em edição (ou ainda está editando), o duplo-clique foi num nó: ignora.
   if(editingId != null) return;
   if(e.target.closest('.node') || e.target.closest('.toggle') || e.target.closest('textarea.edit')) return;
-  fitView();   // duplo-clique no vazio → ajustar à tela
+  // duplo-TOQUE (touch) no vazio → zoom IN suave em direção ao ponto. No desktop o zoom é pela roda do mouse.
+  const touch = (e.sourceCapabilities && e.sourceCapabilities.firesTouchEvents)
+             || (window.matchMedia && matchMedia('(pointer: coarse)').matches);
+  if(!touch) return;
+  const r = viewport.getBoundingClientRect();
+  const cx = e.clientX - r.left, cy = e.clientY - r.top;
+  transitionTo(null, () => {
+    const nz = clamp(zoom * 1.5, 0.18, 3);
+    const wx = (cx - panX) / zoom, wy = (cy - panY) / zoom;   // ponto do mundo sob o clique
+    return { zoom: nz, panX: cx - wx * nz, panY: cy - wy * nz };
+  }, 320);
 });
 viewport.addEventListener('wheel', e => {
   e.preventDefault();
