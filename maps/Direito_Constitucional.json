@@ -13,11 +13,13 @@
         "refs": [
           {
             "label": "CF/88 — Título I (Planalto)",
-            "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#tituloi"
+            "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#tituloi",
+            "kind": "cf"
           },
           {
             "label": "Figura — mapa consolidado (slide aula 4)",
-            "url": "conteudo/figuras/dc1/aula4p5_principios-fundamentais-consolidado.png"
+            "url": "conteudo/figuras/dc1/aula4p5_principios-fundamentais-consolidado.png",
+            "kind": "figura"
           }
         ],
         "children": [
@@ -27,11 +29,13 @@
             "refs": [
               {
                 "label": "CF/88 — Preâmbulo (Planalto)",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm"
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm",
+                "kind": "cf"
               },
               {
                 "label": "Slide — aula 1 (Preâmbulo)",
-                "url": "conteudo/slides/DC1_aula1_slide.pdf"
+                "url": "conteudo/slides/DC1_aula1_slide.pdf",
+                "kind": "slide"
               }
             ],
             "children": [
@@ -58,11 +62,11 @@
               {
                 "id": "t1-vg",
                 "label": "Visão geral — 8 blocos didáticos",
-                "collapsed": true,
                 "refs": [
                   {
                     "label": "Figura — mapa dos 8 blocos (slide aula 1)",
-                    "url": "conteudo/figuras/dc1/aula1p11_principios-fundamentais-8-blocos.png"
+                    "url": "conteudo/figuras/dc1/aula1p11_principios-fundamentais-8-blocos.png",
+                    "kind": "figura"
                   }
                 ],
                 "children": [
@@ -76,7 +80,8 @@
                     "label": "1 Federativo · 2 Republicano · 3 Estado Democrático de Direito ·\n4 Soberania Popular · 5 Separação de Poderes · 6 Fundamentos (art. 1º) ·\n7 Objetivos (art. 3º) · 8 Princípios na Ordem Internacional (art. 4º)",
                     "children": []
                   }
-                ]
+                ],
+                "collapsed": true
               }
             ],
             "collapsed": true
@@ -87,15 +92,18 @@
             "refs": [
               {
                 "label": "CF/88 — art. 1º (Planalto)",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art1"
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art1",
+                "kind": "cf"
               },
               {
                 "label": "Slide — aula 4",
-                "url": "conteudo/slides/DC1_aula4_slide.pdf"
+                "url": "conteudo/slides/DC1_aula4_slide.pdf",
+                "kind": "slide"
               },
               {
                 "label": "Figura — Fundamentos/Objetivos/RI",
-                "url": "conteudo/figuras/dc1/aula4p1_fundamentos-objetivos-ri.png"
+                "url": "conteudo/figuras/dc1/aula4p1_fundamentos-objetivos-ri.png",
+                "kind": "figura"
               }
             ],
             "children": [
@@ -143,15 +151,18 @@
             "refs": [
               {
                 "label": "CF/88 — art. 2º (Planalto)",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art2"
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art2",
+                "kind": "cf"
               },
               {
                 "label": "Slide — aula 3 (Separação dos Poderes)",
-                "url": "conteudo/slides/DC1_aula3_slide.pdf"
+                "url": "conteudo/slides/DC1_aula3_slide.pdf",
+                "kind": "slide"
               },
               {
                 "label": "Figura — Separação dos Poderes",
-                "url": "conteudo/figuras/dc1/aula2p9_separacao-dos-poderes.png"
+                "url": "conteudo/figuras/dc1/aula2p9_separacao-dos-poderes.png",
+                "kind": "figura"
               }
             ],
             "children": [
@@ -177,7 +188,7 @@
               },
               {
                 "id": "t1-a2-e",
-                "label": "É cláusula pétrea (art. 60, §4º, III)",
+                "label": "É cláusula pétrea (art. 60, §4º, III): não pode ser abolidos\nou alterado por PEC",
                 "children": []
               }
             ],
@@ -186,19 +197,21 @@
           {
             "id": "t1-a3",
             "label": "Art. 3º — Objetivos fundamentais (CO GA ER PRO)",
-            "collapsed": true,
             "refs": [
               {
                 "label": "CF/88 — art. 3º (Planalto)",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art3"
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art3",
+                "kind": "cf"
               },
               {
                 "label": "Slide — aula 4",
-                "url": "conteudo/slides/DC1_aula4_slide.pdf"
+                "url": "conteudo/slides/DC1_aula4_slide.pdf",
+                "kind": "slide"
               },
               {
                 "label": "Figura — Fundamentos/Objetivos/RI",
-                "url": "conteudo/figuras/dc1/aula4p1_fundamentos-objetivos-ri.png"
+                "url": "conteudo/figuras/dc1/aula4p1_fundamentos-objetivos-ri.png",
+                "kind": "figura"
               }
             ],
             "children": [
@@ -232,7 +245,8 @@
                 "label": "\"Erradicar\" a pobreza (não \"reduzir a nível aceitável\"); \"reduzir\" só as desigualdades",
                 "children": []
               }
-            ]
+            ],
+            "collapsed": true
           },
           {
             "id": "t1-a4",
@@ -240,15 +254,18 @@
             "refs": [
               {
                 "label": "CF/88 — art. 4º (Planalto)",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art4"
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art4",
+                "kind": "cf"
               },
               {
                 "label": "Slide — aula 4",
-                "url": "conteudo/slides/DC1_aula4_slide.pdf"
+                "url": "conteudo/slides/DC1_aula4_slide.pdf",
+                "kind": "slide"
               },
               {
                 "label": "Figura — Fundamentos/Objetivos/RI",
-                "url": "conteudo/figuras/dc1/aula4p1_fundamentos-objetivos-ri.png"
+                "url": "conteudo/figuras/dc1/aula4p1_fundamentos-objetivos-ri.png",
+                "kind": "figura"
               }
             ],
             "children": [
@@ -323,19 +340,21 @@
           {
             "id": "t1-formas",
             "label": "Formas: Estado · governo · sistema · regime",
-            "collapsed": true,
             "refs": [
               {
                 "label": "Slide — aula 2",
-                "url": "conteudo/slides/DC1_aula2_slide.pdf"
+                "url": "conteudo/slides/DC1_aula2_slide.pdf",
+                "kind": "slide"
               },
               {
                 "label": "Figura — Princípio Republicano",
-                "url": "conteudo/figuras/dc1/aula2p3_principio-republicano.png"
+                "url": "conteudo/figuras/dc1/aula2p3_principio-republicano.png",
+                "kind": "figura"
               },
               {
                 "label": "Figura — Estado Democrático de Direito",
-                "url": "conteudo/figuras/dc1/aula2p5_estado-democratico-de-direito.png"
+                "url": "conteudo/figuras/dc1/aula2p5_estado-democratico-de-direito.png",
+                "kind": "figura"
               }
             ],
             "children": [
@@ -347,7 +366,6 @@
               {
                 "id": "t1-formas-rep",
                 "label": "Princípio Republicano (art. 1º)",
-                "collapsed": true,
                 "children": [
                   {
                     "id": "t1-formas-rep-a",
@@ -364,12 +382,12 @@
                     "label": "Divergência: limitação material implícita (plebiscito de 1993 — art. 2º do ADCT)",
                     "children": []
                   }
-                ]
+                ],
+                "collapsed": true
               },
               {
                 "id": "t1-formas-edd",
                 "label": "Estado Democrático de Direito (art. 1º, parte final)",
-                "collapsed": true,
                 "children": [
                   {
                     "id": "t1-formas-edd-a",
@@ -386,9 +404,11 @@
                     "label": "Instrumentos de participação: plebiscito (prévio) · referendo (posterior) ·\niniciativa popular · ação popular · júri",
                     "children": []
                   }
-                ]
+                ],
+                "collapsed": true
               }
-            ]
+            ],
+            "collapsed": true
           },
           {
             "id": "t1-fed",
@@ -396,11 +416,13 @@
             "refs": [
               {
                 "label": "Slide — aula 2",
-                "url": "conteudo/slides/DC1_aula2_slide.pdf"
+                "url": "conteudo/slides/DC1_aula2_slide.pdf",
+                "kind": "slide"
               },
               {
                 "label": "Figura — Princípio Federativo",
-                "url": "conteudo/figuras/dc1/aula1p12_principio-federativo.png"
+                "url": "conteudo/figuras/dc1/aula1p12_principio-federativo.png",
+                "kind": "figura"
               }
             ],
             "children": [
@@ -432,17 +454,16 @@
               {
                 "id": "t1-fed-cap",
                 "label": "Autonomia dos entes — 4 capacidades",
-                "collapsed": true,
                 "children": [
                   {
                     "id": "t1-fed-cap-a",
                     "label": "Auto-organização · Autogoverno · Autolegislação · Autoadministração",
                     "children": []
                   }
-                ]
+                ],
+                "collapsed": true
               }
-            ],
-            "collapsed": true
+            ]
           },
           {
             "id": "t1-cp",
@@ -450,15 +471,18 @@
             "refs": [
               {
                 "label": "CF/88 — art. 60, §4º (Planalto)",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art60§4"
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art60§4",
+                "kind": "cf"
               },
               {
                 "label": "Slide — aula 2",
-                "url": "conteudo/slides/DC1_aula2_slide.pdf"
+                "url": "conteudo/slides/DC1_aula2_slide.pdf",
+                "kind": "slide"
               },
               {
                 "label": "Figura — Princípio Federativo",
-                "url": "conteudo/figuras/dc1/aula1p12_principio-federativo.png"
+                "url": "conteudo/figuras/dc1/aula1p12_principio-federativo.png",
+                "kind": "figura"
               }
             ],
             "children": [
@@ -500,7 +524,8 @@
             ],
             "collapsed": true
           }
-        ]
+        ],
+        "collapsed": true
       }
     ]
   }
