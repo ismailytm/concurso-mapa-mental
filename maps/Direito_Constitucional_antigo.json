@@ -1,0 +1,2191 @@
+{
+  "app": "mapa-mental",
+  "version": 1,
+  "id": "ndconstmapold",
+  "name": "Direito Constitucional (antigo)",
+  "tree": {
+    "label": "Direito Constitucional (CF/88)",
+    "children": [
+      {
+        "label": "TÍTULO I — Princípios Fundamentais (arts. 1º a 4º)",
+        "children": [
+          {
+            "label": "Preâmbulo",
+            "children": [
+              {
+                "label": "Sem força normativa; não é norma de reprodução obrigatória; não serve\nde parâmetro de controle de constitucionalidade",
+                "id": "nr6cgjj5k2o",
+                "children": []
+              },
+              {
+                "label": "Função de diretriz interpretativa (STF, ADI 2.076 — \"sob a proteção de Deus\"\nnão é de reprodução obrigatória)",
+                "id": "n5i6kf8yk2p",
+                "children": []
+              }
+            ],
+            "id": "nnqsi25kk2o"
+          },
+          {
+            "label": "Art. 1º — Fundamentos (SO-CI-DI-VAL-PLU)",
+            "children": [
+              {
+                "label": "Soberania · Cidadania · Dignidade da pessoa humana ·\nValores sociais do trabalho e da livre iniciativa · Pluralismo político",
+                "id": "nevzj18ck2p",
+                "children": []
+              },
+              {
+                "label": "Parágrafo único: \"todo o poder emana do povo\" (soberania popular) —\npor representantes eleitos ou diretamente",
+                "id": "na33h4s1k2p",
+                "children": []
+              },
+              {
+                "label": "Pluralismo político ≠ pluripartidarismo (o segundo decorre do primeiro)",
+                "id": "npt5ld9mk2p",
+                "children": []
+              },
+              {
+                "label": "\"nos termos seguintes\" (caput) remete aos incisos; \"nos termos desta Constituição\"\n(inciso I) autoriza diferenciações razoáveis entre homens e mulheres",
+                "id": "niilckxsk2p",
+                "children": []
+              }
+            ],
+            "id": "nqvh0usck2p",
+            "collapsed": true
+          },
+          {
+            "label": "Art. 2º — Separação dos Poderes",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Legislativo, Executivo e Judiciário — independentes e harmônicos",
+                "id": "nbizq27pk2p",
+                "children": []
+              },
+              {
+                "label": "Função típica + 2 atípicas cada um (todos legislam, administram e julgam em algum grau)",
+                "id": "n9kjvsxzk2p",
+                "children": []
+              },
+              {
+                "label": "Freios e contrapesos (checks and balances) — controles recíprocos, não isolamento",
+                "id": "n61qj7x0k2p",
+                "children": []
+              },
+              {
+                "label": "É cláusula pétrea (art. 60, §4º, III)",
+                "id": "npiib4zlk2p",
+                "children": []
+              }
+            ],
+            "id": "ntlgpz02k2p"
+          },
+          {
+            "label": "Art. 3º — Objetivos (CO-GA-ER-PRO)",
+            "children": [
+              {
+                "label": "Construir sociedade livre, justa e solidária · Garantir o desenvolvimento nacional",
+                "id": "n6e8j3dzk2p",
+                "children": []
+              },
+              {
+                "label": "Erradicar a pobreza e a marginalização e reduzir desigualdades sociais e regionais",
+                "id": "nyez7y4uk2p",
+                "children": []
+              },
+              {
+                "label": "Promover o bem de todos, sem preconceitos de origem, raça, sexo, cor, idade...",
+                "id": "n11mgekik2p",
+                "children": []
+              },
+              {
+                "label": "Verbo no infinitivo → art. 3º; \"erradicar\" (não \"diminuir a um nível aceitável\")",
+                "id": "nkehnsoqk2p",
+                "children": []
+              }
+            ],
+            "id": "n9xj0kr1k2p",
+            "collapsed": true
+          },
+          {
+            "label": "Art. 4º — Princípios nas relações internacionais",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "10 incisos: independência nacional · prevalência dos direitos humanos · autodeterminação\ndos povos · não intervenção · igualdade entre os Estados · defesa da paz",
+                "id": "nozvtcvjk2p",
+                "children": []
+              },
+              {
+                "label": "...solução pacífica dos conflitos · repúdio ao terrorismo e ao racismo ·\ncooperação entre os povos · concessão de asilo político",
+                "id": "nlmli0rik2p",
+                "children": []
+              },
+              {
+                "label": "Parágrafo único: integração da AMÉRICA LATINA (comunidade latino-americana de nações)\n— pegadinha nº 1 da Quadrix; qualquer outra geografia = errado",
+                "id": "nrgxt7jjk2p",
+                "children": []
+              },
+              {
+                "label": "\"Cidadania\" é sempre fundamento (art. 1º, II), nunca princípio de RI",
+                "id": "niilj0e6k2p",
+                "children": []
+              }
+            ],
+            "id": "nd8iu7a2k2p"
+          },
+          {
+            "label": "Forma de Estado / governo / sistema / regime",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Forma de Estado = Federação · Forma de governo = República ·\nSistema = Presidencialismo · Regime = Democracia semidireta (participativa)",
+                "id": "ntucpyerk2p",
+                "children": []
+              },
+              {
+                "label": "República: eleição + mandato (alternância) + prestação de contas (accountability)",
+                "id": "n4n2fpflk2p",
+                "children": []
+              },
+              {
+                "label": "Instrumentos de participação direta: plebiscito (prévio) · referendo (posterior) ·\niniciativa popular · ação popular · júri",
+                "id": "nkrtgww2k2p",
+                "children": []
+              }
+            ],
+            "id": "nh10o0rpk2p"
+          },
+          {
+            "label": "Federação brasileira",
+            "children": [
+              {
+                "label": "Por SEGREGAÇÃO (movimento centrífugo, do Estado unitário de 1824) — inverso dos EUA",
+                "id": "nc4ihromk2p",
+                "children": []
+              },
+              {
+                "label": "De 3º GRAU: União, Estados/DF e Municípios (Município como ente autônomo é peculiaridade)",
+                "id": "nbg26deuk2p",
+                "children": []
+              },
+              {
+                "label": "COOPERATIVA (competências comuns art. 23 e concorrentes art. 24) · ASSIMÉTRICA (DF, Zona Franca)",
+                "id": "ngh02a0ck2p",
+                "children": []
+              },
+              {
+                "label": "INDISSOLÚVEL — não há direito de secessão; tentativa autoriza intervenção federal (art. 34, I)",
+                "id": "nut542ylk2p",
+                "children": []
+              },
+              {
+                "label": "4 capacidades da autonomia política: auto-organização, autogoverno, autolegislação, autoadministração",
+                "id": "nsc9fvhck2p",
+                "children": []
+              }
+            ],
+            "id": "nxxs9whjk2p",
+            "collapsed": true
+          },
+          {
+            "label": "Cláusulas pétreas (art. 60, §4º)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "\"FOi VOcê que SEPAROU os DIREITOS\": Forma federativa de Estado · Voto direto/secreto/\nuniversal/periódico · Separação dos Poderes · Direitos e garantias individuais",
+                "id": "ncx02mnyk2p",
+                "children": []
+              },
+              {
+                "label": "\"Voto obrigatório\" NÃO é cláusula pétrea (a obrigatoriedade pode ser alterada por emenda)",
+                "id": "njoowl7nk2p",
+                "children": []
+              },
+              {
+                "label": "República NÃO é cláusula pétrea EXPRESSA — limitação material implícita (plebiscito de 1993)",
+                "id": "nto57td2k2p",
+                "children": []
+              },
+              {
+                "label": "\"Direitos e garantias individuais\": doutrina amplia ao conjunto dos direitos fundamentais",
+                "id": "nnc17rjhk2p",
+                "children": []
+              }
+            ],
+            "id": "nacvxkbzk2p"
+          }
+        ],
+        "id": "nuo3pac5k2o",
+        "collapsed": true
+      },
+      {
+        "label": "TÍTULO II — Direitos e Garantias Fundamentais (arts. 5º a 11)",
+        "collapsed": true,
+        "children": [
+          {
+            "label": "Art. 5º — caput e destinatários",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Caput V-L-I-S-P: Vida, Liberdade, Igualdade, Segurança, Propriedade; 79 incisos + 4 parágrafos",
+                "id": "nik8g6u2k2p",
+                "children": []
+              },
+              {
+                "label": "Destinatários: literal = brasileiros e estrangeiros residentes; STF = todas as pessoas\n(PF/PJ, residentes ou não), se compatível com a natureza do direito",
+                "id": "nxfmg1fck2p",
+                "children": []
+              },
+              {
+                "label": "Estrangeiro não tem direitos políticos; pode impetrar HC pessoalmente (em português)",
+                "id": "nht18rnwk2p",
+                "children": []
+              },
+              {
+                "label": "Igualdade formal (NA lei + PERANTE a lei) × material (tratar desiguais desigualmente)",
+                "id": "n7ydeq4ik2p",
+                "children": []
+              },
+              {
+                "label": "Ações afirmativas: TEMPORÁRIAS e finalísticas (corrigir desigualdade histórica)",
+                "id": "nh5iubgak2p",
+                "children": []
+              }
+            ],
+            "id": "nvd08myvk2p"
+          },
+          {
+            "label": "Legalidade × Reserva Legal · direitos absolutos",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Legalidade (art. 5º, II): \"lei\" em sentido AMPLO — inclui atos infralegais fundados em lei",
+                "id": "nl23fvjfk2p",
+                "children": []
+              },
+              {
+                "label": "Reserva legal penal (art. 5º, XXXIX): sentido ESTRITO — só lei formal; nem MP cria crime/pena",
+                "id": "narr1of9k2p",
+                "children": []
+              },
+              {
+                "label": "Reserva legal absoluta (lei CRIA — ex. autarquia) × relativa (lei AUTORIZA + decreto cria — estatais)",
+                "id": "ng9o2uezk2p",
+                "children": []
+              },
+              {
+                "label": "Vedação à tortura e a tratamento desumano/degradante (III): direito ABSOLUTO, sem exceção",
+                "id": "nqfwudstk2p",
+                "children": []
+              }
+            ],
+            "id": "nmwz1szek2p"
+          },
+          {
+            "label": "Liberdades (IV a IX) e laicidade",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Manifestação do pensamento — VEDADO o anonimato (IV)",
+                "id": "nj2g8wpkk2p",
+                "children": []
+              },
+              {
+                "label": "Direito de resposta proporcional ao agravo + indenização (V); \"ou\" aditivo — danos se cumulam",
+                "id": "n0v7zg5hk2p",
+                "children": []
+              },
+              {
+                "label": "Escusa de consciência (VIII): só priva direitos quem recusa a obrigação E a prestação alternativa",
+                "id": "n1i80h97k2p",
+                "children": []
+              },
+              {
+                "label": "Expressão sem censura prévia (IX): biografias independem de autorização (STF, ADI 4.815)",
+                "id": "n2m38ar2k2p",
+                "children": []
+              },
+              {
+                "label": "Laicidade (art. 19, I): Estado não estabelece nem subvenciona cultos, salvo colaboração\nde interesse público; proteção a locais de culto = segurança pública",
+                "id": "n2l2s1yyk2p",
+                "children": []
+              }
+            ],
+            "id": "n02s1k9ek2p"
+          },
+          {
+            "label": "Inviolabilidade domiciliar (XI)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "\"3+1\": flagrante delito, desastre e socorro → qualquer hora; determinação judicial → só de dia",
+                "id": "nr5thhnbk2p",
+                "children": []
+              },
+              {
+                "label": "\"Casa\" = compartimento habitado OU de trabalho privado (quarto de hotel OCUPADO,\nescritório de advocacia na parte reservada)",
+                "id": "nv2c4sqxk2p",
+                "children": []
+              },
+              {
+                "label": "\"Dia\": aurora-crepúsculo / 6h-18h; Lei de Abuso de Autoridade veda mandado das 21h às 5h",
+                "id": "nyu6ih6pk2p",
+                "children": []
+              },
+              {
+                "label": "Marco decisivo = INÍCIO da diligência (começou de dia, pode prosseguir à noite)",
+                "id": "nkr763zok2p",
+                "children": []
+              },
+              {
+                "label": "Quem invoca é quem OCUPA o espaço — inclusive contra o próprio proprietário",
+                "id": "npo1j7gmk2p",
+                "children": []
+              }
+            ],
+            "id": "ntygvuayk2p"
+          },
+          {
+            "label": "Sigilos: comunicações (XII) e bancário",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "4 sigilos: correspondência, telegráficas, dados, telefônicas",
+                "id": "n2qpwsq2k2p",
+                "children": []
+              },
+              {
+                "label": "Exceção EXPRESSA só p/ telefônicas — ordem de juiz CRIMINAL, p/ investigação/instrução penal",
+                "id": "nzq5dtj5k2p",
+                "children": []
+              },
+              {
+                "label": "Prova emprestada: interceptação penal pode ir p/ cível, trabalhista e PAD (com contraditório)",
+                "id": "nif35wi0k2p",
+                "children": []
+              },
+              {
+                "label": "Gravação por um dos interlocutores ≠ interceptação (não é prova ilícita)",
+                "id": "nfa07gpuk2p",
+                "children": []
+              },
+              {
+                "label": "Sigilo bancário: afastam direto = Judiciário, CPIs federais/estaduais/distritais, Adm. Tributária\n(LC 105/2001); NÃO afastam = MP, Polícia, CPI municipal",
+                "id": "noplpytjk2p",
+                "children": []
+              }
+            ],
+            "id": "nheeib3fk2p"
+          },
+          {
+            "label": "Reunião, associação e propriedade",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Normas constitucionais (José Afonso): eficácia plena · contida (liberdade profissional, XIII) · limitada",
+                "id": "nxvizeq9k2p",
+                "children": []
+              },
+              {
+                "label": "Reunião (XVI): pacífica, sem armas, local público, SEM autorização, com PRÉVIO AVISO;\ncerceada → mandado de segurança (locomoção → HC)",
+                "id": "n9z1lfink2p",
+                "children": []
+              },
+              {
+                "label": "Associação: independe de autorização; suspensão = qualquer decisão judicial;\ndissolução = trânsito em julgado; ninguém é obrigado a associar-se",
+                "id": "nb4d6ndck2p",
+                "children": []
+              },
+              {
+                "label": "Representar filiados exige autorização EXPRESSA; exceção: MS coletivo (Súmula 629 STF)",
+                "id": "nztzf8prk2p",
+                "children": []
+              },
+              {
+                "label": "Propriedade tem função social; desapropriação: regra = justa e prévia em dinheiro;\nTDP (títulos ≤10 anos) · TDA (títulos ≤20 anos) · art. 243 (confisco, SEM indenização)",
+                "id": "nkbwxvcsk2p",
+                "children": []
+              },
+              {
+                "label": "Requisição administrativa (XXV): iminente perigo público, uso temporário,\nindenização ULTERIOR só se houver dano",
+                "id": "n8zsd5ewk2p",
+                "children": []
+              }
+            ],
+            "id": "nlxdnuibk2p"
+          },
+          {
+            "label": "Acesso à justiça e garantias processuais",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Petição e certidão gratuitos; certidão = interesse PESSOAL (não de terceiros)",
+                "id": "norcc9okk2p",
+                "children": []
+              },
+              {
+                "label": "Inafastabilidade da jurisdição (XXXV) + jurisdição condicionada: habeas data (recusa administrativa),\nJustiça Desportiva (esgotar TJD/STJD), súmula vinculante contra ato da Administração",
+                "id": "ne3wqw2kk2p",
+                "children": []
+              },
+              {
+                "label": "Irretroatividade (XXXVI): direito adquirido, ato jurídico perfeito, coisa julgada",
+                "id": "nv4qapfxk2p",
+                "children": []
+              },
+              {
+                "label": "Juiz natural (XXXVII e LIII): sem juízo/tribunal de exceção",
+                "id": "n67prjvmk2p",
+                "children": []
+              },
+              {
+                "label": "Júri (XXXVIII): plenitude de defesa (> ampla defesa) · sigilo das votações ·\nsoberania dos veredictos · crimes DOLOSOS contra a vida",
+                "id": "ntnmyhqrk2p",
+                "children": []
+              },
+              {
+                "label": "Devido processo legal · contraditório e ampla defesa (judicial E administrativo) ·\nprovas ilícitas inadmissíveis · presunção de inocência até o trânsito em julgado",
+                "id": "ncspla77k2p",
+                "children": []
+              },
+              {
+                "label": "Prisão: só flagrante ou ordem judicial escrita e fundamentada, salvo transgressão/crime\nPROPRIAMENTE militar; comunicação IMEDIATA ao juiz e à família OU pessoa indicada",
+                "id": "n0ngbo5uk2p",
+                "children": []
+              }
+            ],
+            "id": "nmy4vbf2k2p"
+          },
+          {
+            "label": "Penas e crimes especiais",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Lei penal: mais gravosa NUNCA retroage; mais benéfica SEMPRE retroage (abolitio criminis)",
+                "id": "nby77rhak2p",
+                "children": []
+              },
+              {
+                "label": "\"RAÇÃO\" (RAcismo + AÇÃO de grupos armados): únicos IMPRESCRITÍVEIS",
+                "id": "ne8xwir8k2p",
+                "children": []
+              },
+              {
+                "label": "\"3TH\" (Tortura, Tráfico, Terrorismo, Hediondos): inafiançáveis + insuscetíveis de\ngraça/anistia, MAS PRESCREVEM",
+                "id": "nfwjaknrk2p",
+                "children": []
+              },
+              {
+                "label": "Intranscendência (XLV): pena (inclusive multa) não passa do condenado;\nefeitos civis alcançam herdeiros só até o valor da herança",
+                "id": "n8h8o1ytk2p",
+                "children": []
+              },
+              {
+                "label": "Rol de penas (XLVI) exemplificativo; penas proibidas (XLVII): morte (salvo guerra EXTERNA\ndeclarada), caráter perpétuo, trabalhos forçados, banimento, cruéis",
+                "id": "n78btorbk2p",
+                "children": []
+              },
+              {
+                "label": "Separação carcerária \"NIS\": Natureza do delito, Idade, Sexo",
+                "id": "n30o94w4k2p",
+                "children": []
+              },
+              {
+                "label": "Extradição: nato NUNCA; naturalizado — crime comum só se ANTES da naturalização,\ntráfico de drogas em qualquer tempo; estrangeiro: vedada por crime político ou de opinião",
+                "id": "nnz4hcpjk2p",
+                "children": []
+              },
+              {
+                "label": "Prisão civil por dívida: texto = alimentos E depositário infiel; STF (SV 25) = só alimentos",
+                "id": "nxvdb2j7k2p",
+                "children": []
+              }
+            ],
+            "id": "nf0ai97wk2p"
+          },
+          {
+            "label": "Remédios constitucionais",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "A chave é ligar o REMÉDIO ao seu OBJETO (direito tutelado)",
+                "id": "nfelnva8k2p",
+                "children": []
+              },
+              {
+                "label": "Habeas corpus: liberdade de LOCOMOÇÃO; legitimidade universal; cabe contra particular e\nde ofício; natureza PENAL sempre; gratuito; sem advogado",
+                "id": "nrh4s4a0k2p",
+                "children": []
+              },
+              {
+                "label": "HC e punição disciplinar militar: não cabe p/ o MÉRITO; cabe por vício de competência/forma/finalidade",
+                "id": "ndzk5r4lk2p",
+                "children": []
+              },
+              {
+                "label": "Mandado de segurança: direito líquido e certo (prova pré-constituída), não amparado por HC/HD;\nréu = autoridade coatora (pessoa); com custas",
+                "id": "ni3o1y70k2p",
+                "children": []
+              },
+              {
+                "label": "MS coletivo: partido com representação no Congresso (1 dep. OU 1 sen.) · sindicato/entidade\nde classe (sem prazo) · associação (funcionamento há ≥ 1 ano)",
+                "id": "nopijpvpk2p",
+                "children": []
+              },
+              {
+                "label": "Mandado de injunção: falta de norma regulamentadora (omissão total OU parcial);\npolo passivo SEMPRE autoridade pública; coletivo pela Lei 13.300/2016; com custas",
+                "id": "n8rmfja8k2p",
+                "children": []
+              },
+              {
+                "label": "Habeas data: conhecimento/retificação/complementação de dados pessoais em banco governamental\nou de caráter público; personalíssimo; jurisdição condicionada (Súmula 2 STJ); gratuito",
+                "id": "n01x0y5hk2p",
+                "children": []
+              },
+              {
+                "label": "Ação popular: qualquer CIDADÃO (PF com direitos políticos, título de eleitor); anula ato lesivo\nao patrimônio público, moralidade, meio ambiente, patrimônio histórico-cultural; gratuita salvo má-fé",
+                "id": "nurykq97k2p",
+                "children": []
+              },
+              {
+                "label": "Administrativos: informação, petição, certidão — universais, gratuitos, sem advogado",
+                "id": "n5vlxlrsk2p",
+                "children": []
+              }
+            ],
+            "id": "nrocs0r5k2p"
+          },
+          {
+            "label": "Últimos incisos e parágrafos do art. 5º",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Assistência jurídica gratuita a quem comprova insuficiência (LXXIV — PJ também pode)",
+                "id": "nm3shw31k2p",
+                "children": []
+              },
+              {
+                "label": "Indenização por erro judiciário e por prisão além do tempo da sentença (LXXV — \"o Estado\" = o Brasil)",
+                "id": "nvoj6aw5k2p",
+                "children": []
+              },
+              {
+                "label": "Registro de nascimento e certidão de óbito gratuitos p/ RECONHECIDAMENTE POBRES (LXXVI)",
+                "id": "ng6um662k2p",
+                "children": []
+              },
+              {
+                "label": "HC e HD sempre gratuitos (LXXVII); razoável duração do processo (LXXVIII — judicial e administrativo)",
+                "id": "ntzdg59hk2p",
+                "children": []
+              },
+              {
+                "label": "Proteção de dados pessoais \"INCLUSIVE nos meios digitais\" (LXXIX, EC 115/2022)",
+                "id": "ndnjlnatk2p",
+                "children": []
+              },
+              {
+                "label": "§1º aplicação imediata · §2º rol ABERTO (direitos implícitos e de tratados) ·\n§3º tratado de DIREITOS HUMANOS, 2 turnos + 3/5 em cada Casa = emenda · §4º submissão ao TPI",
+                "id": "nkj5kmmmk2p",
+                "children": []
+              }
+            ],
+            "id": "n9n3m24lk2p"
+          },
+          {
+            "label": "Direitos sociais — princípios e art. 6º",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Proibição do retrocesso (efeito cliquê): princípio IMPLÍCITO",
+                "id": "nuj0sjiuk2p",
+                "children": []
+              },
+              {
+                "label": "Mínimo existencial PREVALECE sobre a reserva do possível; o juiz DETERMINA, o Executivo EXECUTA",
+                "id": "n1y2t7xfk2p",
+                "children": []
+              },
+              {
+                "label": "Art. 6º (rol exemplificativo): educação, saúde, alimentação, trabalho, moradia, transporte,\nlazer, segurança, previdência, proteção à maternidade/infância, assistência aos desamparados",
+                "id": "nt4rknguk2p",
+                "children": []
+              },
+              {
+                "label": "Parágrafo único (EC 114/2021): renda básica familiar ao brasileiro em situação de VULNERABILIDADE\nsocial; programa PERMANENTE; acesso definido em LEI (não automático)",
+                "id": "np4rpk8yk2p",
+                "children": []
+              }
+            ],
+            "id": "ngn3x0f9k2p"
+          },
+          {
+            "label": "Art. 7º — direitos dos trabalhadores (urbanos e rurais, iguais)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Celetista NÃO tem estabilidade (só indenização por LC); FGTS = contrapartida;\nseguro-desemprego só p/ desemprego INVOLUNTÁRIO",
+                "id": "nsbdd6nak2p",
+                "children": []
+              },
+              {
+                "label": "Salário mínimo fixado em lei, nacionalmente unificado, VEDADA a vinculação p/ qualquer fim",
+                "id": "nf1uxqhjk2p",
+                "children": []
+              },
+              {
+                "label": "Irredutibilidade do salário salvo CCT/ACT (nunca acordo individual)",
+                "id": "nv6q6kdpk2p",
+                "children": []
+              },
+              {
+                "label": "Trabalho noturno: só \"superior ao diurno\" (SEM percentual na CF); hora extra: mínimo +50%",
+                "id": "n8v1ooqqk2p",
+                "children": []
+              },
+              {
+                "label": "Retenção DOLOSA do salário = crime (culposa não); PLR desvinculada da remuneração;\nsalário-família só p/ baixa renda",
+                "id": "n5sqd70ak2p",
+                "children": []
+              },
+              {
+                "label": "Jornada 8h/44h; compensação/redução só por CCT/ACT; TIR 6h salvo negociação;\nRSR PREFERENCIALMENTE aos domingos; férias 30 dias + 1/3",
+                "id": "nardif28k2p",
+                "children": []
+              },
+              {
+                "label": "Licença-gestante 120 dias (mínimo na CF); licença-paternidade 5 dias (ADCT); aviso prévio ≥ 30 dias",
+                "id": "nlcpj92sk2p",
+                "children": []
+              },
+              {
+                "label": "Creches/pré-escolas até 5 anos (era 6); seguro de acidente não exclui indenização por dolo/culpa",
+                "id": "n525mombk2p",
+                "children": []
+              },
+              {
+                "label": "Prescrição trabalhista: bienal (p/ ajuizar) + quinquenal (alcance dos créditos)",
+                "id": "nkituhy5k2p",
+                "children": []
+              },
+              {
+                "label": "Discriminação: sexo/cor/estado civil = vedação absoluta; IDADE admite restrição justificada",
+                "id": "nam14af2k2p",
+                "children": []
+              },
+              {
+                "label": "Menor: proibido < 16 (salvo aprendiz a partir de 14); < 18 sem noturno/perigoso/insalubre",
+                "id": "n708p9lpk2p",
+                "children": []
+              },
+              {
+                "label": "Doméstico (EC 72/2013): nem todos os incisos de imediato (FGTS, seguro-desemprego,\nsalário-família dependem de lei; PLR não se aplica)",
+                "id": "n7v0fi76k2p",
+                "children": []
+              }
+            ],
+            "id": "n7xvi1egk2p"
+          },
+          {
+            "label": "Sindicatos (art. 8º), greve (art. 9º) e representação (art. 11)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Sindicato: livre, sem autorização, mas com REGISTRO; UNICIDADE (um por categoria por\nbase territorial nunca inferior a um Município)",
+                "id": "ni35i79tk2p",
+                "children": []
+              },
+              {
+                "label": "Filiação voluntária; mas a PARTICIPAÇÃO do sindicato nas negociações coletivas é obrigatória",
+                "id": "nr13jr6mk2p",
+                "children": []
+              },
+              {
+                "label": "Estabilidade do dirigente: do REGISTRO da candidatura até 1 ano após o fim do mandato (salvo falta grave)",
+                "id": "na8kxtmvk2p",
+                "children": []
+              },
+              {
+                "label": "Greve (art. 9º): a titularidade da decisão (oportunidade e interesses) é dos TRABALHADORES;\na lei define os serviços essenciais",
+                "id": "n83bi70rk2p",
+                "children": []
+              },
+              {
+                "label": "Art. 11: representante dos empregados em empresas com MAIS DE 200 empregados —\nfinalidade EXCLUSIVA de entendimento direto (não negocia acordo coletivo)",
+                "id": "n5vz2xhkk2p",
+                "children": []
+              }
+            ],
+            "id": "ntactkidk2p"
+          }
+        ],
+        "id": "nnjdmh6uk2p"
+      },
+      {
+        "label": "TÍTULO III — Organização do Estado e Administração Pública (arts. 18 a 43)",
+        "collapsed": true,
+        "children": [
+          {
+            "label": "Estrutura federativa (arts. 18-33)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "4 entes autônomos; art. 19 veda: estabelecer/subvencionar cultos (I),\nrecusar fé a documentos públicos (II), criar distinções entre brasileiros (III)",
+                "id": "n0po97emk2p",
+                "children": []
+              },
+              {
+                "label": "Bens da União (art. 20, rol exemplificativo) × bens dos Estados (art. 26); faixa de fronteira 150 km",
+                "id": "ng7esd50k2p",
+                "children": []
+              },
+              {
+                "label": "Deputados estaduais/distritais (art. 27); Governador (art. 28); Lei Orgânica municipal (art. 29)",
+                "id": "n2fcg5klk2p",
+                "children": []
+              },
+              {
+                "label": "DF NÃO se divide em municípios (art. 32); norma máxima = Lei Orgânica; competência legislativa\ncumulativa (estadual + municipal)",
+                "id": "ngwbe2hrk2p",
+                "children": []
+              },
+              {
+                "label": "Territórios federais: hoje não existem; podem ser criados por lei complementar; PODEM se dividir\nem municípios (art. 33)",
+                "id": "n09xs8trk2p",
+                "children": []
+              }
+            ],
+            "id": "n6axckyck2p"
+          },
+          {
+            "label": "Intervenção (arts. 34-36)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "4 espécies: espontânea · por solicitação · por requisição · provocada (por representação/ADI interventiva)",
+                "id": "nodutlsrk2p",
+                "children": []
+              },
+              {
+                "label": "Instrumento: decreto do Presidente da República (na intervenção federal)",
+                "id": "n0dpftigk2p",
+                "children": []
+              },
+              {
+                "label": "Controle político do Congresso Nacional em 24 horas (decreto submetido à apreciação)",
+                "id": "n8j37b14k2p",
+                "children": []
+              },
+              {
+                "label": "Dispensam controle político: execução de lei federal / ordem judicial (art. 34, VI) e\nprincípios sensíveis (art. 34, VII) — decreto limita-se a suspender o ato impugnado",
+                "id": "necc0sk9k2p",
+                "children": []
+              }
+            ],
+            "id": "n5okuc48k2p"
+          },
+          {
+            "label": "Repartição de competências (arts. 21-25, 30)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Tipos: administrativa (material), legislativa e tributária",
+                "id": "n6x74d3tk2p",
+                "children": []
+              },
+              {
+                "label": "Técnica da PREDOMINÂNCIA DO INTERESSE (nacional → União; regional → Estados; local → Municípios)",
+                "id": "nbmgy9grk2p",
+                "children": []
+              },
+              {
+                "label": "Competência RESIDUAL dos Estados (o que não é da União nem dos Municípios)",
+                "id": "nlaeprgrk2p",
+                "children": []
+              },
+              {
+                "label": "Comuns (art. 23): dos 4 entes, atuação conjunta · Concorrentes (art. 24): União = normas gerais,\nEstados = suplementar",
+                "id": "n5hyfoaqk2p",
+                "children": []
+              },
+              {
+                "label": "Sem norma geral federal → Estado legisla plenamente; norma geral superveniente SUSPENDE\na eficácia da estadual no que for contrária",
+                "id": "n7vj6y3sk2p",
+                "children": []
+              }
+            ],
+            "id": "narj4cr5k2p"
+          },
+          {
+            "label": "Administração Pública — LIMPE (art. 37, caput)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Legalidade administrativa: só faz o que a lei IMPÕE ou AUTORIZA (≠ particular, que faz o que a lei não proíbe)",
+                "id": "nrrok3tek2p",
+                "children": []
+              },
+              {
+                "label": "Impessoalidade — aos administrados: igualdade, concurso, veda nepotismo (SV 13: até 3º grau,\ninclusive por afinidade, e nepotismo cruzado)",
+                "id": "nmtf78m3k2p",
+                "children": []
+              },
+              {
+                "label": "Impessoalidade — ao gestor: veda promoção pessoal (art. 37, §1º — publicidade só educativa/informativa)",
+                "id": "nf0e37xbk2p",
+                "children": []
+              },
+              {
+                "label": "Moralidade: ato LEGAL mas IMORAL é nulo de pleno direito",
+                "id": "n7i8b4rpk2p",
+                "children": []
+              },
+              {
+                "label": "Publicidade: dever de publicar (ato normativo só produz efeito após publicado) + transparência",
+                "id": "n8pxy2fsk2p",
+                "children": []
+              },
+              {
+                "label": "Eficiência: EC 19/1998 — norma DERIVADA (as outras 4 são originárias); metas e resultados",
+                "id": "ncyx6ixek2p",
+                "children": []
+              }
+            ],
+            "id": "nhg8646lk2p"
+          },
+          {
+            "label": "Concurso, funções e cargos (art. 37, II a IX)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Concurso exige-se p/ cargo OU emprego (NÃO \"função pública\"); exceção = cargo em comissão",
+                "id": "nzkezog6k2p",
+                "children": []
+              },
+              {
+                "label": "SV 43: veda toda transposição/ascensão a cargo diverso sem concurso específico",
+                "id": "newu10ljk2p",
+                "children": []
+              },
+              {
+                "label": "Validade: até 2 anos + 1 prorrogação por igual período = máximo 4 anos (fora disso: ato nulo, §2º)",
+                "id": "n8tp8x41k2p",
+                "children": []
+              },
+              {
+                "label": "Novo concurso p/ o mesmo cargo só no \"prazo improrrogável\", com prioridade dos aprovados anteriores (IV)",
+                "id": "n9y279chk2p",
+                "children": []
+              },
+              {
+                "label": "Função de confiança: SÓ servidor efetivo · cargo em comissão: livre nomeação (com % mínimo p/ carreira)\n— ambos só p/ direção, chefia e assessoramento (nunca atividade técnica)",
+                "id": "nvypc2sek2p",
+                "children": []
+              },
+              {
+                "label": "Greve do servidor (VII): lei específica (STF aplica a lei da iniciativa privada por analogia);\nVEDADA a quem atua em segurança pública (inclui \"operação-padrão\")",
+                "id": "n3dnyttfk2p",
+                "children": []
+              },
+              {
+                "label": "PCD (VIII): a LEI reserva o percentual (a CF NÃO fixa; Lei 8.112 = até 20%)",
+                "id": "nrwoi53pk2p",
+                "children": []
+              },
+              {
+                "label": "Contratação temporária (IX): necessidade temporária de excepcional interesse público",
+                "id": "nqhejr0uk2p",
+                "children": []
+              }
+            ],
+            "id": "nivwd0mhk2p"
+          },
+          {
+            "label": "Remuneração: teto e vedações (art. 37, X a XV)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Teto geral (XI): subsídio do Ministro do STF — ninguém no funcionalismo pode superá-lo",
+                "id": "nk3epv81k2p",
+                "children": []
+              },
+              {
+                "label": "Subtetos: Municípios = Prefeito; Estados/DF = Governador (Exec.), Deputados (Legisl.),\nDesembargadores 90,25% do STF (Judic., MP, Procuradores, Defensores)",
+                "id": "nfl197eek2p",
+                "children": []
+              },
+              {
+                "label": "Jurisprudência STF: magistratura = teto nacional (STF); procurador municipal = subteto de desembargador",
+                "id": "n2p0y1msk2p",
+                "children": []
+              },
+              {
+                "label": "Estatais NÃO dependentes não se submetem ao teto (§9º); parcelas indenizatórias só furam o teto\nse lei ordinária NACIONAL do Congresso (§11, EC 135/2024)",
+                "id": "n0lku2e1k2p",
+                "children": []
+              },
+              {
+                "label": "Veda vinculação/equiparação (SV 37: Judiciário não aumenta vencimento por isonomia)",
+                "id": "nun6numzk2p",
+                "children": []
+              },
+              {
+                "label": "Veda \"efeito repicão\": cada acréscimo incide sobre o vencimento BÁSICO, nunca em cascata",
+                "id": "ng6aihcek2p",
+                "children": []
+              },
+              {
+                "label": "Irredutibilidade de vencimentos e subsídio (XV), com ressalvas nomeadas",
+                "id": "n4l4e6uyk2p",
+                "children": []
+              }
+            ],
+            "id": "noxh76jnk2p"
+          },
+          {
+            "label": "Acumulação, entidades e licitação (art. 37, XVI a XXII)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Acumulação vedada, salvo (com compatibilidade de horários): 2 professores · professor + outro\nde QUALQUER natureza (EC 138/2025) · 2 cargos da saúde regulamentados",
+                "id": "n14yjas5k2p",
+                "children": []
+              },
+              {
+                "label": "Estende-se a empregos e funções, em toda a Administração direta e indireta",
+                "id": "n9miqag8k2p",
+                "children": []
+              },
+              {
+                "label": "Teto na acumulação: por VÍNCULO isolado na ATIVA (REs 612.975/602.043);\npor SOMATÓRIO na INATIVIDADE (art. 40, §11)",
+                "id": "nkb70ua0k2p",
+                "children": []
+              },
+              {
+                "label": "Lei específica CRIA a autarquia (reserva absoluta); só AUTORIZA a instituição de empresa pública/\nSEM/fundação de direito privado (reserva relativa); LC define as áreas da fundação de direito privado",
+                "id": "n6sawwvqk2p",
+                "children": []
+              },
+              {
+                "label": "Subsidiárias e participação em empresa privada: autorização legislativa EM CADA CASO (XX)",
+                "id": "nymrz48hk2p",
+                "children": []
+              },
+              {
+                "label": "Licitação (XXI): regra p/ obras, serviços, compras e alienações; exigências só as indispensáveis",
+                "id": "nt7654xxk2p",
+                "children": []
+              }
+            ],
+            "id": "n9gdhmw2k2p"
+          },
+          {
+            "label": "Parágrafos do art. 37 — improbidade, responsabilidade civil",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Improbidade (§4º): SUSPENSÃO dos direitos políticos (não \"perda\") · perda da função pública ·\nindisponibilidade dos bens · ressarcimento ao erário; ação CÍVEL, sem prejuízo da penal",
+                "id": "n8ncyg7ek2p",
+                "children": []
+              },
+              {
+                "label": "Ressarcimento ao erário (§5º): prescreve em regra; IMPRESCRITÍVEL só se decorrente de\nimprobidade DOLOSA (STF) — \"culposa\" = errado",
+                "id": "nur5zlz4k2p",
+                "children": []
+              },
+              {
+                "label": "Responsabilidade civil do Estado (§6º): OBJETIVA perante a vítima — risco ADMINISTRATIVO\n(não integral); basta conduta + dano + nexo",
+                "id": "n8oot4s7k2p",
+                "children": []
+              },
+              {
+                "label": "Direito de regresso contra o agente: SUBJETIVO (exige dolo ou culpa)",
+                "id": "npve0kiek2p",
+                "children": []
+              },
+              {
+                "label": "Alcança PJ de direito privado prestadora de serviço público (concessionárias)",
+                "id": "nrr6kh0fk2p",
+                "children": []
+              },
+              {
+                "label": "Contrato de desempenho (§8º): Administração COM Administração (≠ \"contrato de gestão\" com Organização Social)",
+                "id": "ngj13aaqk2p",
+                "children": []
+              },
+              {
+                "label": "Avaliação de políticas públicas (§16): DEVER (\"devem realizar\"), decorre da eficiência",
+                "id": "n5dyo80wk2p",
+                "children": []
+              }
+            ],
+            "id": "nvvbd5wok2p"
+          },
+          {
+            "label": "Servidores — mandato eletivo, regime, RPPS (arts. 38-40)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Art. 38: federal/estadual/distrital → afasta-se; Prefeito → afasta-se, pode OPTAR pela remuneração;\nVereador COM compatibilidade → acumula os dois; SEM compatibilidade → regra do Prefeito",
+                "id": "nirb1fzrk2p",
+                "children": []
+              },
+              {
+                "label": "Tempo de afastamento conta p/ TUDO, inclusive antiguidade — só NÃO p/ promoção por MERECIMENTO",
+                "id": "n9ra6xtck2p",
+                "children": []
+              },
+              {
+                "label": "Servidor eleito permanece filiado ao RPPS do ente de ORIGEM",
+                "id": "n54x4u3tk2p",
+                "children": []
+              },
+              {
+                "label": "Art. 39: fim do Regime Jurídico Único obrigatório (ADI 2.135) — só p/ NOVAS contratações",
+                "id": "nb3de8rgk2p",
+                "children": []
+              },
+              {
+                "label": "Subsídio obrigatório (§4º): membro de Poder, mandato eletivo, Ministros, Secretários —\nparcela ÚNICA, veda acréscimo remuneratório (indenizatório pode)",
+                "id": "ntvwtfjzk2p",
+                "children": []
+              },
+              {
+                "label": "Escolas de governo: só União, Estados e DF (Municípios NÃO são obrigados)",
+                "id": "nw36kfcsk2p",
+                "children": []
+              },
+              {
+                "label": "§9º (EC 103/2019): veda incorporar vantagem temporária / de função de confiança / de comissão\nao cargo efetivo",
+                "id": "naho1uvik2p",
+                "children": []
+              },
+              {
+                "label": "Art. 40 (RPPS): contributivo E solidário — contribuem o ente, ativos, APOSENTADOS e PENSIONISTAS\n(≠ RGPS); exclusivo de cargo efetivo; vedado tempo FICTÍCIO; comissionado exclusivo/temporário/eletivo → RGPS",
+                "id": "n6uzpzurk2p",
+                "children": []
+              }
+            ],
+            "id": "n51t1kwxk2p"
+          },
+          {
+            "label": "Estabilidade e fechamento (arts. 41-43)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Estabilidade (art. 41): 3 anos de efetivo exercício + avaliação ESPECIAL de desempenho por comissão\n+ concurso + cargo de provimento efetivo",
+                "id": "nengcdbjk2p",
+                "children": []
+              },
+              {
+                "label": "Perda do cargo do estável: sentença transitada em julgado · PAD com ampla defesa ·\navaliação PERIÓDICA (LC + ampla defesa)",
+                "id": "nu65ylktk2p",
+                "children": []
+              },
+              {
+                "label": "Estabilidade ≠ vitaliciedade (esta só se perde por sentença judicial transitada em julgado)",
+                "id": "njsua99qk2p",
+                "children": []
+              },
+              {
+                "label": "Não confundir avaliação ESPECIAL (adquirir estabilidade) com avaliação PERIÓDICA (perder o cargo)",
+                "id": "n2dhsza5k2p",
+                "children": []
+              },
+              {
+                "label": "Reintegração (§2º): demissão do estável invalidada por sentença; o ocupante estável é reconduzido\nao cargo de origem SEM indenização",
+                "id": "nzx1cwd5k2p",
+                "children": []
+              },
+              {
+                "label": "Disponibilidade (§3º): cargo extinto/desnecessário — só p/ servidor ESTÁVEL; remuneração proporcional",
+                "id": "nvfu8byck2p",
+                "children": []
+              },
+              {
+                "label": "Art. 42 (militares estaduais PM/CBM): patentes só de oficiais, conferidas pelos Governadores;\nsem HC contra mérito de punição disciplinar; sem sindicalização nem greve",
+                "id": "nz4wtwbnk2p",
+                "children": []
+              },
+              {
+                "label": "Art. 43 (desenvolvimento regional): competência da UNIÃO, disciplinado por LEI COMPLEMENTAR",
+                "id": "nph59r0ak2p",
+                "children": []
+              }
+            ],
+            "id": "nunxubdzk2p"
+          }
+        ],
+        "id": "noyluqevk2p"
+      },
+      {
+        "label": "TÍTULO IV — Direito Administrativo: Estado, Governo, Administração e Fontes (guia \"DC 4\")",
+        "children": [
+          {
+            "label": "Estado, Governo e Administração",
+            "children": [
+              {
+                "label": "Estado = pessoa jurídico-política; 3 elementos originários e indissolúveis:\npovo, território e governo soberano",
+                "id": "npvcv5bvill",
+                "children": []
+              },
+              {
+                "label": "Entes da federação têm autonomia FAP: Financeira, Administrativa, Política",
+                "id": "nxgbkvt9ill",
+                "children": []
+              },
+              {
+                "label": "Brasil por SEGREGAÇÃO → União forte; EUA por AGREGAÇÃO → Estados fortes",
+                "id": "nfibl1qcill",
+                "children": []
+              },
+              {
+                "label": "Repartição por interesse: nacional → União (lista do art. 21); regional → Estados\n(residual; único expresso = gás canalizado, art. 25 §2º); local → Municípios",
+                "id": "nwc6fo6yill",
+                "children": []
+              },
+              {
+                "label": "União delega a PRESTAÇÃO (concessão/permissão/autorização) sem perder a COMPETÊNCIA",
+                "id": "nnt7kqx5ill",
+                "children": []
+              },
+              {
+                "label": "Territórios NÃO são entes da federação — autarquias territoriais (Di Pietro);\n\"condado\" não existe no Brasil",
+                "id": "nsr7gqv5ill",
+                "children": []
+              },
+              {
+                "label": "Governo DECIDE (direção política); Administração EXECUTA (a \"máquina\") — não confundir",
+                "id": "nsqlxticill",
+                "children": []
+              },
+              {
+                "label": "Forma de Estado = Federação · Forma de governo = República · Sistema = Presidencialismo",
+                "id": "npim5lhoill",
+                "children": []
+              },
+              {
+                "label": "Presidente acumula: chefe de Estado + chefe de Governo + chefe da Administração Pública Federal",
+                "id": "ndr95iptill",
+                "children": []
+              }
+            ],
+            "id": "nqim8louill",
+            "collapsed": true
+          },
+          {
+            "label": "Funções dos Poderes",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Cada Poder: função típica + funções atípicas (freios e contrapesos)",
+                "id": "nx1rxfbyill",
+                "children": []
+              },
+              {
+                "label": "Jurisdição (dizer o direito com definitividade) = EXCLUSIVA do Judiciário;\nórgão administrativo tem COMPETÊNCIA, não \"jurisdição\"",
+                "id": "n6gsbm5gill",
+                "children": []
+              },
+              {
+                "label": "PAD é SEMPRE função administrativa, em qualquer Poder que o conduza (nunca jurisdicional)",
+                "id": "nqvowamtill",
+                "children": []
+              },
+              {
+                "label": "Lei de efeito concreto = \"lei formal, ato material\" (mira pessoa/situação específica)",
+                "id": "ncptw96jill",
+                "children": []
+              },
+              {
+                "label": "Função típica PODE ser convertida em atípica pelo direito positivo\n(ex.: inventário/divórcio consensual passou p/ o cartório)",
+                "id": "nfow5gjuill",
+                "children": []
+              }
+            ],
+            "id": "nbrmp3mvill"
+          },
+          {
+            "label": "Administração Pública — os dois sentidos",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Subjetivo (orgânico/formal) = QUEM compõe: órgãos, entidades, agentes —\ninclui Legislativo e Judiciário quando exercem função administrativa",
+                "id": "ntjknb4mill",
+                "children": []
+              },
+              {
+                "label": "Objetivo (material/funcional) = O QUE faz = função administrativa;\n4 atividades P-S-F-I: Poder de polícia · Serviços públicos · Fomento · Intervenção",
+                "id": "n3m5b9qkill",
+                "children": []
+              },
+              {
+                "label": "A Quadrix já confirmou: sentido objetivo é FUNÇÃO, nunca \"entidades e órgãos\"",
+                "id": "nkp60j52ill",
+                "children": []
+              }
+            ],
+            "id": "n1uu1lqnill"
+          },
+          {
+            "label": "Direito Administrativo — conceito e fontes",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Ramo do direito PÚBLICO; NÃO codificado (leis esparsas: 14.133, 8.429, 9.784/99, 8.112);\nbase constitucional arts. 37-41",
+                "id": "nhxqrx7sill",
+                "children": []
+              },
+              {
+                "label": "Critérios/teorias: teleológico (\"fins do Estado\") · negativista/residual (\"por exclusão\") ·\nPoder Executivo · serviço público (Caso Blanco) · potestade pública (império × gestão)",
+                "id": "ns2syp9iill",
+                "children": []
+              },
+              {
+                "label": "Fontes: LEI em sentido amplo = ÚNICA primária/formal; doutrina, jurisprudência\ne costumes = secundárias",
+                "id": "n6jpc0sxill",
+                "children": []
+              },
+              {
+                "label": "Costume: nunca contra legem; só supre ou complementa a lei",
+                "id": "narfeoxsill",
+                "children": []
+              },
+              {
+                "label": "Súmula vinculante: só o STF edita (art. 103-A); vincula toda a Administração e o Judiciário\n(exceto o próprio STF); descumprimento → RECLAMAÇÃO ao STF",
+                "id": "n6gq4155ill",
+                "children": []
+              }
+            ],
+            "id": "nko2onweill"
+          },
+          {
+            "label": "Sistemas administrativos",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Contencioso (francês): dupla jurisdição, tribunal administrativo, \"coisa julgada administrativa\"",
+                "id": "nor7hdu9ill",
+                "children": []
+              },
+              {
+                "label": "Jurisdição ÚNICA (Brasil, art. 5º XXXV): só o Judiciário decide com definitividade;\na via administrativa é opcional",
+                "id": "ns7xbnisill",
+                "children": []
+              },
+              {
+                "label": "Exceções (exigem esgotar via prévia): Justiça Desportiva (TJD/STJD ou 60 dias) ·\nhabeas data (recusa administrativa, Súmula 2 STJ) · reclamação por súmula vinculante",
+                "id": "n8ykqacvill",
+                "children": []
+              },
+              {
+                "label": "MS não cabe havendo recurso administrativo com efeito suspensivo pendente;\nbenefício do INSS: só a concessão inicial exige requerimento prévio",
+                "id": "nqeamlk7ill",
+                "children": []
+              }
+            ],
+            "id": "nmopfk2till"
+          }
+        ],
+        "id": "n64ayhbwill",
+        "collapsed": true
+      },
+      {
+        "label": "TÍTULO V — Direito Administrativo: Ato Administrativo (guia \"DC 5\")",
+        "children": [
+          {
+            "label": "Conceito e distinções",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Declaração UNILATERAL de vontade do Estado, INFERIOR à lei, p/ atender INTERESSE PÚBLICO,\nem FUNÇÃO ADMINISTRATIVA, sujeita a CONTROLE de legalidade pelo Judiciário",
+                "id": "nl9f50eqill",
+                "children": []
+              },
+              {
+                "label": "Bilateralidade (acordo de vontades) = CONTRATO, não ato",
+                "id": "npdr3qjlill",
+                "children": []
+              },
+              {
+                "label": "Nem todo ato do Executivo é ato administrativo: sancionar lei, conceder extradição/asilo = atos POLÍTICOS",
+                "id": "nzkwmq1nill",
+                "children": []
+              },
+              {
+                "label": "Só existe juridicamente quando produz efeito jurídico (cria, extingue ou transforma direito)",
+                "id": "nxzg5vfqill",
+                "children": []
+              },
+              {
+                "label": "Ato material = mera execução física · fato administrativo = acontecimento com efeito jurídico\n(dupla acepção) · fato da administração = sem efeito jurídico",
+                "id": "n4x5vsh6ill",
+                "children": []
+              },
+              {
+                "label": "Silêncio NÃO é ato (art. 48 Lei 9.784/99 = dever de decidir); só vira ato quando LEI expressa\natribuir efeito (Bacen 60 dias = aprovação tácita; habeas data 10 dias = negativa)",
+                "id": "nbro8383ill",
+                "children": []
+              }
+            ],
+            "id": "n35all8oill"
+          },
+          {
+            "label": "5 elementos / requisitos de VALIDADE (CO-FI-FO-MO-B)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Competência, Finalidade, Forma, Motivo, Objeto (Di Pietro usa \"sujeito\" no lugar de competência)",
+                "id": "nh3w9kfcill",
+                "children": []
+              },
+              {
+                "label": "São requisitos de VALIDADE, não de existência",
+                "id": "ng5jfonfill",
+                "children": []
+              },
+              {
+                "label": "Competência: decorre da LEI (confere, limita, retira); irrenunciável, imprescritível,\ninderrogável, improrrogável; ≠ capacidade (atributo pessoal do agente)",
+                "id": "nicfuoujill",
+                "children": []
+              },
+              {
+                "label": "EXCESSO de poder = vício de competência; DESVIO de poder = vício de finalidade\n(ambos são abuso de poder)",
+                "id": "nwk4ruv1ill",
+                "children": []
+              },
+              {
+                "label": "Agente de fato/putativo (investidura irregular) → atos preservados a terceiro de boa-fé;\nusurpação de função (nunca investido) → CRIME, atos nulos/inexistentes",
+                "id": "n1muwe2vill",
+                "children": []
+              },
+              {
+                "label": "Finalidade: SEMPRE vinculada; desvio de finalidade é INSANÁVEL (remoção da Lei 8.112 não pune)",
+                "id": "njy324xjill",
+                "children": []
+              },
+              {
+                "label": "Forma: regra escrita; exceções (gestos, sons, placas, meios mecânicos);\nformalidades = requisitos legais específicos da forma (dia/hora/local numa multa)",
+                "id": "nup6sokmill",
+                "children": []
+              },
+              {
+                "label": "Motivo × motivação; Teoria dos Motivos Determinantes: a motivação apresentada (mesmo dispensável)\nvincula a validade; se falsa → ato nulo",
+                "id": "nypqt8jiill",
+                "children": []
+              },
+              {
+                "label": "Objeto = resultado imediato; objeto igual ≠ finalidade igual (demissão × aposentadoria por\ninvalidez rompem o vínculo, mas por finalidades opostas)",
+                "id": "n2bjdnq5ill",
+                "children": []
+              },
+              {
+                "label": "Convalidam: só COMPETÊNCIA e FORMA (regra 2-3); NUNCA finalidade, motivo, objeto",
+                "id": "numtwpqpill",
+                "children": []
+              }
+            ],
+            "id": "nl4lpb3rill"
+          },
+          {
+            "label": "Vinculado × Discricionário e controle judicial",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Sempre vinculados: competência, finalidade, forma. Podem ser discricionários: MOTIVO e OBJETO",
+                "id": "niqzh16qill",
+                "children": []
+              },
+              {
+                "label": "Mérito administrativo (conveniência e oportunidade) = só em motivo e objeto",
+                "id": "n3ouabavill",
+                "children": []
+              },
+              {
+                "label": "Todo ato (vinculado ou discricionário) sujeita-se a controle judicial de LEGALIDADE;\no Judiciário NÃO entra no mérito e NUNCA revoga",
+                "id": "ne86ar7yill",
+                "children": []
+              },
+              {
+                "label": "Discricionariedade sem razoabilidade/proporcionalidade vira ILEGALIDADE (anulável):\ntatuagem discreta, miopia corrigível, psicotécnico sem base científica",
+                "id": "nchpu113ill",
+                "children": []
+              },
+              {
+                "label": "Controle judicial é POSTERIOR e mediante PROVOCAÇÃO (nunca a priori)",
+                "id": "nevf24uaill",
+                "children": []
+              }
+            ],
+            "id": "n0z9xhp1ill"
+          },
+          {
+            "label": "Atributos (3 teorias)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Hely (mais cobrada, resposta padrão): Presunção de legitimidade/veracidade ·\nImperatividade · Autoexecutoriedade",
+                "id": "ntkyok2aill",
+                "children": []
+              },
+              {
+                "label": "Celso Antônio acrescenta EXIGIBILIDADE (coerção indireta) × executoriedade (direta, sobre bens)",
+                "id": "nrlc0au5ill",
+                "children": []
+              },
+              {
+                "label": "Di Pietro acrescenta TIPICIDADE (o ato só atende ao seu fim legal específico)",
+                "id": "nj5bdbeiill",
+                "children": []
+              },
+              {
+                "label": "Presunção de legitimidade = RELATIVA (iuris tantum); inverte o ônus da prova p/ o particular\n(exceção: prova de fato negativo / \"prova diabólica\" → volta p/ a Administração)",
+                "id": "naygp35jill",
+                "children": []
+              },
+              {
+                "label": "Imperatividade: nem todo ato tem — atos NEGOCIAIS (licença, autorização) e ENUNCIATIVOS\n(certidão, atestado) não impõem nada",
+                "id": "n5g7yuhpill",
+                "children": []
+              },
+              {
+                "label": "Autoexecutoriedade dispensa ordem judicial PRÉVIA (não elimina o controle posterior);\nNÃO há p/ cobrar multa/tributo (dívida ativa + execução fiscal) nem desapropriação sem acordo",
+                "id": "nbft92pfill",
+                "children": []
+              },
+              {
+                "label": "Demolição de obra irregular é autoexecutória; se for CASA HABITADA exige ordem judicial (STF)",
+                "id": "nsgzi4wbill",
+                "children": []
+              }
+            ],
+            "id": "nqpvxxd9ill"
+          },
+          {
+            "label": "Classificação (8 eixos)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Destinatários: geral (normativo) × individual (destinatário identificável — nomear 200 é individual)",
+                "id": "n65matmjill",
+                "children": []
+              },
+              {
+                "label": "Alcance: interno × externo (o externo exige publicidade p/ ser eficaz)",
+                "id": "n8y1mwa3ill",
+                "children": []
+              },
+              {
+                "label": "Prerrogativa: império × gestão × mero expediente (não rege mais a responsabilidade civil do Estado)",
+                "id": "n78jwrilill",
+                "children": []
+              },
+              {
+                "label": "Formação: simples (1 órgão, mesmo colegiado) × complexo (2+ órgãos do MESMO nível;\nsó existe com a última vontade) × composto (1 vontade principal + outra instrumental: visto, homologação)",
+                "id": "npvycjcxill",
+                "children": []
+              },
+              {
+                "label": "Aposentadoria de servidor = ato COMPLEXO (entidade + Tribunal de Contas — STF)",
+                "id": "n1opj1flill",
+                "children": []
+              },
+              {
+                "label": "Ministro do STF etc. (indicação do Presidente + aprovação do Senado): Carvalho Filho = COMPLEXO\n(tendência CEBRASPE); Di Pietro = COMPOSTO (só o PGR)",
+                "id": "nyhixfa4ill",
+                "children": []
+              },
+              {
+                "label": "Eficácia: válido × nulo (vício insanável: finalidade/motivo/objeto) × anulável (sanável:\ncompetência/forma) × inexistente (usurpador; nomeação de pessoa morta)",
+                "id": "nelmw7ubill",
+                "children": []
+              },
+              {
+                "label": "Exequibilidade: perfeito (completou o ciclo) × imperfeito × pendente (falta termo/condição) ×\nconsumado/exaurido (não admite mais revogação)",
+                "id": "n70a44d3ill",
+                "children": []
+              },
+              {
+                "label": "Perfeição × validade × eficácia = 3 planos independentes",
+                "id": "ntgxv1noill",
+                "children": []
+              }
+            ],
+            "id": "njjjdr9till"
+          },
+          {
+            "label": "Extinção (5 formas)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Caducidade: nova lei torna o ato impossível (lei proíbe bingo → autorização caduca)",
+                "id": "nn6tjhyhill",
+                "children": []
+              },
+              {
+                "label": "Cassação: o BENEFICIÁRIO descumpriu condições (CNH cassada); exige contraditório e ampla defesa",
+                "id": "n30g6uaiill",
+                "children": []
+              },
+              {
+                "label": "Contraposição: novo ato com efeitos opostos e inconciliáveis extingue o anterior",
+                "id": "n8cipd8yill",
+                "children": []
+              },
+              {
+                "label": "REVOGAÇÃO: ato LEGAL, por MÉRITO, só a Administração, EX NUNC, sem prazo",
+                "id": "nlzhlw13ill",
+                "children": []
+              },
+              {
+                "label": "ANULAÇÃO: ato ILEGAL, por LEGALIDADE, Administração OU Judiciário, EX TUNC;\nprazo 5 anos (Lei 9.784/99) salvo má-fé; IMPRESCRITÍVEL se viola a CF (STF)",
+                "id": "nymnmvtoill",
+                "children": []
+              },
+              {
+                "label": "Judiciário só revoga os PRÓPRIOS atos; atos de outro Poder ele só ANULA",
+                "id": "nkdtb92gill",
+                "children": []
+              },
+              {
+                "label": "Autotutela: Súmulas 346 e 473 do STF",
+                "id": "nobigavtill",
+                "children": []
+              },
+              {
+                "label": "Revogação da revogação NÃO repristina automaticamente (Carvalho Filho, prevalece) —\nprecisa de previsão expressa",
+                "id": "n61kec1kill",
+                "children": []
+              },
+              {
+                "label": "NÃO admitem revogação: ato vinculado (exceção STF: licença p/ construir antes de iniciada a obra),\nato exaurido, com direito adquirido, integrativo após preclusão, meros atos/enunciativos",
+                "id": "n4rq7mp2ill",
+                "children": []
+              }
+            ],
+            "id": "ns61tq1rill"
+          },
+          {
+            "label": "Convalidação, ratificação, reforma, conversão (art. 55 Lei 9.784/99)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Convalidação: SANA o vício, EX TUNC, o ato continua vivo; só COMPETÊNCIA e FORMA (regra 2-3)",
+                "id": "nenhhqxoill",
+                "children": []
+              },
+              {
+                "label": "Não convalida: competência EXCLUSIVA ou EM RAZÃO DA MATÉRIA; forma sem FORMALIDADE INDISPENSÁVEL",
+                "id": "nrt85yshill",
+                "children": []
+              },
+              {
+                "label": "Ratificação = convalidação de vício de COMPETÊNCIA (a autoridade competente confirma o ato)",
+                "id": "nw57x0o4ill",
+                "children": []
+              },
+              {
+                "label": "Reforma = retira só a parte INVÁLIDA e mantém a válida",
+                "id": "ncg93pq9ill",
+                "children": []
+              },
+              {
+                "label": "Conversão = NOVO ato de espécie DIFERENTE aproveita efeitos úteis do ato inválido\n(nomeação efetiva nula → portaria de cargo em comissão)",
+                "id": "nt7racorill",
+                "children": []
+              },
+              {
+                "label": "Exceções a \"finalidade/motivo/objeto não convalida\": tridestinação lícita, objeto plúrimo",
+                "id": "nvpof6vwill",
+                "children": []
+              },
+              {
+                "label": "Convalidar: FACULDADE se o ato original é discricionário; DEVER se vinculado",
+                "id": "nryhlkztill",
+                "children": []
+              },
+              {
+                "label": "Judiciário NUNCA convalida ato de outro Poder; o Legislativo pode, por LEI",
+                "id": "nk31deciill",
+                "children": []
+              }
+            ],
+            "id": "niqv6r8zill"
+          },
+          {
+            "label": "Espécies — NONEP (Hely)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Normativos: decreto (só o Chefe do Executivo; geral, salvo decreto expropriatório = individual) ·\ninstrução normativa · regimento (só interno) · resolução (nunca do Chefe do Executivo)",
+                "id": "nfighc8kill",
+                "children": []
+              },
+              {
+                "label": "Ordinatórios: instruções, circulares, ordens de serviço, ofícios — só internos,\nalcançam servidores hierarquizados à chefia que os expediu",
+                "id": "n69wim5xill",
+                "children": []
+              },
+              {
+                "label": "Negociais: atendem a pedido do particular; nunca de ofício; descumprir → cassação",
+                "id": "n4g7vzqdill",
+                "children": []
+              },
+              {
+                "label": "Licença = VINCULADA, DEFINITIVA, DECLARATÓRIA (\"LI-DE-DE\"); não pode ser negada se os requisitos estão satisfeitos",
+                "id": "nx1hihk3ill",
+                "children": []
+              },
+              {
+                "label": "Autorização = DISCRICIONÁRIA, PRECÁRIA, CONSTITUTIVA (\"AU-DIS-PRE-CO\");\nexceção: autorização de telecomunicações (Lei 9.472/97) é VINCULADA",
+                "id": "nrois30cill",
+                "children": []
+              },
+              {
+                "label": "Permissão de USO (ato) = discricionária e precária; PERMISSÃO DE SERVIÇO PÚBLICO = CONTRATO de adesão (Lei 8.987/95)",
+                "id": "nxytt4dtill",
+                "children": []
+              },
+              {
+                "label": "Autorização (interesse do particular) × permissão (interesse coletivo, com licitação)",
+                "id": "n3901dxqill",
+                "children": []
+              },
+              {
+                "label": "Enunciativos (só certificam/atestam/opinam): certidão, atestado, parecer (opinativo, salvo vinculante), apostila",
+                "id": "nkjo0ftaill",
+                "children": []
+              },
+              {
+                "label": "Parecerista responde se dolo/culpa OU se o parecer é VINCULANTE (art. 38 Lei 8.666, STF)",
+                "id": "njf45pyoill",
+                "children": []
+              },
+              {
+                "label": "Punitivos: multa, interdição, demolição, cassação",
+                "id": "npc0cuviill",
+                "children": []
+              }
+            ],
+            "id": "no7wwl9uill"
+          }
+        ],
+        "id": "np4hihwvill",
+        "collapsed": true
+      },
+      {
+        "label": "TÍTULO VIII — Atendimento ao Público (guia \"DC 8\")",
+        "collapsed": true,
+        "children": [
+          {
+            "label": "Conceitos e efetividade",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Atendimento ao público = materialização da relação Estado ↔ cidadão; é ESTRATÉGICO, não detalhe",
+                "id": "nmbrhq8p4vq",
+                "children": []
+              },
+              {
+                "label": "ATENDIMENTO EFETIVO = EFICIENTE + EFICAZ (falta um → não é efetivo)",
+                "id": "nfn2dszw4vq",
+                "children": []
+              },
+              {
+                "label": "Eficiência = uso racional de tempo e recursos (fila, espera, \"vai e volta\") · Eficácia = resolve a demanda",
+                "id": "nlbtu89h4vq",
+                "children": []
+              },
+              {
+                "label": "Validade = o serviço é exatamente como o usuário espera/necessita, dentro da legalidade\n(base de \"atender a real necessidade\")",
+                "id": "nxy10ruz4vq",
+                "children": []
+              }
+            ],
+            "id": "n8c5cry64vq"
+          },
+          {
+            "label": "Lei 13.460/2017 — definições (art. 5º)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Usuário = pessoa física OU jurídica que se beneficia/utiliza (efetiva ou potencialmente) de serviço público",
+                "id": "nkui30k84vq",
+                "children": []
+              },
+              {
+                "label": "Administração pública = órgão/entidade de QUALQUER Poder da União/Estados/DF/Municípios —\ninclui Advocacia Pública e Defensoria Pública",
+                "id": "np9q5cav4vq",
+                "children": []
+              },
+              {
+                "label": "Agente público = exerce cargo/emprego/função, civil ou militar, ainda que TRANSITORIAMENTE ou SEM REMUNERAÇÃO",
+                "id": "nzgnxon04vq",
+                "children": []
+              },
+              {
+                "label": "Manifestações = reclamações, denúncias, sugestões, ELOGIOS e demais pronunciamentos (não só reclamação)",
+                "id": "ni3fq2tw4vq",
+                "children": []
+              }
+            ],
+            "id": "nz6nwp684vq"
+          },
+          {
+            "label": "As 3 variáveis: Organização, Usuário, Atendente",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Organização = suporte (condições/organização do trabalho, sistemas, informação atualizada, clima)",
+                "id": "ngiys33f4vq",
+                "children": []
+              },
+              {
+                "label": "Usuário = expectativas prévias e representação mental do que é bom atendimento",
+                "id": "ne98x1ea4vq",
+                "children": []
+              },
+              {
+                "label": "Atendente = competência TÉCNICA + INTERPESSOAL (inteligência emocional); o mais crucial é o AUTOCONTROLE",
+                "id": "nwer9tlt4vq",
+                "children": []
+              },
+              {
+                "label": "Erro comum: culpar só o atendente",
+                "id": "ngkzpptc4vq",
+                "children": []
+              },
+              {
+                "label": "Público externo = atividade-FIM; público interno (colaboradores) = atividade-MEIO; excelência vale p/ os dois",
+                "id": "n03ybtex4vq",
+                "children": []
+              }
+            ],
+            "id": "ns8mp4ds4vq"
+          },
+          {
+            "label": "Regras do art. 5º da Lei 13.460/2017",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Urbanidade, respeito, acessibilidade e cortesia · presunção de BOA-FÉ do usuário",
+                "id": "ncb9sald4vq",
+                "children": []
+              },
+              {
+                "label": "Atendimento por ORDEM DE CHEGADA, ressalvados urgência e agendamento; asseguradas as PRIORIDADES\nLEGAIS (PCD, idosos, gestantes, lactantes, pessoas com criança de colo)",
+                "id": "nye2yvwi4vq",
+                "children": []
+              },
+              {
+                "label": "VEDADA a imposição de exigências/obrigações/restrições/sanções NÃO previstas na legislação",
+                "id": "nupq3ym84vq",
+                "children": []
+              },
+              {
+                "label": "Igualdade de tratamento, vedada discriminação (coexiste com as prioridades legais)",
+                "id": "nfu21tm04vq",
+                "children": []
+              },
+              {
+                "label": "Autenticação pelo PRÓPRIO agente à vista do original; VEDADO exigir reconhecimento de firma,\nsalvo dúvida de autenticidade",
+                "id": "n9h82xqb4vq",
+                "children": []
+              },
+              {
+                "label": "Linguagem SIMPLES (sem siglas, jargões, estrangeirismos); VEDADA nova prova de fato já comprovado",
+                "id": "nk49dfzh4vq",
+                "children": []
+              },
+              {
+                "label": "Cumprimento de prazos; horários compatíveis com o bom atendimento; soluções tecnológicas; ética",
+                "id": "nj29kby74vq",
+                "children": []
+              }
+            ],
+            "id": "n5ignxle4vq"
+          },
+          {
+            "label": "Diversidade e atendimento inclusivo",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "NÃO ignore a deficiência; pergunte a melhor forma de ajudar e ACEITE a recusa",
+                "id": "nevwow534vq",
+                "children": []
+              },
+              {
+                "label": "Deficiência visual: NÃO aponte (\"ali/lá\"), descreva o caminho; NÃO aumente o volume da voz",
+                "id": "nr78d4a84vq",
+                "children": []
+              },
+              {
+                "label": "Deficiência auditiva: fale DE FRENTE, mais devagar, tom normal (sem gritar nem sussurrar)",
+                "id": "nspplgft4vq",
+                "children": []
+              },
+              {
+                "label": "Pessoa idosa: NÃO infantilizar (sem diminutivos pejorativos)",
+                "id": "nrvkxawh4vq",
+                "children": []
+              },
+              {
+                "label": "Pessoa transgênero: SEMPRE nome social (mesmo se o documento traz outro); JAMAIS perguntar\nse é \"operada\"; dúvida → chamamento neutro (\"você\")",
+                "id": "nlvoyxu54vq",
+                "children": []
+              },
+              {
+                "label": "Fila preferencial: PCD e idoso (mais de 65 anos); nem toda deficiência é visível\n(símbolo do girassol); presunção de boa-fé",
+                "id": "n3r38o9p4vq",
+                "children": []
+              }
+            ],
+            "id": "nauzhuwk4vq"
+          },
+          {
+            "label": "Presencial × telefônico",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Presencial: linguagem NÃO VERBAL comunica; telefone no atendimento presencial NUNCA simultâneo\n(avisa, atende rápido, retoma)",
+                "id": "n1gfiwss4vq",
+                "children": []
+              },
+              {
+                "label": "Telefônico: atender até o 2º toque (3º em algumas bancas); identificar instituição+setor+servidor+saudação;\nescuta ativa ANTES de informar; resolver ou encaminhar (sem \"empurra-empurra\")",
+                "id": "nwgf1tcl4vq",
+                "children": []
+              },
+              {
+                "label": "JAMAIS \"meu bem / meu amor / querido\"; impessoalidade ≠ atitude robótica (pode sorrir, ser cordial)",
+                "id": "n6mma8n84vq",
+                "children": []
+              },
+              {
+                "label": "Não criticar a instituição diante do usuário; manter sigilo e discrição",
+                "id": "nvf2asjo4vq",
+                "children": []
+              },
+              {
+                "label": "Princípios mais percebidos pelo usuário: competência, presteza, cortesia, paciência, respeito",
+                "id": "ngvqkm924vq",
+                "children": []
+              }
+            ],
+            "id": "nq3mxr2p4vq"
+          },
+          {
+            "label": "Qualidade — expectativa × percepção",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Qualidade = comparação EXPECTATIVA × PERCEPÇÃO: não atendida = ruim · atendida = bom · superada = excelência",
+                "id": "n5xoq8394vq",
+                "children": []
+              },
+              {
+                "label": "4 formas de entender qualidade: excelência · valor (preço × benefício) ·\nconformidade às especificações (cartas de serviço) · superação de expectativas",
+                "id": "n9fxvif64vq",
+                "children": []
+              },
+              {
+                "label": "Paradigma da DESCONFIRMAÇÃO (expectativa × percepção) prevalece no serviço público —\nmodelos: Gaps e SERVQUAL",
+                "id": "npp7d09v4vq",
+                "children": []
+              },
+              {
+                "label": "Teoria da PERFORMANCE (só o percebido) — modelo SERVPERF",
+                "id": "n0c48tss4vq",
+                "children": []
+              },
+              {
+                "label": "SERVQUAL = 2 etapas (expectativas + percepções); SERVPERF = só percepções",
+                "id": "n8a1qt374vq",
+                "children": []
+              },
+              {
+                "label": "Modelo dos Gaps (Parasuraman/Zeithaml/Berry): Gap 1 esperado × percepção gerencial · Gap 2 percepção\ngerencial × especificações · Gap 3 especificações × execução · Gap 4 execução × comunicação externa · Gap 5 esperado × percebido",
+                "id": "n642tulo4vq",
+                "children": []
+              },
+              {
+                "label": "Dimensões cobradas: RESPONSIVIDADE (prestativo com rapidez) · SEGURANÇA (credibilidade) ·\nTANGIBILIDADE (instalações; tangíveis e intangíveis)",
+                "id": "n4ux66qq4vq",
+                "children": []
+              },
+              {
+                "label": "Para melhorar a qualidade: OUVIR os atendentes e OUVIR o usuário",
+                "id": "n84jaeh34vq",
+                "children": []
+              }
+            ],
+            "id": "nzgelyle4vq"
+          }
+        ],
+        "id": "nmeycr0j4vq"
+      },
+      {
+        "label": "TÍTULO X — Trabalho em Grupo e em Equipe (guia \"DC 10\")",
+        "collapsed": true,
+        "children": [
+          {
+            "label": "Grupo × Equipe — a distinção central",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "\"Toda equipe é um grupo, mas nem todo grupo é uma equipe\" (grupo = gênero, equipe = espécie)",
+                "id": "n1xjhmss4vq",
+                "children": []
+              },
+              {
+                "label": "Grupo: ajuda mútua + troca de informação; resultado INDIVIDUAL; responsabilidade INDIVIDUAL;\navaliação individual prevalece; liderança FORMAL",
+                "id": "nuxwzwta4vq",
+                "children": []
+              },
+              {
+                "label": "Equipe: INTERDEPENDÊNCIA + objetivo comum + SINERGIA; resultado COLETIVO; responsabilidade\nCOMPARTILHADA; avaliação coletiva prevalece; liderança formal OU informal; coesão MAIOR",
+                "id": "nn4fhpyb4vq",
+                "children": []
+              },
+              {
+                "label": "Sinergia = o todo é maior que a soma das partes (marca da equipe)",
+                "id": "n4pajvmm4vq",
+                "children": []
+              },
+              {
+                "label": "Grupo NÃO é individualista — o individual é a responsabilidade pelo resultado, não a convivência",
+                "id": "n27bmpws4vq",
+                "children": []
+              },
+              {
+                "label": "Origem: Experimentos de Hawthorne (relações humanas)",
+                "id": "nps0yh624vq",
+                "children": []
+              }
+            ],
+            "id": "nd5rinle4vq"
+          },
+          {
+            "label": "Tipos de grupo e de equipe",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Grupo: formal (estrutura da organização) × informal (espontâneo)",
+                "id": "nu4l2j984vq",
+                "children": []
+              },
+              {
+                "label": "De comando e de tarefa = FORMAL; de interesse e de amizade = INFORMAL",
+                "id": "njje86ls4vq",
+                "children": []
+              },
+              {
+                "label": "Círculo de Controle de Qualidade: adesão voluntária, mas instituído pela organização → FORMAL",
+                "id": "ns3trl464vq",
+                "children": []
+              },
+              {
+                "label": "Equipe de solução de problemas: 5-12, MESMO departamento, algumas horas/semana",
+                "id": "n4b8vq3r4vq",
+                "children": []
+              },
+              {
+                "label": "Equipe autogerenciada: 10-15, assumem tarefas dos antigos chefes, liderança INFORMAL",
+                "id": "n8q22kt44vq",
+                "children": []
+              },
+              {
+                "label": "Equipe multifuncional (funcional cruzada): MESMO nível, setores DIFERENTES, projeto comum (a mais cobrada)",
+                "id": "n4x6rik24vq",
+                "children": []
+              },
+              {
+                "label": "Força-tarefa (subtipo): TEMPORÁRIA + EMERGENCIAL · Comitê (subtipo): mais PERMANENTE",
+                "id": "n2m9ppcq4vq",
+                "children": []
+              },
+              {
+                "label": "Equipes virtuais: membros dispersos geograficamente + TI",
+                "id": "n9cu1is14vq",
+                "children": []
+              }
+            ],
+            "id": "napskbq54vq"
+          },
+          {
+            "label": "Estágios de desenvolvimento (Tuckman)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "1. Formação — incerteza, pessoas se conhecendo",
+                "id": "n7i3n3za4vq",
+                "children": []
+              },
+              {
+                "label": "2. Tempestade/tormenta — conflitos de TAREFA e de PROCESSO são saudáveis;\nde RELACIONAMENTO travam a transição",
+                "id": "n02yttvb4vq",
+                "children": []
+              },
+              {
+                "label": "3. Normalização — coesão e proximidade (ainda não a fase mais produtiva)",
+                "id": "nbbv2ifx4vq",
+                "children": []
+              },
+              {
+                "label": "4. Desempenho — totalmente funcional, produz muito",
+                "id": "n87c84q84vq",
+                "children": []
+              },
+              {
+                "label": "5. Finalização/interrupção — encerramento; a entrada de novo membro pode \"resetar\" a equipe",
+                "id": "nb1tz0oe4vq",
+                "children": []
+              }
+            ],
+            "id": "nnvsghno4vq"
+          },
+          {
+            "label": "Estrutura e condições do grupo",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Condições externas: alinhamento à estratégia, estruturas de autoridade, regulamentos, avaliação,\ncultura, condições físicas",
+                "id": "n6853tkh4vq",
+                "children": []
+              },
+              {
+                "label": "Estrutura: liderança formal · status · tamanho ADEQUADO · composição HETEROGÊNEA\n(papéis complementares) · coesão",
+                "id": "nxb7e8zf4vq",
+                "children": []
+              },
+              {
+                "label": "Papéis = padrões comportamentais esperados; falta de clareza → FOLGA SOCIAL\n(\"encostar\" no trabalho alheio)",
+                "id": "ntmi8mmo4vq",
+                "children": []
+              },
+              {
+                "label": "Conflito de papéis = expectativas contraditórias — deve ser eliminado",
+                "id": "nktfqsot4vq",
+                "children": []
+              },
+              {
+                "label": "Normas: desempenho, aparência, organização social, locação de recursos; conformidade = alinhar-se a elas",
+                "id": "n6lblzew4vq",
+                "children": []
+              }
+            ],
+            "id": "nyc4csew4vq"
+          },
+          {
+            "label": "Personalidade e traços relevantes (Robbins)",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Personalidade = organização dinâmica interna (Allport); padrões de pensar, agir, sentir (APA);\ndeterminantes: hereditariedade, ambiente, situação",
+                "id": "n9ahs6224vq",
+                "children": []
+              },
+              {
+                "label": "Lócus de controle INTERNO (favorece a equipe, se autorresponsabiliza) ×\nEXTERNO (prejudica, foge da responsabilidade)",
+                "id": "nqnmv39v4vq",
+                "children": []
+              },
+              {
+                "label": "Maquiavelismo: \"os fins justificam os meios\" — em excesso corrói confiança; manter no MÍNIMO ético",
+                "id": "ncgaz61v4vq",
+                "children": []
+              },
+              {
+                "label": "Automonitoramento = ajustar o comportamento ao contexto (ligado ao autocontrole)",
+                "id": "nwlq9vag4vq",
+                "children": []
+              },
+              {
+                "label": "Personalidade Tipo A (iniciativa, velocidade, risco) + Tipo B (ponderação, análise de riscos) —\nequipes eficazes COMBINAM os dois",
+                "id": "na6z7pm94vq",
+                "children": []
+              }
+            ],
+            "id": "n4eafcgn4vq"
+          },
+          {
+            "label": "Comportamento interpessoal e empatia",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Receptivo (deixa o outro se expressar, sem defesas — abre espaço para a assertividade) ×\nDefensivo (percebe perigo, gasta energia se defendendo — abre espaço para a agressividade)",
+                "id": "ndxxsl4i4vq",
+                "children": []
+              },
+              {
+                "label": "Assertivo (firmeza COM respeito) ≠ Agressivo (não respeita o outro; nasce do defensivo)",
+                "id": "ndytvwg94vq",
+                "children": []
+              },
+              {
+                "label": "Empatia (cognitiva) = colocar-se no lugar do outro e USAR isso para guiar a ação — central na EQUIPE",
+                "id": "nbhlzkc94vq",
+                "children": []
+              },
+              {
+                "label": "Simpatia = só cordialidade (não garante compreensão); compaixão = só pesar",
+                "id": "nfjhcviz4vq",
+                "children": []
+              },
+              {
+                "label": "No ATENDIMENTO: empatia + simpatia; só simpatia é conduta inadequada",
+                "id": "n97fb91a4vq",
+                "children": []
+              },
+              {
+                "label": "Competência interpessoal: escuta ativa, dar/receber feedback, comunicação de mão dupla",
+                "id": "n0u253ye4vq",
+                "children": []
+              }
+            ],
+            "id": "nz5a4per4vq"
+          },
+          {
+            "label": "Coesão, pensamento grupal e avaliação",
+            "collapsed": true,
+            "children": [
+              {
+                "label": "Coesão (Robbins): grau de atração entre os membros; na equipe deve ser MAIOR",
+                "id": "ndcwiy7k4vq",
+                "children": []
+              },
+              {
+                "label": "PENSAMENTO GRUPAL: coesão excessiva → concordância automática, rejeição de críticas externas →\nPIORA as decisões; coesão alta não garante eficácia",
+                "id": "nhljt4q14vq",
+                "children": []
+              },
+              {
+                "label": "Equipe NÃO serve para tudo: rapidez e decisão focalizada → equipe;\ntrabalho padronizado/repetitivo e tarefas independentes → GRUPO simples",
+                "id": "n48kmoqf4vq",
+                "children": []
+              },
+              {
+                "label": "Fatores positivos (Robbins): participação/empowerment, responsabilidade difusa, clareza,\ninteração, flexibilidade, foco, criatividade, rapidez",
+                "id": "ndqc2qbh4vq",
+                "children": []
+              },
+              {
+                "label": "DESEMPENHO (comportamentos/processos — o \"COMO\") × EFETIVIDADE (resultados × metas — o \"QUANTO\") —\ndimensões diferentes",
+                "id": "noo34z884vq",
+                "children": []
+              },
+              {
+                "label": "Imagem do servidor perante a opinião pública: agir com ética, célere e com efetividade",
+                "id": "nkiy3np24vq",
+                "children": []
+              }
+            ],
+            "id": "nqzaq90l4vq"
+          }
+        ],
+        "id": "nl6utmnp4vq"
+      }
+    ],
+    "id": "n6jlwdxok2o"
+  }
+}

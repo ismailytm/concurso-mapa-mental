@@ -463,7 +463,8 @@
                 ],
                 "collapsed": true
               }
-            ]
+            ],
+            "collapsed": true
           },
           {
             "id": "t1-cp",
@@ -524,8 +525,7 @@
             ],
             "collapsed": true
           }
-        ],
-        "collapsed": true
+        ]
       }
     ]
   }
