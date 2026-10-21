@@ -42,46 +42,216 @@
               {
                 "id": "t1-pre-a",
                 "label": "Conteúdo: instituir \"um Estado Democrático\"; assegurar direitos sociais e\nindividuais, liberdade, segurança, bem-estar, desenvolvimento, igualdade e\njustiça; sociedade fraterna, pluralista e sem preconceitos; solução pacífica\ndas controvérsias; \"sob a proteção de Deus\"",
-                "children": []
+                "children": [],
+                "color": "cinza"
               },
               {
                 "id": "t1-pre-b",
-                "label": "Sem força normativa · não cria direitos/deveres ·\nnão é parâmetro de controle de constitucionalidade",
+                "label": "Não possui força normativa",
+                "children": []
+              },
+              {
+                "id": "nup7f6uqp37",
+                "label": "Possui função de diretriz interpretativa do texto da constituição",
                 "children": []
               },
               {
                 "id": "t1-pre-c",
-                "label": "Não é norma de reprodução obrigatória (STF, ADI 2.076 —\n\"sob a proteção de Deus\" pode faltar nas Constituições estaduais)",
+                "label": "Não é norma de observância obrigatória: Constituições dos Estados-membros\nnão são obrigadas a repetir, copiar ou reproduzir todos os dispositivos \npresentes na Constituição Federal.",
                 "children": []
               },
               {
-                "id": "t1-pre-d",
-                "label": "Função: diretriz / vetor de interpretação da Constituição",
+                "id": "nxgaquxz4d5",
+                "label": "Não é parâmetro de controle",
+                "children": []
+              }
+            ],
+            "collapsed": true
+          },
+          {
+            "id": "t1-vg",
+            "label": "Princípios Fundamentais",
+            "refs": [
+              {
+                "label": "Slide — aula 1",
+                "url": "conteudo/slides/DC1_aula1_slide.pdf",
+                "kind": "slide"
+              },
+              {
+                "label": "Figura — mapa dos 8 blocos (slide aula 1)",
+                "url": "conteudo/figuras/dc1/aula1p11_principios-fundamentais-8-blocos.png",
+                "kind": "figura"
+              }
+            ],
+            "children": [
+              {
+                "id": "t1-vg-a",
+                "label": "Princípios estruturantes do Estado brasileiro,\nescolhidos pelo Poder Constituinte Originário",
                 "children": []
               },
               {
-                "id": "t1-vg",
-                "label": "Visão geral — 8 blocos didáticos",
-                "refs": [
-                  {
-                    "label": "Figura — mapa dos 8 blocos (slide aula 1)",
-                    "url": "conteudo/figuras/dc1/aula1p11_principios-fundamentais-8-blocos.png",
-                    "kind": "figura"
-                  }
-                ],
+                "id": "t1-vg-b",
+                "label": "1 Federativo\n2 Republicano\n3 Estado Democrático de Direito\n4 Soberania Popular\n5 Separação de Poderes\n6 Fundamentos (art. 1º)\n7 Objetivos (art. 3º)\n8 Princípios na Ordem Internacional (art. 4º)",
+                "children": []
+              }
+            ],
+            "collapsed": true
+          },
+          {
+            "id": "nfc182uj04p",
+            "label": "Princípio Federativo",
+            "children": [
+              {
+                "id": "nzdflz77gna",
+                "label": "Arts. 1º e 18",
+                "children": []
+              },
+              {
+                "id": "nxo9j1r03iq",
+                "label": "Forma de Estado",
                 "children": [
                   {
-                    "id": "t1-vg-a",
-                    "label": "Princípios estruturantes do Estado brasileiro,\nescolhidos pelo Poder Constituinte Originário",
+                    "id": "t1-formas-a",
+                    "label": "Forma de Estado: Federação (organização territorial, poder descentralizado, união indissolúvel)",
                     "children": []
                   },
                   {
-                    "id": "t1-vg-b",
-                    "label": "1 Federativo · 2 Republicano · 3 Estado Democrático de Direito ·\n4 Soberania Popular · 5 Separação de Poderes · 6 Fundamentos (art. 1º) ·\n7 Objetivos (art. 3º) · 8 Princípios na Ordem Internacional (art. 4º)",
+                    "id": "npq12qnea16",
+                    "label": "Forma de governo: República (chefia do Estado)",
+                    "children": []
+                  },
+                  {
+                    "id": "nadxsekb362",
+                    "label": "Sistema de governo: Presidencialismo (relação Executivo × Legislativo)",
+                    "children": []
+                  },
+                  {
+                    "id": "nobidxgayiq",
+                    "label": "Regime político: Democracia semidireta / participativa",
                     "children": []
                   }
                 ],
                 "collapsed": true
+              },
+              {
+                "id": "n35yj0pns9d",
+                "label": "Autonomia política (4 capacidades)",
+                "children": [
+                  {
+                    "id": "nh0ywoy0y5s",
+                    "label": "Auto-organização",
+                    "children": []
+                  },
+                  {
+                    "id": "n728q1v4fx4",
+                    "label": "Autogoverno",
+                    "children": []
+                  },
+                  {
+                    "id": "ncwhfd46ipk",
+                    "label": "Autolegislação",
+                    "children": []
+                  },
+                  {
+                    "id": "n2khn300ky0",
+                    "label": "Autoadministração",
+                    "children": []
+                  }
+                ],
+                "collapsed": true
+              },
+              {
+                "id": "t1-formas-rep",
+                "label": "Princípio Republicano (art. 1º)",
+                "children": [
+                  {
+                    "id": "t1-formas-rep-a",
+                    "label": "Características: eleição + mandato (alternância no poder) +\ndever de prestar contas (accountability)",
+                    "children": []
+                  },
+                  {
+                    "id": "t1-formas-rep-b",
+                    "label": "NÃO é cláusula pétrea expressa",
+                    "children": []
+                  },
+                  {
+                    "id": "t1-formas-rep-c",
+                    "label": "Divergência: limitação material implícita (plebiscito de 1993 — art. 2º do ADCT)",
+                    "children": []
+                  }
+                ],
+                "collapsed": true
+              },
+              {
+                "id": "n10efgt2jfb",
+                "label": "Cláusula pétrea (não pode ser abolido por emenda)\n(FOi VOcê que SEPAROU os DIREITOS)",
+                "children": []
+              },
+              {
+                "id": "np39kfh5ub8",
+                "label": "De 3º grau\nPor segregação\nCooperativa\nAssimétrica",
+                "children": [
+                  {
+                    "id": "n9nlz4b0l7r",
+                    "label": "De 3º grau:\nNacional - União\nRegional - Estados/DF\nLocal - Municípios\n\n(Município como ente autônomo é peculiaridade brasileira)",
+                    "children": []
+                  },
+                  {
+                    "id": "nxiv4fl710n",
+                    "label": "Por segregação (movimento centrífugo, do Estado unitário de 1824) —\ninverso dos EUA (agregação)",
+                    "children": []
+                  },
+                  {
+                    "id": "nsato79drpb",
+                    "label": "Cooperativa (competências comuns art. 23 / concorrentes art. 24)",
+                    "children": []
+                  },
+                  {
+                    "id": "nzj99dql7me",
+                    "label": "Assimétrica (DF, Zona Franca)",
+                    "children": []
+                  }
+                ],
+                "collapsed": true
+              },
+              {
+                "id": "t1-formas-edd",
+                "label": "Estado Democrático de Direito (art. 1º, parte final)",
+                "children": [
+                  {
+                    "id": "t1-formas-edd-a",
+                    "label": "Estado Democrático: poder do povo; espécies de democracia —\ndireta · indireta (representativa) · semidireta (participativa) = Brasil",
+                    "children": []
+                  },
+                  {
+                    "id": "t1-formas-edd-b",
+                    "label": "Estado de Direito: observância das leis; criado em oposição ao antigo Estado de Polícia",
+                    "children": []
+                  },
+                  {
+                    "id": "t1-formas-edd-c",
+                    "label": "Instrumentos de participação: plebiscito (prévio) · referendo (posterior) ·\niniciativa popular · ação popular · júri",
+                    "children": []
+                  }
+                ],
+                "collapsed": true
+              }
+            ],
+            "refs": [
+              {
+                "label": "Slide — aula 1",
+                "url": "conteudo/slides/DC1_aula1_slide.pdf",
+                "kind": "slide"
+              },
+              {
+                "label": "Slide — aula 2",
+                "url": "conteudo/slides/DC1_aula2_slide.pdf",
+                "kind": "slide"
+              },
+              {
+                "label": "Figura — Princípio Federativo (slide aula 1)",
+                "url": "conteudo/figuras/dc1/aula1p12_principio-federativo.png",
+                "kind": "figura"
               }
             ],
             "collapsed": true
@@ -338,137 +508,8 @@
             "collapsed": true
           },
           {
-            "id": "t1-formas",
-            "label": "Formas: Estado · governo · sistema · regime",
-            "refs": [
-              {
-                "label": "Slide — aula 2",
-                "url": "conteudo/slides/DC1_aula2_slide.pdf",
-                "kind": "slide"
-              },
-              {
-                "label": "Figura — Princípio Republicano",
-                "url": "conteudo/figuras/dc1/aula2p3_principio-republicano.png",
-                "kind": "figura"
-              },
-              {
-                "label": "Figura — Estado Democrático de Direito",
-                "url": "conteudo/figuras/dc1/aula2p5_estado-democratico-de-direito.png",
-                "kind": "figura"
-              }
-            ],
-            "children": [
-              {
-                "id": "t1-formas-a",
-                "label": "Forma de Estado = Federação (organização territorial do poder) ·\nForma de governo = República (chefia do Estado) ·\nSistema de governo = Presidencialismo (relação Executivo × Legislativo) ·\nRegime político = Democracia semidireta / participativa",
-                "children": []
-              },
-              {
-                "id": "t1-formas-rep",
-                "label": "Princípio Republicano (art. 1º)",
-                "children": [
-                  {
-                    "id": "t1-formas-rep-a",
-                    "label": "Características: eleição + mandato (alternância no poder) +\ndever de prestar contas (accountability)",
-                    "children": []
-                  },
-                  {
-                    "id": "t1-formas-rep-b",
-                    "label": "NÃO é cláusula pétrea expressa",
-                    "children": []
-                  },
-                  {
-                    "id": "t1-formas-rep-c",
-                    "label": "Divergência: limitação material implícita (plebiscito de 1993 — art. 2º do ADCT)",
-                    "children": []
-                  }
-                ],
-                "collapsed": true
-              },
-              {
-                "id": "t1-formas-edd",
-                "label": "Estado Democrático de Direito (art. 1º, parte final)",
-                "children": [
-                  {
-                    "id": "t1-formas-edd-a",
-                    "label": "Estado Democrático: poder do povo; espécies de democracia —\ndireta · indireta (representativa) · semidireta (participativa) = Brasil",
-                    "children": []
-                  },
-                  {
-                    "id": "t1-formas-edd-b",
-                    "label": "Estado de Direito: observância das leis; criado em oposição ao antigo Estado de Polícia",
-                    "children": []
-                  },
-                  {
-                    "id": "t1-formas-edd-c",
-                    "label": "Instrumentos de participação: plebiscito (prévio) · referendo (posterior) ·\niniciativa popular · ação popular · júri",
-                    "children": []
-                  }
-                ],
-                "collapsed": true
-              }
-            ],
-            "collapsed": true
-          },
-          {
-            "id": "t1-fed",
-            "label": "Federação brasileira",
-            "refs": [
-              {
-                "label": "Slide — aula 2",
-                "url": "conteudo/slides/DC1_aula2_slide.pdf",
-                "kind": "slide"
-              },
-              {
-                "label": "Figura — Princípio Federativo",
-                "url": "conteudo/figuras/dc1/aula1p12_principio-federativo.png",
-                "kind": "figura"
-              }
-            ],
-            "children": [
-              {
-                "id": "t1-fed-0",
-                "label": "Base: arts. 1º e 18",
-                "children": []
-              },
-              {
-                "id": "t1-fed-a",
-                "label": "Por segregação (movimento centrífugo, do Estado unitário de 1824) —\ninverso dos EUA (agregação)",
-                "children": []
-              },
-              {
-                "id": "t1-fed-b",
-                "label": "De 3º grau: União, Estados/DF e Municípios\n(Município como ente autônomo é peculiaridade brasileira)",
-                "children": []
-              },
-              {
-                "id": "t1-fed-c",
-                "label": "Cooperativa (competências comuns art. 23 / concorrentes art. 24) ·\nassimétrica (DF, Zona Franca)",
-                "children": []
-              },
-              {
-                "id": "t1-fed-d",
-                "label": "Indissolúvel — não há direito de secessão;\ntentativa autoriza intervenção federal (art. 34, I)",
-                "children": []
-              },
-              {
-                "id": "t1-fed-cap",
-                "label": "Autonomia dos entes — 4 capacidades",
-                "children": [
-                  {
-                    "id": "t1-fed-cap-a",
-                    "label": "Auto-organização · Autogoverno · Autolegislação · Autoadministração",
-                    "children": []
-                  }
-                ],
-                "collapsed": true
-              }
-            ],
-            "collapsed": true
-          },
-          {
             "id": "t1-cp",
-            "label": "Cláusulas pétreas (art. 60, §4º) — FOi VOcê que SEPAROU os DIREITOS",
+            "label": "Cláusulas pétreas (art. 60, §4º) (FOi VOcê que SEPAROU os DIREITOS)",
             "refs": [
               {
                 "label": "CF/88 — art. 60, §4º (Planalto)",
@@ -516,16 +557,136 @@
                 "id": "t1-cp-c",
                 "label": "República NÃO é cláusula pétrea expressa — limitação material implícita\n(art. 2º do ADCT, plebiscito de 1993)",
                 "children": []
-              },
-              {
-                "id": "t1-cp-d",
-                "label": "\"Direitos e garantias individuais\": doutrina majoritária amplia ao conjunto\ndos direitos e garantias fundamentais",
-                "children": []
               }
             ],
             "collapsed": true
           }
         ]
+      },
+      {
+        "id": "t2",
+        "label": "TÍTULO II — Dos Direitos e Garantias Fundamentais (arts. 5º a 17º)",
+        "refs": [
+          {
+            "label": "CF/88 — Título II (Planalto)",
+            "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#tituloii",
+            "kind": "cf"
+          }
+        ],
+        "children": [
+          {
+            "id": "t2-c1",
+            "label": "Cap. I — Dos Direitos e Deveres Individuais e Coletivos (art. 5º)",
+            "refs": [
+              {
+                "label": "CF/88 — art. 5º (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art5",
+                "kind": "cf"
+              }
+            ],
+            "children": []
+          },
+          {
+            "id": "t2-c2",
+            "label": "Cap. II — Dos Direitos Sociais (arts. 6º a 11)",
+            "refs": [
+              {
+                "label": "CF/88 — art. 6º (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art6",
+                "kind": "cf"
+              }
+            ],
+            "children": []
+          },
+          {
+            "id": "t2-c3",
+            "label": "Cap. III — Da Nacionalidade (arts. 12 e 13)",
+            "refs": [
+              {
+                "label": "CF/88 — art. 12 (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art12",
+                "kind": "cf"
+              }
+            ],
+            "children": []
+          },
+          {
+            "id": "t2-c4",
+            "label": "Cap. IV — Dos Direitos Políticos (arts. 14 a 16)",
+            "refs": [
+              {
+                "label": "CF/88 — art. 14 (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art14",
+                "kind": "cf"
+              }
+            ],
+            "children": []
+          },
+          {
+            "id": "t2-c5",
+            "label": "Cap. V — Dos Partidos Políticos (art. 17)",
+            "refs": [
+              {
+                "label": "CF/88 — art. 17 (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art17",
+                "kind": "cf"
+              }
+            ],
+            "children": []
+          }
+        ],
+        "collapsed": true
+      },
+      {
+        "id": "t3",
+        "label": "TÍTULO III — Da Organização do Estado (arts. 37º a 41º)",
+        "refs": [
+          {
+            "label": "CF/88 — Título III (Planalto)",
+            "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#tituloiii",
+            "kind": "cf"
+          }
+        ],
+        "children": [
+          {
+            "id": "t3-c7",
+            "label": "Cap. VII — Da Administração Pública (arts. 37 a 41)",
+            "refs": [
+              {
+                "label": "CF/88 — art. 37 (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art37",
+                "kind": "cf"
+              }
+            ],
+            "children": [
+              {
+                "id": "t3-c7-s1",
+                "label": "Seção I — Disposições Gerais (arts. 37 e 38)",
+                "refs": [
+                  {
+                    "label": "CF/88 — art. 37 (Planalto)",
+                    "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art37",
+                    "kind": "cf"
+                  }
+                ],
+                "children": []
+              },
+              {
+                "id": "t3-c7-s2",
+                "label": "Seção II — Dos Servidores Públicos (arts. 39 a 41)",
+                "refs": [
+                  {
+                    "label": "CF/88 — art. 39 (Planalto)",
+                    "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art39",
+                    "kind": "cf"
+                  }
+                ],
+                "children": []
+              }
+            ]
+          }
+        ],
+        "collapsed": true
       }
     ]
   }

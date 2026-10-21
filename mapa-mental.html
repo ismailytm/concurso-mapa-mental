@@ -130,6 +130,17 @@
   .node[data-color="vermelho"]{background:var(--c-vermelho); border-color:var(--c-vermelho-b); color:var(--node-text)}
   .node[data-color="cinza"]   {background:var(--c-cinza);    border-color:var(--c-cinza-b);    color:var(--node-text)}
   .node.selected{outline:2px solid var(--accent); outline-offset:2px}
+  /* largura fixada pelo usuário (node.w): quebra o texto sozinho dentro dela */
+  .node.fixw{box-sizing:border-box; white-space:pre-wrap; overflow-wrap:anywhere}
+  .node.fixw textarea.edit{white-space:pre-wrap; min-width:0}
+  /* alça de largura: borda direita do balão selecionado (só modo Pasta) */
+  /* área de pegar = borda + faixa interna dos pontinhos (cabe no padding de 13px, não muda a largura) */
+  .rsz{position:absolute; top:0; bottom:0; right:-5px; width:16px; cursor:ew-resize; display:none; z-index:3}
+  .rsz::after{content:""; position:absolute; top:50%; right:8px; width:6px; height:16px; margin-top:-8px;
+    background-image:radial-gradient(circle,var(--accent) 1.2px,transparent 1.5px); background-size:6px 5.4px; opacity:.85}
+  .rsz:hover::after{opacity:1; filter:brightness(1.3)}
+  .node.selected > .rsz{display:block}
+  body.readonly .rsz{display:none !important}
   .node.dragging{opacity:.35}
   .node.drop-target{outline:2px dashed var(--accent); outline-offset:2px}   /* soltar = vira filho */
   /* soltar entre irmãos: linha de inserção */
@@ -497,7 +508,7 @@ let remoteUrl = '';            // URL base do repo (com "/" no fim)
 // por caminho quando o navegador está logado no tenant. Já URL-encodada (%C3%A2 = â, %20 = espaço).
 // Vai pro repo público, mas não expõe conteúdo: sem login, a URL só mostra a tela de autenticação.
 // Override por dispositivo: localStorage['mm_ref_base'] (inclusive '' p/ desligar) ou ?refbase=<url>.
-const REF_BASE_DEFAULT = 'https://digivoxcombr-my.sharepoint.com/personal/ismaily_mendes_smartspace_us/Documents/C%C3%A2mara%20dos%20Deputados/projetos/inss-df/';
+const REF_BASE_DEFAULT = 'https://digivoxcombr-my.sharepoint.com/personal/ismaily_mendes_smartspace_us/Documents/C%C3%A2mara%20dos%20Deputados/projetos/concursos/inss-df/';
 let REF_BASE = REF_BASE_DEFAULT;
 const els = new Map();     // id -> elemento .node
 let LAYOUT = new Map();    // id -> {node,parent,depth,x,y,w,h}
@@ -527,6 +538,7 @@ function normalize(node){
       });
     if(!node.refs.length) delete node.refs;
   } else if(node.refs !== undefined){ delete node.refs; }
+  if(!(node.w > 0)) delete node.w;
   node.children.forEach(normalize);
   return node;
 }
@@ -991,13 +1003,20 @@ function toggleCollapse(id){
   });
   positionActionBar();
 }
+// nós afetados por uma cor: só o nó · Shift = + descendentes · Alt = irmãos · Shift+Alt = irmãos + ramos
+function colorTargets(id, opts){
+  const ctx = findCtx(id); if(!ctx) return [];
+  const roots = (opts.siblings && ctx.parent) ? ctx.parent.children : [ctx.node];
+  const out = [];
+  roots.forEach(r => opts.deep ? walk(r, n => out.push(n)) : out.push(r));
+  return out;
+}
 function setColor(id, key, opts){
   if(readOnly) return;
   opts = opts || {};
   const ctx = findCtx(id); if(!ctx) return;
-  const apply = n => { if(key && key !== 'auto') n.color = key; else delete n.color; };
   const roots = (opts.siblings && ctx.parent) ? ctx.parent.children.slice() : [ctx.node];
-  roots.forEach(r => opts.deep ? walk(r, apply) : apply(r));
+  colorTargets(id, opts).forEach(n => { if(key && key !== 'auto') n.color = key; else delete n.color; });
   snapshot(); render();
   if(opts.siblings) toast('Cor aplicada aos ' + roots.length + ' irmãos' + (opts.deep ? ' (com ramos)' : ''));
   else if(opts.deep) toast('Cor aplicada ao ramo (' + countDesc(ctx.node) + ' descendentes)');
@@ -1190,6 +1209,9 @@ function layout(){
     if(node.color) el.dataset.color = node.color; else el.removeAttribute('data-color');
     el.classList.toggle('selected', id === selectedId);
     if(id !== editingId) el.querySelector('.lbl').textContent = node.label || '​';
+    el.classList.toggle('fixw', !!node.w);
+    el.style.width = node.w ? node.w + 'px' : '';
+    if(!el.querySelector('.rsz')) addResizeHandle(el, id);
 
     let tg = el.querySelector('.toggle');
     if(node.children.length){
@@ -1651,11 +1673,73 @@ bar.addEventListener('click', e => {
   if(a === 'color')   bar.querySelector('.sw').classList.toggle('open');
 });
 
+// prévia da cor: passar o mouse na bolinha pinta o balão selecionado; só o clique aplica
+// Shift/Alt segurados = prévia do ramo / irmãos, igual ao clique
+let _pvKey = null, _pvNodes = [];
+function paintNode(n, c){
+  const el = els.get(n.id); if(!el) return;
+  if(c) el.dataset.color = c; else el.removeAttribute('data-color');
+}
+function previewColor(key, e){
+  _pvNodes.forEach(n => paintNode(n, n.color));          // desfaz a prévia anterior
+  _pvNodes = []; _pvKey = key || null;
+  if(!key || selectedId == null) return;
+  _pvNodes = colorTargets(selectedId, { deep: e.shiftKey, siblings: e.altKey });
+  _pvNodes.forEach(n => paintNode(n, key === 'auto' ? null : key));
+}
+bar.addEventListener('mouseover', e => { const b = e.target.closest('[data-sc]'); if(b) previewColor(b.dataset.sc, e); });
+bar.addEventListener('mouseout',  e => { if(e.target.closest('[data-sc]')) previewColor(null); });
+['keydown','keyup'].forEach(t => document.addEventListener(t, e => {
+  if(_pvKey && (e.key === 'Shift' || e.key === 'Alt')){ if(e.key === 'Alt') e.preventDefault(); previewColor(_pvKey, e); }
+}));
+// botões da barra não pegam foco (senão Shift/Alt depois do clique acende o outline de foco)
+bar.addEventListener('pointerdown', e => { if(e.target.closest('button')) e.preventDefault(); });
+
 // ===========================================================================
 //  Edição de texto
 // ===========================================================================
+// alça na borda direita: arrastar fixa a largura (node.w); duplo-clique volta ao automático
+function addResizeHandle(el, id){
+  const h = document.createElement('div');
+  h.className = 'rsz'; h.title = 'Arraste p/ ajustar a largura · duplo-clique = automática';
+  h.addEventListener('pointerdown', ev => {
+    ev.stopPropagation(); ev.preventDefault();
+    if(readOnly) return;
+    finishTween();
+    const ctx = findCtx(id); if(!ctx) return;
+    const x0 = ev.clientX, w0 = el.offsetWidth;
+    h.setPointerCapture(ev.pointerId);
+    const move = e => {
+      ctx.node.w = Math.round(Math.max(60, w0 + (e.clientX - x0) / zoom));
+      const ta = el.querySelector('textarea.edit');
+      layout(); if(ta){ autoGrow(ta); layout(); }
+      positionActionBar();
+    };
+    const up = () => {
+      h.removeEventListener('pointermove', move);
+      h.removeEventListener('pointerup', up);
+      h.removeEventListener('pointercancel', up);
+      snapshot();
+    };
+    h.addEventListener('pointermove', move);
+    h.addEventListener('pointerup', up);
+    h.addEventListener('pointercancel', up);
+  });
+  h.addEventListener('dblclick', ev => {
+    ev.stopPropagation();
+    const ctx = findCtx(id); if(readOnly || !ctx || !ctx.node.w) return;
+    delete ctx.node.w; snapshot(); render(); positionActionBar();
+  });
+  el.appendChild(h);
+}
+
 // cresce a caixa de edição no tamanho exato do texto (largura E altura), sem soft-wrap
 function autoGrow(ta){
+  if(ta.closest('.fixw')){           // largura fixa: ocupa a largura do balão e quebra sozinho
+    ta.style.width = '100%'; ta.style.height = '0px';
+    ta.style.height = ta.scrollHeight + 'px';
+    return;
+  }
   ta.style.width = '0px'; ta.style.height = '0px';
   ta.style.width  = Math.max(120, Math.min(ta.scrollWidth + 2, 1000)) + 'px';
   ta.style.height = ta.scrollHeight + 'px';
@@ -1672,11 +1756,12 @@ function startEdit(id){
   const ta = document.createElement('textarea');
   ta.className = 'edit';
   ta.value = ctx.node.label;
-  ta.wrap = 'off';
+  ta.wrap = ctx.node.w ? 'soft' : 'off';
   el.appendChild(ta);
   autoGrow(ta);
   ta.focus(); ta.select();
-  ta.addEventListener('input', () => autoGrow(ta));
+  // reflow ao digitar: o balão cresce e empurra os vizinhos na hora (antes só ao confirmar)
+  ta.addEventListener('input', () => { autoGrow(ta); layout(); positionActionBar(); });
   ta.addEventListener('pointerdown', ev => ev.stopPropagation());
   ta.addEventListener('keydown', onEditKey);
   ta.addEventListener('blur', () => { if(editingId === id) commitEdit(false); });
@@ -2068,7 +2153,19 @@ function exportPNG(){
     g.font = cs.fontWeight + ' ' + fs + 'px ' + cs.fontFamily;
     g.textBaseline = 'middle';
     const ctx = findCtx(id);
-    const lines = String((ctx && ctx.node.label) || '').split('\n');   // sem wrap: só as quebras explícitas
+    let lines = String((ctx && ctx.node.label) || '').split('\n');
+    if(ctx && ctx.node.w){            // largura fixa: quebra por palavra, como no balão
+      const maxW = it.w - 26, out = [];
+      lines.forEach(ln => {
+        let cur = '';
+        ln.split(' ').forEach(wd => {
+          const t = cur ? cur + ' ' + wd : wd;
+          if(cur && g.measureText(t).width > maxW){ out.push(cur); cur = wd; } else cur = t;
+        });
+        out.push(cur);
+      });
+      lines = out;
+    }
     const lh = fs * 1.4;
     let ty = it.y + it.h/2 - (lines.length - 1) * lh/2;
     lines.forEach(ln => { g.fillText(ln, it.x + 13, ty); ty += lh; });
