@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Mapa Mental — Estudo</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231e1b4b'/%3E%3Cpath d='M11 16C16 16 15 8 21 8M11 16C16 16 15 24 21 24M11 16H21' stroke='%2360a5fa' stroke-width='2' fill='none'/%3E%3Ccircle cx='9' cy='16' r='4' fill='%236366f1'/%3E%3Ccircle cx='23' cy='8' r='3' fill='%2314b8a6'/%3E%3Ccircle cx='23' cy='16' r='3' fill='%2314b8a6'/%3E%3Ccircle cx='23' cy='24' r='3' fill='%2322c55e'/%3E%3C/svg%3E">
 <style>
   /* ---------------------------------------------------------------------------
      Editor de mapa mental no estilo do NotebookLM (árvore horizontal, nós
@@ -12,7 +13,7 @@
   --------------------------------------------------------------------------- */
   :root{
     --canvas-bg:#12131a; --panel:#1b1d26; --panel-2:#242734; --text:#e6e8ef;
-    --muted:#98a0b3; --border:#33374a; --accent:#6ea8fe; --danger:#e0596b;
+    --muted:#98a0b3; --border:#33374a; --accent:#6ea8fe; --danger:#e0596b; --warning:#e0a64b;
     /* uma cor por nível: indigo → azul → teal → verde → verde claro.
        --dNb é também a cor do conector que CHEGA num nó de profundidade N */
     --d0:#3f3d56; --d0b:#5f5c86; --d0-text:#e9e7f6;
@@ -38,65 +39,96 @@
   }
   button{font:inherit; color:inherit}
 
-  /* ---- barra superior ---- */
+  /* ---- barra superior (mínima: mapa ▾ · busca · desfazer/refazer · fonte) ---- */
   #topbar{
-    position:absolute; inset:0 0 auto 0; height:46px; z-index:30;
-    display:flex; align-items:center; gap:6px; padding:0 10px;
+    position:absolute; inset:0 0 auto 0; height:34px; z-index:30;
+    display:flex; align-items:center; gap:4px; padding:0 8px;
     background:var(--panel); border-bottom:1px solid var(--border);
   }
-  #topbar .brand{font-weight:700; letter-spacing:.2px; margin-right:6px; white-space:nowrap}
-  #topbar .brand span{color:var(--accent)}
-  #mapSel{
-    max-width:220px; height:28px; padding:0 8px; border-radius:7px;
-    background:var(--panel-2); color:var(--text); border:1px solid var(--border);
+  #mapBtn{
+    height:26px; max-width:46vw; padding:0 8px; border-radius:7px; border:0; background:none; color:var(--text);
+    display:inline-flex; align-items:center; gap:6px; cursor:pointer; font:inherit;
   }
-  /* toggle Pasta | Repo (esquerda = pasta local que edita, direita = repo remoto só leitura) */
-  #srcToggle{display:inline-flex; align-items:center; gap:6px; cursor:pointer; user-select:none;
-    font:11px/1 system-ui,sans-serif; white-space:nowrap}
-  #srcToggle .st-lbl{color:var(--muted); transition:color .12s}
-  #srcToggle.is-local  .st-lbl.l{color:var(--accent); font-weight:600}
-  #srcToggle.is-remote .st-lbl.r{color:var(--accent); font-weight:600}
-  #srcToggle .st-track{position:relative; width:32px; height:17px; border-radius:9px;
-    background:var(--panel-2); border:1px solid var(--border)}
-  #srcToggle .st-knob{position:absolute; top:1px; left:1px; width:13px; height:13px; border-radius:50%;
-    background:var(--accent); transition:left .14s}
-  #srcToggle.is-remote .st-knob{left:16px}
-  /* o 📁 Pasta e o selo "somente leitura" ficam empilhados na MESMA célula e só trocam
-     de visibility — assim o slot tem largura fixa (= o mais largo dos dois) e o toggle
-     Pasta|Repo não se move ao alternar. Conteúdo à direita, sem vão sobrando depois. */
-  #srcSlot{display:grid; align-items:center; justify-items:end; max-width:200px; overflow:hidden}
-  #srcSlot>*{grid-area:1/1; min-width:0}
+  #mapBtn b{font-weight:600; font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  #mapBtn svg{width:13px; height:13px; color:var(--muted); flex:none}
+  #mapBtn:hover, #mapBtn.open{background:var(--panel-2)}
+  .tbi{
+    position:relative; width:26px; height:26px; padding:0; border-radius:7px; border:0; background:none;
+    color:var(--muted); display:grid; place-items:center; cursor:pointer; flex:none;
+  }
+  .tbi:hover, .tbi.open{background:var(--panel-2); color:var(--text)}
+  .tbi svg{width:15px; height:15px; display:block}
+  .tbi:disabled{opacity:.4; cursor:default}
+  #topbar button:focus-visible{outline:2px solid var(--accent); outline-offset:1px}
+  /* bolinha no ícone da pasta: verde = pasta ok · âmbar = precisa vincular/reconectar · azul = Repo */
+  .srcdot{position:absolute; right:3px; bottom:3px; width:7px; height:7px; border-radius:50%;
+    border:1.5px solid var(--panel); background:var(--muted)}
+  #srcBtn.ok   .srcdot{background:#5fc48a}
+  #srcBtn.warn .srcdot{background:var(--warning)}
+  #srcBtn.rem  .srcdot{background:var(--accent)}
   #roTag{
-    font:600 10px/1 system-ui,sans-serif; letter-spacing:.3px; white-space:nowrap;
+    font:600 10px/1 system-ui,sans-serif; letter-spacing:.3px; white-space:nowrap; display:none;
     color:var(--warning); border:1px solid var(--warning); border-radius:6px; padding:3px 6px;
   }
-  /* modo somente-leitura (fonte = Repo): esconde as ações que gravam */
-  body.readonly [data-act="new"],
-  body.readonly [data-act="rename"],
-  body.readonly [data-act="dup"],
-  body.readonly [data-act="del"],
-  body.readonly [data-act="undo"],
-  body.readonly [data-act="redo"],
-  body.readonly [data-act="addchild"]{display:none}
-  /* aberto via link (HOSTED): sem opção de Pasta — some o toggle e os separadores órfãos */
-  body.hosted #srcToggle,
-  body.hosted #srcSep,
-  body.hosted #tbSep1{display:none}
-  .tb{
-    height:28px; padding:0 10px; border-radius:7px; cursor:pointer;
-    background:var(--panel-2); border:1px solid var(--border); color:var(--text);
-    display:inline-flex; align-items:center; gap:5px; white-space:nowrap;
+  body.readonly #roTag{display:inline-block}
+  /* menus da barra */
+  .tmenu{
+    position:absolute; top:32px; left:8px; z-index:40; display:none; min-width:210px; max-width:min(320px, calc(100vw - 16px));
+    background:var(--panel); border:1px solid var(--border); border-radius:9px; padding:4px;
+    box-shadow:0 8px 24px rgba(0,0,0,.45);
   }
-  .tb:hover{border-color:var(--accent); color:var(--accent)}
-  .tb.icon{width:28px; padding:0; justify-content:center}
-  .tb.icon svg{width:15px; height:15px; display:block}
-  .tb:disabled{opacity:.4; cursor:default}
-  .sep{width:1px; height:24px; background:var(--border); margin:0 3px}
+  .tmenu.right{left:auto; right:8px}
+  #mapCtx{min-width:0; width:max-content; z-index:41}   /* menu de contexto: só a largura do texto */
+  .tmenu.open{display:block}
+  .tmenu button{
+    display:flex; align-items:center; gap:8px; width:100%; text-align:left; padding:6px 9px; border:0; border-radius:6px;
+    background:none; color:var(--text); font:inherit; font-size:13px; cursor:pointer; white-space:nowrap;
+    overflow:hidden; text-overflow:ellipsis;
+  }
+  .tmenu button:hover{background:var(--panel-2)}
+  .tmenu .danger{color:var(--danger)}
+  .tmenu hr{border:0; border-top:1px solid var(--border); margin:4px 2px}
+  .tm-lbl{font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; padding:6px 9px 3px}
+  #mapList{max-height:50vh; overflow:auto}
+  .tmenu .ck{width:12px; flex:none; color:var(--accent)}
+  .tmenu .cur{color:var(--accent)}
+  .tmenu .cur .ck::before{content:"✓"}
+  #srcToggle.is-local  [data-src="local"],
+  #srcToggle.is-remote [data-src="remote"]{color:var(--accent)}
+  #srcToggle.is-local  [data-src="local"] .ck::before,
+  #srcToggle.is-remote [data-src="remote"] .ck::before{content:"✓"}
+  /* modo somente-leitura (fonte = Repo): esconde o que grava */
+  body.readonly .tm-w:not(:has(#folderBtn)),
+  body.readonly [data-act="undo"],
+  body.readonly [data-act="redo"]{display:none}
+  /* aberto via link (HOSTED): sem Pasta — some o botão de fonte */
+  body.hosted #srcBtn{display:none}
   .spacer{flex:1}
+  /* caixa de diálogo do app (substitui prompt/confirm) */
+  #dlg{position:fixed; inset:0; z-index:100; background:rgba(8,9,13,.55); display:grid; place-items:start center;
+    padding:max(14vh, 60px) 16px 16px; animation:dlgIn .12s ease}
+  .dlg-box{width:min(380px, 100%); background:var(--panel); border:1px solid var(--border); border-radius:12px;
+    padding:16px; display:grid; gap:12px; box-shadow:0 16px 48px rgba(0,0,0,.55)}
+  .dlg-t{font-size:14px; font-weight:600; color:var(--text); overflow-wrap:anywhere}
+  .dlg-x{color:var(--muted); font-size:13px; margin-top:-6px; white-space:pre-line; line-height:1.55; max-height:40vh; overflow:auto}
+  .dlg-box input{height:32px; padding:0 10px; border-radius:8px; border:1px solid var(--border); background:var(--canvas-bg);
+    color:var(--text); font:inherit; outline:none}
+  .dlg-box input:focus{border-color:var(--accent)}
+  .dlg-b{display:flex; justify-content:flex-end; gap:8px}
+  .dlg-b button{height:30px; padding:0 14px; border-radius:8px; border:1px solid var(--border); background:var(--panel-2);
+    color:var(--text); font:inherit; cursor:pointer}
+  .dlg-b button{transition:background .12s, filter .12s}
+  .dlg-b button:hover{background:#2f3344}
+  .dlg-b button.pri:hover, .dlg-b button.danger:hover{filter:brightness(1.15)}
+  .dlg-b button.pri{background:var(--accent); border-color:var(--accent); color:#0d1220; font-weight:600}
+  .dlg-b button.danger{background:var(--danger); border-color:var(--danger); color:#fff; font-weight:600}
+  .dlg-b button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  @keyframes dlgIn{from{opacity:0}}
+  @media (prefers-reduced-motion:reduce){ #dlg{animation:none} }
 
   /* ---- área do mapa ---- */
   #viewport{
-    position:absolute; inset:46px 0 0 0; overflow:hidden;
+    position:absolute; inset:34px 0 0 0; overflow:hidden;
     cursor:grab; touch-action:none; user-select:none;
   }
   #viewport.panning{cursor:grabbing}
@@ -295,7 +327,11 @@
     padding:4px; background:var(--panel-2); border:1px solid var(--border);
     border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,.34);
   }
-  #actionbar .row{display:flex; gap:3px}
+  #actionbar .row{display:flex; gap:3px; align-items:center}
+  #actionbar .mcount{display:none; font-size:11.5px; color:var(--muted); padding:0 6px 0 5px; white-space:nowrap; font-variant-numeric:tabular-nums}
+  #actionbar.multi .mcount{display:inline}
+  #actionbar.multi [data-a="child"], #actionbar.multi [data-a="sibling"],
+  #actionbar.multi [data-a="edit"],  #actionbar.multi [data-a="ref"]{display:none}
   #actionbar button{
     width:28px; height:28px; border:0; border-radius:7px; background:transparent;
     color:var(--text); cursor:pointer; display:grid; place-items:center;
@@ -323,6 +359,27 @@
   #actionbar .sw button[data-sc="cinza"]{background:var(--c-cinza-b)}
 
   /* ---- dica + toast ---- */
+  /* ---- busca (na barra): lupa que vira campo ao clicar / Ctrl+F; fecha com Esc ou ao sair vazia ---- */
+  #search{
+    height:26px; width:26px; display:flex; align-items:center; gap:4px; flex:none;
+    border:1px solid transparent; border-radius:7px; padding:0 5px; cursor:text; overflow:hidden;
+    transition:width .18s ease;
+  }
+  #search:hover{background:var(--panel-2)}
+  #search.x{width:min(260px, 46vw); background:var(--canvas-bg); border-color:var(--accent)}
+  #search > svg{width:15px; height:15px; color:var(--muted); flex:none}
+  #search input{flex:1; min-width:0; width:0; background:none; border:0; outline:none; color:var(--text); font:inherit; font-size:13px; padding:0}
+  #search:not(.x) input, #search:not(.x) .cnt, #search:not(.x) button{display:none}
+  #search input::-webkit-search-cancel-button{display:none}   /* o ✕ é o nosso (fecha), não o do navegador (só apaga) */
+  #search .cnt{font-size:11px; color:var(--muted); white-space:nowrap; font-variant-numeric:tabular-nums}
+  @media (prefers-reduced-motion:reduce){ #search{transition:none} }
+  #search button{width:20px; height:20px; flex:none; border:0; border-radius:6px; background:none; color:var(--muted); cursor:pointer; display:grid; place-items:center; padding:0}
+  #search button:hover{background:var(--panel-2); color:var(--accent)}
+  #search button svg{width:13px; height:13px; color:currentColor}
+  .node mark{background:rgba(245,196,81,.28); color:inherit; text-decoration:underline 2px #f5c451; text-underline-offset:2px; border-radius:2px}
+  .node.hit{box-shadow:0 0 0 2px #f5c451, 0 1px 3px rgba(0,0,0,.28)}
+  .node.hit-cur{box-shadow:0 0 0 3px #f5c451, 0 0 14px rgba(245,196,81,.55)}
+
   #helpBtn{
     position:absolute; left:12px; bottom:calc(12px + env(safe-area-inset-bottom)); z-index:25;
     width:30px; height:30px; border-radius:50%;                 /* bolinha (mesmo tamanho dos #controls) */
@@ -360,26 +417,44 @@
 <body>
 
 <div id="topbar">
-  <div class="brand">Mapa <span>Mental</span></div>
-  <select id="mapSel" title="Mapas salvos neste navegador"></select>
-  <button class="tb" data-act="new">Novo</button>
-  <button class="tb" data-act="rename">Renomear</button>
-  <button class="tb" data-act="dup">Duplicar</button>
-  <button class="tb" data-act="del">Excluir</button>
-  <div class="sep" id="tbSep1"></div>
-  <button class="tb icon" data-act="addchild" title="Adicionar nó ao selecionado (Tab)">+</button>
-  <button class="tb icon" data-act="undo" title="Desfazer (Ctrl+Z)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg></button>
-  <button class="tb icon" data-act="redo" title="Refazer (Ctrl+Y)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg></button>
+  <button id="mapBtn" title="Mapas · botão direito num mapa: renomear, duplicar, excluir"><b id="mapName"></b><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+  <select id="mapSel" hidden></select>
+  <span id="roTag">somente leitura</span>
   <div class="spacer"></div>
-  <span id="srcSlot">
-    <button class="tb" data-act="folder" id="folderBtn" title="Salvar os mapas como .json numa pasta" style="visibility:hidden">&#128193; Pasta&#8230;</button>
-    <span id="roTag" style="visibility:hidden">somente leitura</span>
-  </span>
-  <div class="sep" id="srcSep"></div>
-  <div id="srcToggle" title="Fonte dos mapas — Pasta: edita e salva · Repo: só leitura, do GitHub">
-    <span class="st-lbl l">Pasta</span>
-    <span class="st-track"><span class="st-knob"></span></span>
-    <span class="st-lbl r">Repo</span>
+  <div id="search" title="Buscar nos balões (Ctrl+F)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="searchIn" type="search" placeholder="Buscar… (Ctrl+F)" autocomplete="off" spellcheck="false">
+    <span class="cnt" id="searchCnt"></span>
+    <button id="searchPrev" title="Anterior (Shift+Enter)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button>
+    <button id="searchNext" title="Próximo (Enter)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></button>
+    <button id="searchClose" title="Fechar a busca (Esc)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+  </div>
+  <button class="tbi" data-act="undo" title="Desfazer (Ctrl+Z)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/></svg></button>
+  <button class="tbi" data-act="redo" title="Refazer (Ctrl+Y)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3L21 13"/></svg></button>
+  <button class="tbi" id="srcBtn" title="Fonte dos mapas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.7-.9l-.8-1.2A2 2 0 0 0 7.9 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/></svg><i class="srcdot"></i></button>
+
+  <div class="tmenu" id="mapMenu">
+    <div class="tm-lbl">Mapas</div>
+    <div id="mapList"></div>
+    <div class="tm-w">
+      <hr>
+      <button data-act="new"><span class="ck">+</span>Novo mapa</button>
+    </div>
+  </div>
+  <!-- botão direito (ou segurar o dedo) no nome do mapa -->
+  <div class="tmenu" id="mapCtx">
+    <button data-act="rename">Renomear</button>
+    <button data-act="dup">Duplicar</button>
+    <hr>
+    <button data-act="del" class="danger">Excluir</button>
+  </div>
+  <div class="tmenu right" id="srcMenu">
+    <div class="tm-lbl">Fonte dos mapas</div>
+    <div id="srcToggle">
+      <button data-src="local"><span class="ck"></span>Pasta — edita e salva</button>
+      <button data-src="remote"><span class="ck"></span>Repo — só leitura (site)</button>
+    </div>
+    <div class="tm-w"><hr><button data-act="folder" id="folderBtn">Pasta…</button></div>
   </div>
 </div>
 
@@ -391,6 +466,7 @@
 
 <div id="actionbar">
   <div class="row">
+    <span class="mcount" id="mcount"></span>
     <button data-a="child"   title="Novo filho (Tab)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5v6a4 4 0 0 0 4 4h10"/><path d="m15 10 5 5-5 5"/></svg></button>
     <button data-a="sibling" title="Novo irmão (Enter)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h6a4 4 0 0 1 4 4v10"/><path d="m10 14 5 5 5-5"/></svg></button>
     <button data-a="edit"    title="Editar texto (F2 / duplo-clique)">&#9998;</button>
@@ -496,6 +572,21 @@ function safeName(s){
 let maps = null, currentId = null, tree = null;
 let zoom = 1, panX = 0, panY = 0;
 let selectedId = null, editingId = null, pendingNewId = null;
+// seleção múltipla (Shift+clique). Só vale enquanto contém o selectedId — qualquer código que troque
+// o selectedId p/ outro nó "desliga" a seleção múltipla sozinho, sem precisar limpar em todo lugar.
+const multi = new Set();
+const multiOn = () => multi.size > 1 && multi.has(selectedId);
+const isSel = id => id === selectedId || (multiOn() && multi.has(id));
+function selIds(){
+  if(!multiOn()) return selectedId != null ? [selectedId] : [];
+  return [...multi].filter(id => findCtx(id));
+}
+// só os "de cima": tira quem já está dentro de outro selecionado; na ordem do mapa
+function topSel(ids){
+  const set = new Set(ids), out = [];
+  walk(tree, n => { if(set.has(n.id)) out.push(n.id); });
+  return out.filter(id => !out.some(o => o !== id && isDescendant(o, id)));
+}
 let history = [], histIdx = -1;
 let animateNext = false;   // anima a entrada dos nós no próximo layout (expandir / adicionar)
 let _anchorRef = null;     // {id, y} — nó que deve ficar imóvel; o layout inteiro translada p/ mantê-lo
@@ -641,6 +732,17 @@ async function syncFromDir(){
   }catch(e){ console.warn('syncFromDir', e); }
   return count;
 }
+// nomes dos mapas (.json no formato do app) dentro de uma pasta — só leitura, p/ conferir antes de vincular
+async function listMapFiles(dir){
+  const out = [];
+  try{
+    for await (const [name, h] of dir.entries()){
+      if(h.kind !== 'file' || !/\.json$/i.test(name)) continue;
+      try{ const d = JSON.parse(await (await h.getFile()).text()); if(d && d.tree) out.push(d.name || name.replace(/\.json$/i, '')); }catch(_){}
+    }
+  }catch(_){}
+  return out.sort((a, b) => a.localeCompare(b, 'pt'));
+}
 async function linkFolder(){
   // id:'mm-notebook' → o navegador reabre na última pasta escolhida; startIn no handle anterior crava nela
   const base = { id:'mm-notebook', mode:'readwrite' };
@@ -656,6 +758,16 @@ async function linkFolder(){
       return;
     }
   }
+  // o seletor de pasta é do sistema (não dá p/ mudar); depois dele, mostra o que tem dentro e pede confirmação
+  const names = await listMapFiles(dirHandle);
+  const ok = await ask({
+    title: 'Usar a pasta "' + dirHandle.name + '"?',
+    text: names.length
+      ? names.length + (names.length > 1 ? ' mapas encontrados:' : ' mapa encontrado:') + '\n• ' + names.slice(0, 8).join('\n• ') + (names.length > 8 ? '\n… e mais ' + (names.length - 8) : '')
+      : 'Nenhum mapa (.json) nesta pasta.' + (prev ? ' A lista vai começar com um mapa em branco.' : ' Os mapas atuais serão salvos aqui.'),
+    ok: 'Usar esta pasta'
+  });
+  if(!ok){ dirHandle = prev; return; }
   needsReconnect = false;
   try{ await idbSet('dir', dirHandle); }catch(_){}
 
@@ -696,6 +808,16 @@ async function reconnectFolder(){
   }catch(e){ console.warn('reconnectFolder', e); }
 }
 function updateFolderBtn(){
+  const sb = $('srcBtn');
+  if(sb){
+    const remote = source === 'remote', linked = dirHandle && !needsReconnect;
+    sb.classList.toggle('rem', remote);
+    sb.classList.toggle('ok', !remote && !!linked);
+    sb.classList.toggle('warn', !remote && !linked && FS_OK);
+    sb.title = remote ? 'Fonte: Repo (só leitura)'
+      : linked ? 'Fonte: pasta "' + dirHandle.name + '" — salvo'
+      : dirHandle ? 'Pasta desconectada — clique p/ reconectar' : 'Fonte: Pasta (nenhuma vinculada)';
+  }
   const b = $('folderBtn'); if(!b) return;
   if(!FS_OK){ b.textContent = 'Baixar JSON'; b.title = 'Baixar o mapa atual como .json'; return; }
   if(dirHandle && needsReconnect){ b.textContent = '📁 Reconectar'; b.title = 'Reautorizar o acesso à pasta vinculada'; }
@@ -711,9 +833,9 @@ function refreshSrcUI(){
   const remote = source === 'remote';
   const t = $('srcToggle');
   if(t){ t.classList.toggle('is-remote', remote); t.classList.toggle('is-local', !remote); }
-  const fb = $('folderBtn'); if(fb) fb.style.visibility = remote ? 'hidden' : 'visible';
-  const rt = $('roTag'); if(rt) rt.style.visibility = readOnly ? 'visible' : 'hidden';
+  const fb = $('folderBtn'); if(fb) fb.parentNode.style.display = remote ? 'none' : '';
   document.body.classList.toggle('readonly', readOnly);
+  updateFolderBtn();
 }
 async function loadRemote(base){
   base = (base || REMOTE_MAPS).trim();
@@ -782,6 +904,15 @@ async function reconnectIfLinked(){
   updateFolderBtn();
 }
 function refreshMapSel(){
+  $('mapName').textContent = maps[currentId].name || '(sem nome)';
+  const list = $('mapList'); list.innerHTML = '';
+  Object.keys(maps).forEach(id => {
+    const b = document.createElement('button');
+    b.dataset.map = id; if(id === currentId) b.className = 'cur';
+    b.innerHTML = '<span class="ck"></span>';
+    b.append(maps[id].name || '(sem nome)');
+    list.appendChild(b);
+  });
   const sel = $('mapSel'); sel.innerHTML = '';
   Object.keys(maps).forEach(id=>{
     const o = document.createElement('option');
@@ -791,7 +922,9 @@ function refreshMapSel(){
   sel.value = currentId;
   document.title = (maps[currentId].name || 'Mapa Mental') + ' — Mapa Mental';
 }
-function resetHistory(){ history = [JSON.stringify(tree)]; histIdx = 0; }
+// o histórico ignora abrir/recolher: `collapsed` fica fora do snapshot (mas continua salvo no arquivo)
+const histJSON = t => JSON.stringify(t, (k, v) => k === 'collapsed' ? undefined : v);
+function resetHistory(){ history = [histJSON(tree)]; histIdx = 0; }
 
 function switchMap(id){
   if(!maps[id]) return;
@@ -800,9 +933,42 @@ function switchMap(id){
   selectedId = null; editingId = null; pendingNewId = null;
   resetHistory(); refreshMapSel(); render(); fitView(); saveMaps();
 }
-function newMap(){
+// caixa de diálogo do app (no lugar de prompt/confirm do navegador).
+// Com `value` → pede texto, devolve a string (ou null). Sem `value` → confirma, devolve true/false.
+function ask({ title, text, value, ok = 'OK', danger = false }){
+  return new Promise(done => {
+    const wrap = document.createElement('div'); wrap.id = 'dlg';
+    const box = document.createElement('div'); box.className = 'dlg-box';
+    box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true');
+    const h = document.createElement('div'); h.className = 'dlg-t'; h.textContent = title; box.appendChild(h);
+    if(text){ const t = document.createElement('div'); t.className = 'dlg-x'; t.textContent = text; box.appendChild(t); }
+    let inp = null;
+    if(value !== undefined){ inp = document.createElement('input'); inp.value = value; inp.spellcheck = false; box.appendChild(inp); }
+    const row = document.createElement('div'); row.className = 'dlg-b';
+    const no = document.createElement('button'); no.textContent = 'Cancelar';
+    const yes = document.createElement('button'); yes.textContent = ok; yes.className = danger ? 'danger' : 'pri';
+    row.append(no, yes); box.appendChild(row); wrap.appendChild(box); document.body.appendChild(wrap);
+    const prevFocus = document.activeElement;
+    const end = v => { wrap.remove(); if(prevFocus && prevFocus.focus) prevFocus.focus(); done(v); };
+    const accept = () => end(inp ? inp.value : true);
+    const cancel = () => end(inp ? null : false);
+    yes.onclick = accept; no.onclick = cancel;
+    wrap.addEventListener('pointerdown', e => { if(e.target === wrap) cancel(); });
+    wrap.addEventListener('keydown', e => {
+      e.stopPropagation();                                     // atalhos do mapa não disparam por trás
+      if(e.key === 'Escape'){ e.preventDefault(); cancel(); }
+      else if(e.key === 'Enter' && e.target.tagName !== 'BUTTON'){ e.preventDefault(); accept(); }
+      else if(e.key === 'Tab'){                                // foco preso na caixa
+        const f = [inp, no, yes].filter(Boolean), i = f.indexOf(document.activeElement);
+        e.preventDefault(); f[(i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+      }
+    });
+    if(inp){ inp.focus(); inp.select(); } else (danger ? no : yes).focus();
+  });
+}
+async function newMap(){
   if(readOnly) return;
-  const name = (prompt('Nome do novo mapa:', 'Novo mapa') || '').trim();
+  const name = ((await ask({ title:'Novo mapa', value:'Novo mapa', ok:'Criar' })) || '').trim();
   if(name === '') return;
   const id = uid();
   maps[id] = { name, tree:normalize({ id:uid(), label:name, children:[] }), updatedAt:Date.now() };
@@ -811,9 +977,9 @@ function newMap(){
   startEdit(tree.id); saveMaps();
   if(dirHandle && !needsReconnect) writeMapFile(id);
 }
-function renameMap(){
+async function renameMap(){
   if(readOnly) return;
-  const name = (prompt('Renomear mapa:', maps[currentId].name) || '').trim();
+  const name = ((await ask({ title:'Renomear mapa', value:maps[currentId].name, ok:'Renomear' })) || '').trim();
   if(name === '') return;
   maps[currentId].name = name; refreshMapSel(); saveMaps();
 }
@@ -833,9 +999,9 @@ function dupMap(){
   if(dirHandle && !needsReconnect) writeMapFile(id);
   toast('Mapa duplicado');
 }
-function delMap(){
+async function delMap(){
   if(readOnly) return;
-  if(!confirm('Excluir o mapa "' + (maps[currentId].name||'') + '"? Esta ação não pode ser desfeita.')) return;
+  if(!(await ask({ title:'Excluir o mapa "' + (maps[currentId].name||'') + '"?', text:'Esta ação não pode ser desfeita.', ok:'Excluir', danger:true }))) return;
   removeMapFile(currentId);
   delete maps[currentId];
   const ids = Object.keys(maps);
@@ -881,8 +1047,8 @@ function visibleList(){
 
 function snapshot(){
   if(readOnly) return;                   // sem histórico/persistência no modo Repo
-  const s = JSON.stringify(tree);
-  if(history[histIdx] === s) return;
+  const s = histJSON(tree);
+  if(history[histIdx] === s){ saveMaps(); return; }   // só abriu/recolheu: salva, sem virar passo de desfazer
   history = history.slice(0, histIdx+1);
   history.push(s);
   if(history.length > 80) history.shift();
@@ -891,7 +1057,9 @@ function snapshot(){
 }
 function restore(idx){
   histIdx = idx;
+  const closed = new Set(); walk(tree, n => { if(n.collapsed) closed.add(n.id); });   // mantém o que está recolhido agora
   tree = normalize(JSON.parse(history[histIdx]));
+  walk(tree, n => { if(closed.has(n.id)) n.collapsed = true; });
   maps[currentId].tree = tree;
   if(selectedId && !findCtx(selectedId)) selectedId = null;
   editingId = null; pendingNewId = null;
@@ -920,22 +1088,46 @@ function addSibling(nodeId){
   animateNext = true;
   render(); ensureVisible(node.id); startEdit(node.id);
 }
-function removeNode(id){
+async function removeMany(){
+  const ids = topSel(selIds()).filter(x => { const c = findCtx(x); return c && c.parent; });
+  if(!ids.length){ toast('A raiz não pode ser excluída'); return; }
+  const inside = ids.reduce((n, x) => n + countDesc(findCtx(x).node), 0);
+  if(!(await ask({ title:'Excluir ' + ids.length + ' balões?',
+                   text: inside ? 'Os ' + inside + ' balões dentro deles também serão excluídos.' : undefined,
+                   ok:'Excluir', danger:true }))) return;
+  let parentId = null;
+  ids.forEach(x => { const c = findCtx(x); if(!c || !c.parent) return; parentId = parentId ?? c.parent.id; c.parent.children.splice(c.index, 1); });
+  multi.clear(); selectedId = parentId; editingId = null; pendingNewId = null;
+  snapshot(); render(); positionActionBar();                // um passo só no desfazer
+}
+async function removeNode(id){
   if(readOnly) return;
+  if(multiOn()) return removeMany();
   const ctx = findCtx(id);
   if(!ctx || !ctx.parent){ toast('A raiz não pode ser excluída'); return; }
   const n = countDesc(ctx.node);
-  if(n > 0 && !confirm('Excluir este nó e os ' + n + ' descendentes?')) return;
-  ctx.parent.children.splice(ctx.index, 1);
-  selectedId = ctx.parent.id; editingId = null; pendingNewId = null;
+  if(n > 0 && !(await ask({ title:'Excluir este nó?', text:'Os ' + n + ' balões dentro dele também serão excluídos.', ok:'Excluir', danger:true }))) return;
+  const c2 = findCtx(id); if(!c2 || !c2.parent) return;   // árvore pode ter mudado com a caixa aberta
+  c2.parent.children.splice(c2.index, 1);
+  selectedId = c2.parent.id; editingId = null; pendingNewId = null;
   snapshot(); render(); positionActionBar();
 }
+// sobe/desce cada selecionado uma posição entre os próprios irmãos. Selecionados vizinhos andam
+// juntos como um bloco; um bloco já no topo (ou no fim) fica parado. Ramos diferentes: cada um no seu.
 function moveSibling(id, dir){
   if(readOnly) return;
-  const ctx = findCtx(id); if(!ctx || !ctx.parent) return;
-  const arr = ctx.parent.children, i = ctx.index, j = i + dir;
-  if(j < 0 || j >= arr.length) return;
-  transitionTo(() => { arr.splice(j, 0, arr.splice(i, 1)[0]); snapshot(); });
+  const sel = new Set(selIds());
+  const parents = new Set();
+  sel.forEach(x => { const c = findCtx(x); if(c && c.parent) parents.add(c.parent); });
+  if(!parents.size) return;
+  transitionTo(() => {
+    parents.forEach(par => {
+      const a = par.children;
+      if(dir < 0){ for(let i = 1; i < a.length; i++)      if(sel.has(a[i].id) && !sel.has(a[i-1].id)) [a[i-1], a[i]] = [a[i], a[i-1]]; }
+      else       { for(let i = a.length - 2; i >= 0; i--) if(sel.has(a[i].id) && !sel.has(a[i+1].id)) [a[i+1], a[i]] = [a[i], a[i+1]]; }
+    });
+    snapshot();
+  });
   positionActionBar();
 }
 function reparent(srcId, tgtId){
@@ -949,6 +1141,21 @@ function reparent(srcId, tgtId){
     s.parent.children.splice(s.index, 1);
     delete t.node.collapsed;
     t.node.children.push(s.node);
+    snapshot();
+  });
+  positionActionBar();
+}
+// arrasta vários: tira todos de onde estão e põe juntos (na ordem do mapa) dentro de / antes de / depois de `tgt`
+function moveGroup(ids, tgt, mode){
+  if(readOnly) return;
+  if(ids.some(g => g === tgt || isDescendant(g, tgt))) return;
+  transitionTo(() => {
+    _anchorRef = null;
+    const nodes = ids.map(x => findCtx(x)).filter(c => c && c.parent).map(c => c.node);
+    nodes.forEach(n => { const c = findCtx(n.id); c.parent.children.splice(c.index, 1); });
+    const t = findCtx(tgt); if(!t) return;
+    if(mode === 'into'){ delete t.node.collapsed; t.node.children.push(...nodes); animateNext = true; }
+    else t.parent.children.splice(t.index + (mode === 'after' ? 1 : 0), 0, ...nodes);
     snapshot();
   });
   positionActionBar();
@@ -1005,6 +1212,14 @@ function toggleCollapse(id){
 }
 // nós afetados por uma cor: só o nó · Shift = + descendentes · Alt = irmãos · Shift+Alt = irmãos + ramos
 function colorTargets(id, opts){
+  if(multiOn()){                                   // vários selecionados: cada um (e o ramo, com Shift)
+    const seen = new Set(), out = [];
+    selIds().forEach(x => colorTargetsOne(x, opts).forEach(n => { if(!seen.has(n.id)){ seen.add(n.id); out.push(n); } }));
+    return out;
+  }
+  return colorTargetsOne(id, opts);
+}
+function colorTargetsOne(id, opts){
   const ctx = findCtx(id); if(!ctx) return [];
   const roots = (opts.siblings && ctx.parent) ? ctx.parent.children : [ctx.node];
   const out = [];
@@ -1018,7 +1233,8 @@ function setColor(id, key, opts){
   const roots = (opts.siblings && ctx.parent) ? ctx.parent.children.slice() : [ctx.node];
   colorTargets(id, opts).forEach(n => { if(key && key !== 'auto') n.color = key; else delete n.color; });
   snapshot(); render();
-  if(opts.siblings) toast('Cor aplicada aos ' + roots.length + ' irmãos' + (opts.deep ? ' (com ramos)' : ''));
+  if(multiOn()) toast('Cor aplicada a ' + colorTargets(id, opts).length + ' balões');
+  else if(opts.siblings) toast('Cor aplicada aos ' + roots.length + ' irmãos' + (opts.deep ? ' (com ramos)' : ''));
   else if(opts.deep) toast('Cor aplicada ao ramo (' + countDesc(ctx.node) + ' descendentes)');
 }
 function toggleAll(){
@@ -1207,8 +1423,10 @@ function layout(){
     }
     el.dataset.depth = Math.min(depth, 4);
     if(node.color) el.dataset.color = node.color; else el.removeAttribute('data-color');
-    el.classList.toggle('selected', id === selectedId);
-    if(id !== editingId) el.querySelector('.lbl').textContent = node.label || '​';
+    el.classList.toggle('selected', isSel(id));
+    el.classList.toggle('hit', _hitSet.has(id));
+    el.classList.toggle('hit-cur', id === _hitCur);
+    if(id !== editingId) setLabel(el.querySelector('.lbl'), node.label || '​');
     el.classList.toggle('fixw', !!node.w);
     el.style.width = node.w ? node.w + 'px' : '';
     if(!el.querySelector('.rsz')) addResizeHandle(el, id);
@@ -1326,6 +1544,7 @@ function layout(){
 
 function render(){
   closeRefBox();
+  if(_hitSet.size || $('searchIn').value) refreshHits();   // árvore mudou (edição, troca de mapa): recalcula a busca
   layout();
   world.style.setProperty('--enter-dur', Math.round(TWEEN_MS * 0.96) + 'ms');   // fade dos nós novos ~= tween padrão
   applyTransform();
@@ -1634,6 +1853,9 @@ function ensureVisible(id){
 // ===========================================================================
 function positionActionBar(){
   if(readOnly || selectedId == null || editingId != null){ bar.style.display = 'none'; return; }
+  const nSel = selIds().length;
+  bar.classList.toggle('multi', nSel > 1);
+  $('mcount').textContent = nSel + ' balões';
   const lit = LAYOUT.get(selectedId);
   const pit = POS.get(selectedId) || lit;      // x/y acompanham a animação; w/h do layout
   if(!lit || !pit){ bar.style.display = 'none'; return; }
@@ -1663,6 +1885,13 @@ bar.addEventListener('click', e => {
   const a = b.dataset.a, sc = b.dataset.sc;
   if(sc){ setColor(selectedId, sc, { deep: e.shiftKey, siblings: e.altKey }); bar.querySelector('.sw').classList.remove('open'); return; }
   if(!selectedId) return;
+  if(multiOn()){                                         // vários: só subir/descer, cor e excluir
+    if(a === 'up')    moveSibling(selectedId, -1);
+    if(a === 'down')  moveSibling(selectedId, +1);
+    if(a === 'del')   removeNode(selectedId);
+    if(a === 'color') bar.querySelector('.sw').classList.toggle('open');
+    return;
+  }
   if(a === 'child')   addChild(selectedId);
   if(a === 'sibling') addSibling(selectedId);
   if(a === 'edit')    startEdit(selectedId);
@@ -1694,6 +1923,81 @@ bar.addEventListener('mouseout',  e => { if(e.target.closest('[data-sc]')) previ
 }));
 // botões da barra não pegam foco (senão Shift/Alt depois do clique acende o outline de foco)
 bar.addEventListener('pointerdown', e => { if(e.target.closest('button')) e.preventDefault(); });
+
+// ===========================================================================
+//  Busca — varre a árvore inteira (inclusive ramos recolhidos), sem acento/caixa
+// ===========================================================================
+let _hits = [], _hitSet = new Set(), _hitIdx = -1, _hitCur = null;
+const fold = t => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+// escreve o rótulo sublinhando os trechos que batem com a busca (sem acento/caixa)
+function setLabel(lbl, text){
+  const q = _hitSet.has(lbl.parentNode.dataset.id) ? fold($('searchIn').value.trim()) : '';
+  if(!q){ lbl.textContent = text; return; }
+  let f = '', map = [];                      // f = texto "dobrado"; map[i] = índice no original
+  for(let i = 0; i < text.length; i++){ const c = fold(text[i]); for(const _ of c){ f += _; map.push(i); } }
+  map.push(text.length);
+  lbl.textContent = '';
+  let last = 0, k = f.indexOf(q);
+  while(k >= 0){
+    const a = map[k], b = map[k + q.length] ?? text.length;
+    if(a > last) lbl.append(text.slice(last, a));
+    const m = document.createElement('mark'); m.textContent = text.slice(a, b); lbl.append(m);
+    last = b; k = f.indexOf(q, k + q.length);
+  }
+  lbl.append(text.slice(last));
+}
+function refreshHits(){
+  const q = fold($('searchIn').value.trim());
+  _hits = [];
+  if(q) walk(tree, n => { if(fold(n.label).includes(q)) _hits.push(n.id); });
+  _hitSet = new Set(_hits);
+  _hitIdx = _hits.indexOf(_hitCur);
+  if(_hitIdx < 0) _hitCur = null;
+  $('searchCnt').textContent = !q ? '' : (_hitIdx >= 0 ? (_hitIdx + 1) + '/' : '') + _hits.length;
+}
+function runSearch(){ _hitCur = null; refreshHits(); layout(); }
+function gotoHit(step){
+  if(!_hits.length) return;
+  _hitIdx = (_hitIdx + step + _hits.length) % _hits.length;
+  const id = _hitCur = _hits[_hitIdx];
+  $('searchCnt').textContent = (_hitIdx + 1) + '/' + _hits.length;
+  transitionTo(() => {
+    let c = findCtx(id), opened = false;          // abre os ancestrais recolhidos
+    while(c && c.parent){
+      if(c.parent.collapsed){ delete c.parent.collapsed; opened = true; }
+      c = findCtx(c.parent.id);
+    }
+    if(opened){ animateNext = true; snapshot(); }
+    selectedId = id; _anchorRef = null;
+  }, () => {
+    const it = LAYOUT.get(id); if(!it) return null;
+    return frameBox(it.x, it.y, it.w + 32, it.h, FOCUS_ZOOM);
+  });
+}
+function openSearch(){ $('search').classList.add('x'); const i = $('searchIn'); i.focus(); i.select(); }
+function clearSearch(){
+  $('searchIn').value = ''; runSearch(); $('searchIn').blur(); $('search').classList.remove('x');
+}
+(() => {
+  const box = $('search'), inp = $('searchIn');
+  ['pointerdown','wheel','dblclick'].forEach(t => box.addEventListener(t, e => e.stopPropagation()));
+  inp.addEventListener('input', runSearch);
+  box.addEventListener('click', () => { if(!box.classList.contains('x')) openSearch(); });
+  inp.addEventListener('blur', () => { if(!inp.value) setTimeout(() => { if(!inp.value && document.activeElement !== inp) box.classList.remove('x'); }, 120); });
+  inp.addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); gotoHit(e.shiftKey ? -1 : 1); }
+    else if(e.key === 'Escape'){ e.preventDefault(); clearSearch(); }
+    e.stopPropagation();
+  });
+  $('searchNext').addEventListener('click', () => gotoHit(1));
+  $('searchPrev').addEventListener('click', () => gotoHit(-1));
+  $('searchClose').addEventListener('click', e => { e.stopPropagation(); clearSearch(); });
+  document.addEventListener('keydown', e => {
+    if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f' && editingId == null){
+      e.preventDefault(); openSearch();
+    }
+  }, true);
+})();
 
 // ===========================================================================
 //  Edição de texto
@@ -1831,7 +2135,7 @@ function commitEdit(then){
 // ===========================================================================
 function setSelected(id){
   if(editingId != null && editingId !== id) commitEdit(false);
-  selectedId = id;
+  selectedId = id; multi.clear();
   els.forEach((el, i) => el.classList.toggle('selected', i === id));
   positionActionBar();
 }
@@ -1891,8 +2195,11 @@ viewport.addEventListener('pointermove', e => {
   if(cand && !readOnly){
     if(!cand.moved && Math.hypot(e.clientX - cand.x, e.clientY - cand.y) > 5){
       cand.moved = true;
-      const el = els.get(cand.id); if(el) el.classList.add('dragging');
+      // arrastar um dos selecionados = arrastar todos
+      cand.group = (multiOn() && multi.has(cand.id)) ? topSel(selIds()) : null;
+      (cand.group || [cand.id]).forEach(x => { const el = els.get(x); if(el) el.classList.add('dragging'); });
       ghost = makeGhost(cand.id);
+      if(cand.group) ghost.textContent = cand.group.length + ' balões';
     }
     if(cand.moved && ghost){
       ghost.style.left = e.clientX + 'px';
@@ -1905,7 +2212,7 @@ viewport.addEventListener('pointermove', e => {
       const mx = e.clientX, my = e.clientY;
       let best = null, bestD = Infinity;
       LAYOUT.forEach((it, id) => {
-        if(id === cand.id || isDescendant(cand.id, id)) return;
+        if((cand.group || [cand.id]).some(g => id === g || isDescendant(g, id))) return;
         const sx = r.left + panX + it.x * zoom, sy = r.top + panY + it.y * zoom;
         const sw = it.w * zoom, sh = it.h * zoom;
         const dx = Math.max(sx - mx, 0, mx - (sx + sw));
@@ -1969,7 +2276,15 @@ function endPointer(e){
   }
   if(cand){
     try{ viewport.releasePointerCapture(e.pointerId); }catch(_){}
-    if(!cand.moved){
+    if(!cand.moved && e.shiftKey && !readOnly){   // Shift+clique: põe/tira da seleção
+      if(editingId != null) commitEdit(false);
+      if(!multiOn()){ multi.clear(); if(selectedId != null) multi.add(selectedId); }
+      if(multi.has(cand.id)){ multi.delete(cand.id); if(selectedId === cand.id) selectedId = [...multi].pop() ?? null; }
+      else { multi.add(cand.id); selectedId = cand.id; }
+      _lastClick = null;
+      els.forEach((el, i) => el.classList.toggle('selected', isSel(i)));
+      positionActionBar();
+    } else if(!cand.moved){
       const t = performance.now();
       if(_lastClick && _lastClick.id === cand.id && t - _lastClick.t < 450){
         _lastClick = null;
@@ -1979,11 +2294,12 @@ function endPointer(e){
         setSelected(cand.id);
       }
     } else {
-      const el = els.get(cand.id); if(el) el.classList.remove('dragging');
+      (cand.group || [cand.id]).forEach(x => { const el = els.get(x); if(el) el.classList.remove('dragging'); });
       if(ghost){ ghost.remove(); ghost = null; }
       clearDrop();
       if(cand.target){
-        if(cand.mode === 'into') reparent(cand.id, cand.target);
+        if(cand.group) moveGroup(cand.group, cand.target, cand.mode);
+        else if(cand.mode === 'into') reparent(cand.id, cand.target);
         else reorderNode(cand.id, cand.target, cand.mode);
       }
     }
@@ -1991,7 +2307,7 @@ function endPointer(e){
   }
 }
 function abortDrag(){          // Esc durante o arrasto: cancela sem mover nada
-  const el = cand && els.get(cand.id); if(el) el.classList.remove('dragging');
+  if(cand) (cand.group || [cand.id]).forEach(x => { const el = els.get(x); if(el) el.classList.remove('dragging'); });
   if(ghost){ ghost.remove(); ghost = null; }
   clearDrop();
   cand = null;
@@ -2083,7 +2399,8 @@ document.addEventListener('keydown', e => {
     case 'F2':        if(selectedId) startEdit(selectedId); break;
     case 'Delete':
     case 'Backspace': e.preventDefault(); if(selectedId) removeNode(selectedId); break;
-    case 'Escape':    selectedId = null; render(); positionActionBar(); break;
+    case 'Escape':    if($('search').classList.contains('x')){ clearSearch(); break; }   // 1º Esc fecha a busca
+                      selectedId = null; multi.clear(); render(); positionActionBar(); break;
     case ' ':         e.preventDefault(); fitView(); break;
     case '+': case '=': zoomBy(1.12); break;
     case '-': case '_': zoomBy(1/1.12); break;
@@ -2206,8 +2523,56 @@ document.addEventListener('pointerdown', e => {
   }
 });
 
+function closeTopMenus(){
+  ['mapMenu','srcMenu','mapCtx'].forEach(id => $(id).classList.remove('open'));
+  ['mapBtn','srcBtn'].forEach(id => $(id).classList.remove('open'));
+}
+function toggleTopMenu(btn, menu){
+  const was = $(menu).classList.contains('open');
+  closeTopMenus(); closeMenus();
+  if(!was){ $(menu).classList.add('open'); $(btn).classList.add('open'); }
+}
+// botão direito (ou segurar ~0,5s no toque) num mapa da LISTA = Renomear/Duplicar/Excluir.
+// Troca p/ aquele mapa (as ações valem p/ o mapa aberto) e abre o menu no ponto, com a lista ainda aberta.
+let _lpT = null, _lpFired = false;
+function openMapCtx(it, x, y){
+  if(readOnly) return;
+  if(it.dataset.map !== currentId) switchMap(it.dataset.map);   // refaz a lista; ela continua aberta
+  const m = $('mapCtx');
+  m.style.left = Math.min(x, innerWidth - 140) + 'px';
+  m.style.top  = Math.min(y, innerHeight - 140) + 'px';
+  m.classList.add('open');
+}
+$('mapList').addEventListener('contextmenu', e => {
+  const it = e.target.closest('[data-map]'); if(!it) return;
+  e.preventDefault(); openMapCtx(it, e.clientX, e.clientY);
+});
+$('mapList').addEventListener('pointerdown', e => {
+  _lpFired = false; $('mapCtx').classList.remove('open');
+  const it = e.target.closest('[data-map]');
+  if(!it || e.pointerType !== 'touch') return;
+  _lpT = setTimeout(() => { _lpFired = true; openMapCtx(it, e.clientX, e.clientY); }, 500);
+});
+['pointerup','pointercancel','pointerleave'].forEach(t => $('mapList').addEventListener(t, () => clearTimeout(_lpT)));
+// no resto da barra e nos menus, nada de menu do navegador
+$('topbar').addEventListener('contextmenu', e => { if(!e.target.closest('input')) e.preventDefault(); });
+document.addEventListener('pointerdown', e => {
+  if(!e.target.closest('.tmenu') && !e.target.closest('#mapBtn') && !e.target.closest('#srcBtn')) closeTopMenus();
+});
 $('topbar').addEventListener('click', e => {
+  if(e.target.closest('#mapBtn')) return toggleTopMenu('mapBtn', 'mapMenu');
+  if(e.target.closest('#srcBtn')) return toggleTopMenu('srcBtn', 'srcMenu');
+  const m = e.target.closest('[data-map]');
+  if(m){ if(_lpFired){ _lpFired = false; return; } closeTopMenus(); if(m.dataset.map !== currentId) switchMap(m.dataset.map); return; }
+  const sb = e.target.closest('[data-src]');
+  if(sb){
+    closeTopMenus();
+    if(sb.dataset.src === 'local' && source === 'remote') exitRemote();
+    else if(sb.dataset.src === 'remote' && source !== 'remote') loadRemote();
+    return;
+  }
   const b = e.target.closest('[data-act]'); if(!b) return;
+  if(b.closest('.tmenu')) closeTopMenus();
   const a = b.dataset.act;
   if(a === 'new')    newMap();
   if(a === 'rename') renameMap();
@@ -2223,10 +2588,6 @@ $('topbar').addEventListener('click', e => {
   if(a === 'addchild') addChild(selectedId || tree.id);
 });
 $('mapSel').addEventListener('change', e => switchMap(e.target.value));
-$('srcToggle').addEventListener('click', () => {
-  if(source === 'remote') exitRemote();     // Repo → Pasta
-  else loadRemote();                        // Pasta → Repo (URL fixa REMOTE_MAPS)
-});
 $('controls').addEventListener('click', e => {
   const b = e.target.closest('[data-act]'); if(!b) return;
   const a = b.dataset.act;

@@ -1,31 +1,47 @@
 {
   "app": "mapa-mental",
   "version": 1,
-  "id": "ndcinssmap1",
+  "id": "ncjyel5sb5c",
   "name": "Direito Constitucional",
   "tree": {
-    "id": "dc-root",
+    "id": "n3dc0ap5b5f",
     "label": "Direito Constitucional (CF/88)",
     "children": [
       {
-        "id": "t1",
+        "id": "nhlfqleob5f",
         "label": "TÍTULO I — Princípios Fundamentais (arts. 1º a 4º)",
-        "refs": [
-          {
-            "label": "CF/88 — Título I (Planalto)",
-            "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#tituloi",
-            "kind": "cf"
-          },
-          {
-            "label": "Figura — mapa consolidado (slide aula 4)",
-            "url": "conteudo/figuras/dc1/aula4p5_principios-fundamentais-consolidado.png",
-            "kind": "figura"
-          }
-        ],
         "children": [
           {
-            "id": "t1-pre",
+            "id": "npzr0su2b5f",
             "label": "Preâmbulo",
+            "children": [
+              {
+                "id": "ndxo1bk7b5f",
+                "label": "Conteúdo: instituir \"um Estado Democrático\"; assegurar direitos sociais e\nindividuais, liberdade, segurança, bem-estar, desenvolvimento, igualdade e\njustiça; sociedade fraterna, pluralista e sem preconceitos; solução pacífica\ndas controvérsias; \"sob a proteção de Deus\"",
+                "children": [],
+                "color": "cinza"
+              },
+              {
+                "id": "nq8xovjfb5f",
+                "label": "Não possui força normativa",
+                "children": []
+              },
+              {
+                "id": "nfs1fkvrb5f",
+                "label": "Possui função de diretriz interpretativa do texto da constituição",
+                "children": []
+              },
+              {
+                "id": "nede9r2jb5f",
+                "label": "Não é norma de observância obrigatória: Constituições dos Estados-membros\nnão são obrigadas a repetir, copiar ou reproduzir todos os dispositivos \npresentes na Constituição Federal.",
+                "children": []
+              },
+              {
+                "id": "ns91wpanb5f",
+                "label": "Não é parâmetro de controle",
+                "children": []
+              }
+            ],
             "refs": [
               {
                 "label": "CF/88 — Preâmbulo (Planalto)",
@@ -38,39 +54,23 @@
                 "kind": "slide"
               }
             ],
-            "children": [
-              {
-                "id": "t1-pre-a",
-                "label": "Conteúdo: instituir \"um Estado Democrático\"; assegurar direitos sociais e\nindividuais, liberdade, segurança, bem-estar, desenvolvimento, igualdade e\njustiça; sociedade fraterna, pluralista e sem preconceitos; solução pacífica\ndas controvérsias; \"sob a proteção de Deus\"",
-                "children": [],
-                "color": "cinza"
-              },
-              {
-                "id": "t1-pre-b",
-                "label": "Não possui força normativa",
-                "children": []
-              },
-              {
-                "id": "nup7f6uqp37",
-                "label": "Possui função de diretriz interpretativa do texto da constituição",
-                "children": []
-              },
-              {
-                "id": "t1-pre-c",
-                "label": "Não é norma de observância obrigatória: Constituições dos Estados-membros\nnão são obrigadas a repetir, copiar ou reproduzir todos os dispositivos \npresentes na Constituição Federal.",
-                "children": []
-              },
-              {
-                "id": "nxgaquxz4d5",
-                "label": "Não é parâmetro de controle",
-                "children": []
-              }
-            ],
             "collapsed": true
           },
           {
-            "id": "t1-vg",
+            "id": "nomkbelkb5f",
             "label": "Princípios Fundamentais",
+            "children": [
+              {
+                "id": "nngi1915b5f",
+                "label": "Princípios estruturantes do Estado brasileiro,\nescolhidos pelo Poder Constituinte Originário",
+                "children": []
+              },
+              {
+                "id": "nir3e47nb5f",
+                "label": "1 Federativo\n2 Republicano\n3 Estado Democrático de Direito\n4 Soberania Popular\n5 Separação de Poderes\n6 Fundamentos (art. 1º)\n7 Objetivos (art. 3º)\n8 Princípios na Ordem Internacional (art. 4º)",
+                "children": []
+              }
+            ],
             "refs": [
               {
                 "label": "Slide — aula 1",
@@ -83,77 +83,38 @@
                 "kind": "figura"
               }
             ],
-            "children": [
-              {
-                "id": "t1-vg-a",
-                "label": "Princípios estruturantes do Estado brasileiro,\nescolhidos pelo Poder Constituinte Originário",
-                "children": []
-              },
-              {
-                "id": "t1-vg-b",
-                "label": "1 Federativo\n2 Republicano\n3 Estado Democrático de Direito\n4 Soberania Popular\n5 Separação de Poderes\n6 Fundamentos (art. 1º)\n7 Objetivos (art. 3º)\n8 Princípios na Ordem Internacional (art. 4º)",
-                "children": []
-              }
-            ],
             "collapsed": true
           },
           {
-            "id": "nfc182uj04p",
+            "id": "nu329vefb5f",
             "label": "Princípio Federativo",
             "children": [
               {
-                "id": "nzdflz77gna",
-                "label": "Arts. 1º e 18",
+                "id": "n4ixp5qlb5f",
+                "label": "Arts. 1º e 18º",
                 "children": []
               },
               {
-                "id": "nxo9j1r03iq",
-                "label": "Forma de Estado",
-                "children": [
-                  {
-                    "id": "t1-formas-a",
-                    "label": "Forma de Estado: Federação (organização territorial, poder descentralizado, união indissolúvel)",
-                    "children": []
-                  },
-                  {
-                    "id": "npq12qnea16",
-                    "label": "Forma de governo: República (chefia do Estado)",
-                    "children": []
-                  },
-                  {
-                    "id": "nadxsekb362",
-                    "label": "Sistema de governo: Presidencialismo (relação Executivo × Legislativo)",
-                    "children": []
-                  },
-                  {
-                    "id": "nobidxgayiq",
-                    "label": "Regime político: Democracia semidireta / participativa",
-                    "children": []
-                  }
-                ],
-                "collapsed": true
-              },
-              {
-                "id": "n35yj0pns9d",
+                "id": "n7hur2l8b5f",
                 "label": "Autonomia política (4 capacidades)",
                 "children": [
                   {
-                    "id": "nh0ywoy0y5s",
+                    "id": "nlepac1jb5f",
                     "label": "Auto-organização",
                     "children": []
                   },
                   {
-                    "id": "n728q1v4fx4",
+                    "id": "njgrxuqpb5f",
                     "label": "Autogoverno",
                     "children": []
                   },
                   {
-                    "id": "ncwhfd46ipk",
+                    "id": "ne5f76qib5f",
                     "label": "Autolegislação",
                     "children": []
                   },
                   {
-                    "id": "n2khn300ky0",
+                    "id": "n9wnol7ab5f",
                     "label": "Autoadministração",
                     "children": []
                   }
@@ -161,75 +122,53 @@
                 "collapsed": true
               },
               {
-                "id": "t1-formas-rep",
-                "label": "Princípio Republicano (art. 1º)",
-                "children": [
-                  {
-                    "id": "t1-formas-rep-a",
-                    "label": "Características: eleição + mandato (alternância no poder) +\ndever de prestar contas (accountability)",
-                    "children": []
-                  },
-                  {
-                    "id": "t1-formas-rep-b",
-                    "label": "NÃO é cláusula pétrea expressa",
-                    "children": []
-                  },
-                  {
-                    "id": "t1-formas-rep-c",
-                    "label": "Divergência: limitação material implícita (plebiscito de 1993 — art. 2º do ADCT)",
-                    "children": []
-                  }
-                ],
-                "collapsed": true
-              },
-              {
-                "id": "n10efgt2jfb",
+                "id": "n7drum4eb5f",
                 "label": "Cláusula pétrea (não pode ser abolido por emenda)\n(FOi VOcê que SEPAROU os DIREITOS)",
                 "children": []
               },
               {
-                "id": "np39kfh5ub8",
+                "id": "nbmrz9epb5f",
                 "label": "De 3º grau\nPor segregação\nCooperativa\nAssimétrica",
                 "children": [
                   {
-                    "id": "n9nlz4b0l7r",
-                    "label": "De 3º grau:\nNacional - União\nRegional - Estados/DF\nLocal - Municípios\n\n(Município como ente autônomo é peculiaridade brasileira)",
+                    "id": "nz08zv6tb5f",
+                    "label": "De 3º grau:\nNacional - União\nRegional - Estados/DF\nLocal - Municípios\n(Município como ente autônomo é peculiaridade brasileira)",
                     "children": []
                   },
                   {
-                    "id": "nxiv4fl710n",
+                    "id": "n192oaxib5f",
                     "label": "Por segregação (movimento centrífugo, do Estado unitário de 1824) —\ninverso dos EUA (agregação)",
                     "children": []
                   },
                   {
-                    "id": "nsato79drpb",
-                    "label": "Cooperativa (competências comuns art. 23 / concorrentes art. 24)",
+                    "id": "n7075uxib5f",
+                    "label": "Cooperativa (sem repartição de competências) (competências comuns art. 23 / concorrentes art. 24)",
                     "children": []
                   },
                   {
-                    "id": "nzj99dql7me",
-                    "label": "Assimétrica (DF, Zona Franca)",
+                    "id": "nfltxgy6b5f",
+                    "label": "Assimétrica (A União trata diferente os entes de menor grau) (DF, Zona Franca)",
                     "children": []
                   }
                 ],
                 "collapsed": true
               },
               {
-                "id": "t1-formas-edd",
+                "id": "n22w1tajb5f",
                 "label": "Estado Democrático de Direito (art. 1º, parte final)",
                 "children": [
                   {
-                    "id": "t1-formas-edd-a",
+                    "id": "n950s296b5f",
                     "label": "Estado Democrático: poder do povo; espécies de democracia —\ndireta · indireta (representativa) · semidireta (participativa) = Brasil",
                     "children": []
                   },
                   {
-                    "id": "t1-formas-edd-b",
+                    "id": "nys1w8aib5f",
                     "label": "Estado de Direito: observância das leis; criado em oposição ao antigo Estado de Polícia",
                     "children": []
                   },
                   {
-                    "id": "t1-formas-edd-c",
+                    "id": "n3salcneb5f",
                     "label": "Instrumentos de participação: plebiscito (prévio) · referendo (posterior) ·\niniciativa popular · ação popular · júri",
                     "children": []
                   }
@@ -257,8 +196,72 @@
             "collapsed": true
           },
           {
-            "id": "t1-a1",
+            "id": "nectovvob5f",
+            "label": "Princípio Republicano",
+            "children": [
+              {
+                "id": "ngy69zinb5f",
+                "label": "O Estado Fede — Forma de Estado: Federação\n(organização territorial, poder descentralizado, união indissolúvel)",
+                "children": []
+              },
+              {
+                "id": "nxjatsaeb5f",
+                "label": "A República é Fogo — Forma de governo: República (chefia do Estado)",
+                "children": []
+              },
+              {
+                "id": "ntczsj87b5f",
+                "label": "O Presidente é Sistemático — Sistema de governo: Presidencialismo (relação Executivo × Legislativo)",
+                "children": []
+              },
+              {
+                "id": "nc0uw685b5f",
+                "label": "O Regime é Democrático — Regime político: Democracia (semidireta / participativa)",
+                "children": []
+              }
+            ],
+            "collapsed": true
+          },
+          {
+            "id": "nhjc3juqb5f",
             "label": "Art. 1º — Fundamentos da República (SO CI DI VAL PLU)",
+            "children": [
+              {
+                "id": "nqw172erb5f",
+                "label": "SO — Soberania (ótica interna: impor a ordem jurídica no território ·\nótica externa: dever de igualdade entre os Estados)",
+                "children": []
+              },
+              {
+                "id": "n7ogcuarb5f",
+                "label": "CI — Cidadania (sentido amplo: titular de direitos fundamentais ·\nsentido estrito: titular de direitos políticos)",
+                "children": []
+              },
+              {
+                "id": "nto0gyr4b5f",
+                "label": "DI — Dignidade da pessoa humana (direito à existência digna)",
+                "children": []
+              },
+              {
+                "id": "ndkuchfgb5f",
+                "label": "VAL — Valores sociais do trabalho e da livre iniciativa (opção pelo modelo capitalista)",
+                "children": []
+              },
+              {
+                "id": "np95jaoqb5f",
+                "label": "PLU — Pluralismo político (pluralidade de ideias; ≠ pluripartidarismo, que dele decorre)",
+                "children": []
+              },
+              {
+                "id": "npsy7o43b5f",
+                "label": "Parágrafo único — soberania popular: \"todo o poder emana do povo\",\npor representantes eleitos OU diretamente (ligado ao ideal democrático)",
+                "children": []
+              },
+              {
+                "id": "nl2s7r38b5f",
+                "label": "\"Cidadania\" é sempre fundamento (art. 1º, II) — nunca princípio de relações internacionais",
+                "children": []
+              }
+            ],
             "refs": [
               {
                 "label": "CF/88 — art. 1º (Planalto)",
@@ -276,48 +279,38 @@
                 "kind": "figura"
               }
             ],
-            "children": [
-              {
-                "id": "t1-a1-0",
-                "label": "SO — Soberania (ótica interna: impor a ordem jurídica no território ·\nótica externa: dever de igualdade entre os Estados)",
-                "children": []
-              },
-              {
-                "id": "t1-a1-1",
-                "label": "CI — Cidadania (sentido amplo: titular de direitos fundamentais ·\nsentido estrito: titular de direitos políticos)",
-                "children": []
-              },
-              {
-                "id": "t1-a1-2",
-                "label": "DI — Dignidade da pessoa humana (direito à existência digna)",
-                "children": []
-              },
-              {
-                "id": "t1-a1-3",
-                "label": "VAL — Valores sociais do trabalho e da livre iniciativa (opção pelo modelo capitalista)",
-                "children": []
-              },
-              {
-                "id": "t1-a1-4",
-                "label": "PLU — Pluralismo político (pluralidade de ideias; ≠ pluripartidarismo, que dele decorre)",
-                "children": []
-              },
-              {
-                "id": "t1-a1-pu",
-                "label": "Parágrafo único — soberania popular: \"todo o poder emana do povo\",\npor representantes eleitos OU diretamente (ligado ao ideal democrático)",
-                "children": []
-              },
-              {
-                "id": "t1-a1-ci",
-                "label": "\"Cidadania\" é sempre fundamento (art. 1º, II) — nunca princípio de relações internacionais",
-                "children": []
-              }
-            ],
             "collapsed": true
           },
           {
-            "id": "t1-a2",
+            "id": "nuqdia9nb5f",
             "label": "Art. 2º — Separação dos Poderes",
+            "children": [
+              {
+                "id": "n9fu27i2b5f",
+                "label": "Legislativo, Executivo e Judiciário — independentes e harmônicos entre si",
+                "children": []
+              },
+              {
+                "id": "nkt0jqlvb5f",
+                "label": "Visão clássica: Aristóteles (\"Política\") e Montesquieu (\"Do Espírito das Leis\")",
+                "children": []
+              },
+              {
+                "id": "n4pnye6nb5f",
+                "label": "Visão moderna — funções típicas e atípicas:\nLegislativo: típicas legislar e fiscalizar · atípicas administrar e julgar\nExecutivo: típica administrar · atípicas legislar (MP) e julgar (PAD)\nJudiciário: típica julgar · atípicas administrar e legislar (regimento)",
+                "children": []
+              },
+              {
+                "id": "nenrh6fob5f",
+                "label": "Freios e contrapesos (checks and balances) — controles recíprocos:\nex. nomeação de Ministro do STF, processo legislativo, controle de constitucionalidade",
+                "children": []
+              },
+              {
+                "id": "n2yc9el5b5f",
+                "label": "É cláusula pétrea (art. 60, §4º, III): não pode ser abolidos\nou alterado por PEC",
+                "children": []
+              }
+            ],
             "refs": [
               {
                 "label": "CF/88 — art. 2º (Planalto)",
@@ -335,38 +328,43 @@
                 "kind": "figura"
               }
             ],
-            "children": [
-              {
-                "id": "t1-a2-a",
-                "label": "Legislativo, Executivo e Judiciário — independentes e harmônicos entre si",
-                "children": []
-              },
-              {
-                "id": "t1-a2-b",
-                "label": "Visão clássica: Aristóteles (\"Política\") e Montesquieu (\"Do Espírito das Leis\")",
-                "children": []
-              },
-              {
-                "id": "t1-a2-c",
-                "label": "Visão moderna — funções típicas e atípicas:\nLegislativo: típicas legislar e fiscalizar · atípicas administrar e julgar\nExecutivo: típica administrar · atípicas legislar (MP) e julgar (PAD)\nJudiciário: típica julgar · atípicas administrar e legislar (regimento)",
-                "children": []
-              },
-              {
-                "id": "t1-a2-d",
-                "label": "Freios e contrapesos (checks and balances) — controles recíprocos:\nex. nomeação de Ministro do STF, processo legislativo, controle de constitucionalidade",
-                "children": []
-              },
-              {
-                "id": "t1-a2-e",
-                "label": "É cláusula pétrea (art. 60, §4º, III): não pode ser abolidos\nou alterado por PEC",
-                "children": []
-              }
-            ],
             "collapsed": true
           },
           {
-            "id": "t1-a3",
-            "label": "Art. 3º — Objetivos fundamentais (CO GA ER PRO)",
+            "id": "nc0tutmqb5f",
+            "label": "Art. 3º — Objetivos fundamentais (CON GA ER PRO)",
+            "children": [
+              {
+                "id": "n35byn5ib5f",
+                "label": "CO — Construir uma sociedade livre, justa e solidária",
+                "children": []
+              },
+              {
+                "id": "nz2cwhoeb5f",
+                "label": "GA — Garantir o desenvolvimento nacional",
+                "children": []
+              },
+              {
+                "id": "n1moyldhb5f",
+                "label": "ER — Erradicar a pobreza e a marginalização e reduzir as desigualdades sociais e regionais",
+                "children": []
+              },
+              {
+                "id": "nrta9dl9b5f",
+                "label": "PRO — Promover o bem de todos, sem preconceitos de origem, raça, sexo, cor, idade...",
+                "children": []
+              },
+              {
+                "id": "nq6nfoi3b5f",
+                "label": "Verbos no infinitivo → art. 3º (chave de identificação)",
+                "children": []
+              },
+              {
+                "id": "n47l0zvwb5f",
+                "label": "\"Erradicar\" a pobreza (não \"reduzir a nível aceitável\"); \"reduzir\" só as desigualdades",
+                "children": []
+              }
+            ],
             "refs": [
               {
                 "label": "CF/88 — art. 3º (Planalto)",
@@ -384,43 +382,78 @@
                 "kind": "figura"
               }
             ],
-            "children": [
-              {
-                "id": "t1-a3-0",
-                "label": "CO — Construir uma sociedade livre, justa e solidária",
-                "children": []
-              },
-              {
-                "id": "t1-a3-1",
-                "label": "GA — Garantir o desenvolvimento nacional",
-                "children": []
-              },
-              {
-                "id": "t1-a3-2",
-                "label": "ER — Erradicar a pobreza e a marginalização e reduzir as desigualdades sociais e regionais",
-                "children": []
-              },
-              {
-                "id": "t1-a3-3",
-                "label": "PRO — Promover o bem de todos, sem preconceitos de origem, raça, sexo, cor, idade...",
-                "children": []
-              },
-              {
-                "id": "t1-a3-a",
-                "label": "Verbos no infinitivo → art. 3º (chave de identificação)",
-                "children": []
-              },
-              {
-                "id": "t1-a3-b",
-                "label": "\"Erradicar\" a pobreza (não \"reduzir a nível aceitável\"); \"reduzir\" só as desigualdades",
-                "children": []
-              }
-            ],
             "collapsed": true
           },
           {
-            "id": "t1-a4",
+            "id": "n828qo9ob5f",
             "label": "Art. 4º — Princípios nas relações internacionais (PANIICO SOCO REDE)",
+            "children": [
+              {
+                "id": "ngtugv94b5f",
+                "label": "P — Prevalência dos direitos humanos",
+                "children": []
+              },
+              {
+                "id": "n30t5gp4b5f",
+                "label": "A — Autodeterminação dos povos",
+                "children": []
+              },
+              {
+                "id": "n1mnkbjxb5f",
+                "label": "N — Não-intervenção",
+                "children": []
+              },
+              {
+                "id": "n3x449ksb5f",
+                "label": "I — Independência nacional",
+                "children": []
+              },
+              {
+                "id": "ncw186m1b5f",
+                "label": "I — Igualdade entre os Estados",
+                "children": []
+              },
+              {
+                "id": "n0uknmovb5f",
+                "label": "CO — Cooperação entre os povos para o progresso da humanidade",
+                "children": []
+              },
+              {
+                "id": "nlhsqbmeb5f",
+                "label": "SO — Solução pacífica dos conflitos",
+                "children": []
+              },
+              {
+                "id": "n47hkg94b5f",
+                "label": "CO — Concessão de asilo político",
+                "children": []
+              },
+              {
+                "id": "nlgt5t5gb5f",
+                "label": "RE — Repúdio ao terrorismo e ao racismo",
+                "children": []
+              },
+              {
+                "id": "nj8fu3nhb5f",
+                "label": "DE — Defesa da paz",
+                "children": []
+              },
+              {
+                "id": "n4vyc6jmb5f",
+                "label": "São 10 incisos (art. 4º, I a X) — o mnemônico não segue a ordem numérica",
+                "children": []
+              },
+              {
+                "id": "n7773t6vb5f",
+                "label": "Parágrafo único: integração econômica, política, social e cultural dos povos da\nAMÉRICA LATINA → comunidade latino-americana de nações",
+                "children": []
+              },
+              {
+                "id": "nqb73meeb5f",
+                "label": "Pegadinha: outra região (América do Sul, Ibero-América, Mercosul) = errado",
+                "children": []
+              }
+            ],
             "refs": [
               {
                 "label": "CF/88 — art. 4º (Planalto)",
@@ -438,78 +471,43 @@
                 "kind": "figura"
               }
             ],
-            "children": [
-              {
-                "id": "t1-a4-0",
-                "label": "P — Prevalência dos direitos humanos",
-                "children": []
-              },
-              {
-                "id": "t1-a4-1",
-                "label": "A — Autodeterminação dos povos",
-                "children": []
-              },
-              {
-                "id": "t1-a4-2",
-                "label": "N — Não-intervenção",
-                "children": []
-              },
-              {
-                "id": "t1-a4-3",
-                "label": "I — Independência nacional",
-                "children": []
-              },
-              {
-                "id": "t1-a4-4",
-                "label": "I — Igualdade entre os Estados",
-                "children": []
-              },
-              {
-                "id": "t1-a4-5",
-                "label": "CO — Cooperação entre os povos para o progresso da humanidade",
-                "children": []
-              },
-              {
-                "id": "t1-a4-6",
-                "label": "SO — Solução pacífica dos conflitos",
-                "children": []
-              },
-              {
-                "id": "t1-a4-7",
-                "label": "CO — Concessão de asilo político",
-                "children": []
-              },
-              {
-                "id": "t1-a4-8",
-                "label": "RE — Repúdio ao terrorismo e ao racismo",
-                "children": []
-              },
-              {
-                "id": "t1-a4-9",
-                "label": "DE — Defesa da paz",
-                "children": []
-              },
-              {
-                "id": "t1-a4-a",
-                "label": "São 10 incisos (art. 4º, I a X) — o mnemônico não segue a ordem numérica",
-                "children": []
-              },
-              {
-                "id": "t1-a4-b",
-                "label": "Parágrafo único: integração econômica, política, social e cultural dos povos da\nAMÉRICA LATINA → comunidade latino-americana de nações",
-                "children": []
-              },
-              {
-                "id": "t1-a4-c",
-                "label": "Pegadinha: outra região (América do Sul, Ibero-América, Mercosul) = errado",
-                "children": []
-              }
-            ],
             "collapsed": true
           },
           {
-            "id": "t1-cp",
+            "id": "ntkk47mjb5f",
             "label": "Cláusulas pétreas (art. 60, §4º) (FOi VOcê que SEPAROU os DIREITOS)",
+            "children": [
+              {
+                "id": "nzn7c0uxb5f",
+                "label": "FO — Forma federativa de Estado",
+                "children": []
+              },
+              {
+                "id": "nk3cdsi4b5f",
+                "label": "VO — Voto direto, secreto, universal e periódico",
+                "children": []
+              },
+              {
+                "id": "nw73civeb5f",
+                "label": "SEPAROU — Separação dos Poderes",
+                "children": []
+              },
+              {
+                "id": "n4s6u44bb5f",
+                "label": "DIREITOS — Direitos e garantias individuais",
+                "children": []
+              },
+              {
+                "id": "ngs5gf93b5f",
+                "label": "\"Voto obrigatório\" NÃO é cláusula pétrea (a obrigatoriedade pode ser alterada por emenda)",
+                "children": []
+              },
+              {
+                "id": "n6isi5rub5f",
+                "label": "República NÃO é cláusula pétrea expressa — limitação material implícita\n(art. 2º do ADCT, plebiscito de 1993)",
+                "children": []
+              }
+            ],
             "refs": [
               {
                 "label": "CF/88 — art. 60, §4º (Planalto)",
@@ -527,45 +525,87 @@
                 "kind": "figura"
               }
             ],
-            "children": [
-              {
-                "id": "t1-cp-0",
-                "label": "FO — Forma federativa de Estado",
-                "children": []
-              },
-              {
-                "id": "t1-cp-1",
-                "label": "VO — Voto direto, secreto, universal e periódico",
-                "children": []
-              },
-              {
-                "id": "t1-cp-2",
-                "label": "SEPAROU — Separação dos Poderes",
-                "children": []
-              },
-              {
-                "id": "t1-cp-3",
-                "label": "DIREITOS — Direitos e garantias individuais",
-                "children": []
-              },
-              {
-                "id": "t1-cp-b",
-                "label": "\"Voto obrigatório\" NÃO é cláusula pétrea (a obrigatoriedade pode ser alterada por emenda)",
-                "children": []
-              },
-              {
-                "id": "t1-cp-c",
-                "label": "República NÃO é cláusula pétrea expressa — limitação material implícita\n(art. 2º do ADCT, plebiscito de 1993)",
-                "children": []
-              }
-            ],
             "collapsed": true
+          }
+        ],
+        "refs": [
+          {
+            "label": "CF/88 — Título I (Planalto)",
+            "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#tituloi",
+            "kind": "cf"
+          },
+          {
+            "label": "Figura — mapa consolidado (slide aula 4)",
+            "url": "conteudo/figuras/dc1/aula4p5_principios-fundamentais-consolidado.png",
+            "kind": "figura"
           }
         ]
       },
       {
-        "id": "t2",
+        "id": "n1pzwo4kb5f",
         "label": "TÍTULO II — Dos Direitos e Garantias Fundamentais (arts. 5º a 17º)",
+        "children": [
+          {
+            "id": "no1ea94yb5f",
+            "label": "Cap. I — Dos Direitos e Deveres Individuais e Coletivos (art. 5º)",
+            "children": [],
+            "refs": [
+              {
+                "label": "CF/88 — art. 5º (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art5",
+                "kind": "cf"
+              }
+            ]
+          },
+          {
+            "id": "nurpe6f7b5f",
+            "label": "Cap. II — Dos Direitos Sociais (arts. 6º a 11)",
+            "children": [],
+            "refs": [
+              {
+                "label": "CF/88 — art. 6º (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art6",
+                "kind": "cf"
+              }
+            ]
+          },
+          {
+            "id": "nkcmiupsb5f",
+            "label": "Cap. III — Da Nacionalidade (arts. 12 e 13)",
+            "children": [],
+            "refs": [
+              {
+                "label": "CF/88 — art. 12 (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art12",
+                "kind": "cf"
+              }
+            ]
+          },
+          {
+            "id": "nj3mj0meb5f",
+            "label": "Cap. IV — Dos Direitos Políticos (arts. 14 a 16)",
+            "children": [],
+            "refs": [
+              {
+                "label": "CF/88 — art. 14 (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art14",
+                "kind": "cf"
+              }
+            ]
+          },
+          {
+            "id": "n4v96tnub5f",
+            "label": "Cap. V — Dos Partidos Políticos (art. 17)",
+            "children": [],
+            "refs": [
+              {
+                "label": "CF/88 — art. 17 (Planalto)",
+                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art17",
+                "kind": "cf"
+              }
+            ]
+          }
+        ],
         "refs": [
           {
             "label": "CF/88 — Título II (Planalto)",
@@ -573,84 +613,41 @@
             "kind": "cf"
           }
         ],
-        "children": [
-          {
-            "id": "t2-c1",
-            "label": "Cap. I — Dos Direitos e Deveres Individuais e Coletivos (art. 5º)",
-            "refs": [
-              {
-                "label": "CF/88 — art. 5º (Planalto)",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art5",
-                "kind": "cf"
-              }
-            ],
-            "children": []
-          },
-          {
-            "id": "t2-c2",
-            "label": "Cap. II — Dos Direitos Sociais (arts. 6º a 11)",
-            "refs": [
-              {
-                "label": "CF/88 — art. 6º (Planalto)",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art6",
-                "kind": "cf"
-              }
-            ],
-            "children": []
-          },
-          {
-            "id": "t2-c3",
-            "label": "Cap. III — Da Nacionalidade (arts. 12 e 13)",
-            "refs": [
-              {
-                "label": "CF/88 — art. 12 (Planalto)",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art12",
-                "kind": "cf"
-              }
-            ],
-            "children": []
-          },
-          {
-            "id": "t2-c4",
-            "label": "Cap. IV — Dos Direitos Políticos (arts. 14 a 16)",
-            "refs": [
-              {
-                "label": "CF/88 — art. 14 (Planalto)",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art14",
-                "kind": "cf"
-              }
-            ],
-            "children": []
-          },
-          {
-            "id": "t2-c5",
-            "label": "Cap. V — Dos Partidos Políticos (art. 17)",
-            "refs": [
-              {
-                "label": "CF/88 — art. 17 (Planalto)",
-                "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art17",
-                "kind": "cf"
-              }
-            ],
-            "children": []
-          }
-        ],
         "collapsed": true
       },
       {
-        "id": "t3",
+        "id": "n3vo2gvxb5f",
         "label": "TÍTULO III — Da Organização do Estado (arts. 37º a 41º)",
-        "refs": [
-          {
-            "label": "CF/88 — Título III (Planalto)",
-            "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#tituloiii",
-            "kind": "cf"
-          }
-        ],
         "children": [
           {
-            "id": "t3-c7",
+            "id": "nqg432gpb5f",
             "label": "Cap. VII — Da Administração Pública (arts. 37 a 41)",
+            "children": [
+              {
+                "id": "nki6zrlgb5f",
+                "label": "Seção I — Disposições Gerais (arts. 37 e 38)",
+                "children": [],
+                "refs": [
+                  {
+                    "label": "CF/88 — art. 37 (Planalto)",
+                    "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art37",
+                    "kind": "cf"
+                  }
+                ]
+              },
+              {
+                "id": "n0bv7pukb5f",
+                "label": "Seção II — Dos Servidores Públicos (arts. 39 a 41)",
+                "children": [],
+                "refs": [
+                  {
+                    "label": "CF/88 — art. 39 (Planalto)",
+                    "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art39",
+                    "kind": "cf"
+                  }
+                ]
+              }
+            ],
             "refs": [
               {
                 "label": "CF/88 — art. 37 (Planalto)",
@@ -658,32 +655,14 @@
                 "kind": "cf"
               }
             ],
-            "children": [
-              {
-                "id": "t3-c7-s1",
-                "label": "Seção I — Disposições Gerais (arts. 37 e 38)",
-                "refs": [
-                  {
-                    "label": "CF/88 — art. 37 (Planalto)",
-                    "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art37",
-                    "kind": "cf"
-                  }
-                ],
-                "children": []
-              },
-              {
-                "id": "t3-c7-s2",
-                "label": "Seção II — Dos Servidores Públicos (arts. 39 a 41)",
-                "refs": [
-                  {
-                    "label": "CF/88 — art. 39 (Planalto)",
-                    "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#art39",
-                    "kind": "cf"
-                  }
-                ],
-                "children": []
-              }
-            ]
+            "collapsed": true
+          }
+        ],
+        "refs": [
+          {
+            "label": "CF/88 — Título III (Planalto)",
+            "url": "https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm#tituloiii",
+            "kind": "cf"
           }
         ],
         "collapsed": true
